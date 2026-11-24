@@ -56,6 +56,8 @@ jobs:
           python -m pip install kokoro==0.9.4 soundfile
       - name: Render Brazilian Portuguese audio
         run: python generate-dora.py --scope "$DORA_SCOPE"
+      - name: Audit complete audio coverage
+        run: python generate-dora.py --scope "$DORA_SCOPE" --verify-only
       - name: Commit verified MP3 files
         run: |
           git config user.name "github-actions[bot]"
