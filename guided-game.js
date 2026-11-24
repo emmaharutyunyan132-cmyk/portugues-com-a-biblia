@@ -71,11 +71,11 @@ function gameAdvance(){
  if(['choice','listen','write','tiles'].includes(q.kind)&&!d.feedback)return;
  if(q.kind==='reflect'&&!d.revealed)return;
  if(q.kind==='learn'){let w=gameState().words[wordId(q.pt)]||{seen:0,correct:0};w.seen++;w.last=Date.now();gameState().words[wordId(q.pt)]=w}
- if(q.kind==='free'&&d.input){let src=gameSource(gameKey),field=src.level==='A2'?'a2Writing':src.level==='B1'?'b1Writing':'b2Writing';S[field][src.i]=d.input}
+ if(q.kind==='free'){let src=gameSource(gameKey),field=src.level==='A2'?'a2Writing':src.level==='B1'?'b1Writing':'b2Writing';S[field][src.i]=d.input.slice(0,src.level==='A2'?3000:src.level==='B1'?4000:6000)}
  stopSpeech();d.at++;
  if(d.at>=d.tasks.length&&d.retries.length){d.tasks.push(...d.retries.filter(x=>!d.mastered[x.id]));d.retries=[]}
  if(d.at>=d.tasks.length){gameFinish(d);return}
- d.input='';d.selected=null;d.picked=[];d.feedback=null;d.revealed=false;save();render();scrollTo(0,0)
+ d.input='';d.selected=null;d.picked=[];d.feedback=null;d.revealed=false;let upcoming=d.tasks[d.at],src=gameSource(gameKey);if(upcoming?.kind==='free'&&src?.kind==='course'){let field=src.level==='A2'?'a2Writing':src.level==='B1'?'b1Writing':'b2Writing';d.input=typeof S[field][src.i]==='string'?S[field][src.i].slice(0,6000):''}save();render();scrollTo(0,0)
 }
 function gameFinish(d){
  let src=gameSource(gameKey);if(!src)return;let ids=[...new Set(d.tasks.filter(q=>['choice','listen','write','tiles'].includes(q.kind)).map(q=>q.id))],correct=ids.filter(id=>d.mastered[id]).length,passed=correct>=Math.ceil(ids.length*.8),already=src.kind==='course'?S.done.includes(src.i):!!ebState().done[ebKey(src.ch,src.v[0])],xp=0;
