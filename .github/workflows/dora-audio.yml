@@ -3,16 +3,23 @@ on:
   workflow_dispatch:
     inputs:
       scope:
-        description: "Pilot: first two lessons; all: all course lesson words and examples"
+        description: "Pilot: first two lessons; all: course lessons and fixed supplementary audio"
         type: choice
         options:
           - pilot
           - all
-        default: pilot
+        default: all
   push:
     branches: [main]
     paths:
       - ".github/workflows/dora-audio.yml"
+      - "index.html"
+      - "generate-dora.py"
+      - "a2-writing.js"
+      - "bible-data.js"
+      - "bible-topics.js"
+      - "bible-core.js"
+      - "bible-view.js"
 permissions:
   contents: write
 concurrency:
@@ -22,14 +29,21 @@ jobs:
   generate:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
-    timeout-minutes: 120
+    timeout-minutes: 180
     env:
-      DORA_SCOPE: ${{ inputs.scope || 'pilot' }}
+      DORA_SCOPE: ${{ inputs.scope || 'all' }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Validate public text inventory
+        run: |
+          python -m py_compile generate-dora.py
+          python generate-dora.py --scope "$DORA_SCOPE" --list-only > /tmp/dora-texts.json
+          python -c 'import json; print("Unique phrases:", len(json.load(open("/tmp/dora-texts.json"))))'
       - name: Install audio dependencies
         run: |
           sudo apt-get update -qq
