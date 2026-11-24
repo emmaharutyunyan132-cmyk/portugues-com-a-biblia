@@ -2376,11 +2376,11 @@ const FOUNDATION_GROUPS = [
    ],
    [
     "direita",
-    "право"
+    "правая сторона"
    ],
    [
     "esquerda",
-    "лево"
+    "левая сторона"
    ],
    [
     "em frente",
@@ -5745,7 +5745,7 @@ const FOUNDATION_GROUPS = [
  [
   "psalmshepherd",
   "faith",
-  "Псалом 23: забота и пастырь",
+  "Псалом 22 (23): забота и пастырь",
   "Salmo 23: cuidado e pastor",
   "Повторяй эти слова вместе: они относятся к одной теме.",
   "Revise estas palavras juntas: pertencem ao mesmo tema.",
@@ -5830,7 +5830,7 @@ const FOUNDATION_GROUPS = [
    ],
    [
     "beneficência",
-    "благодеяние",
+    "благотворительность, благодеяние",
     "A beneficência pode atender necessidades concretas.",
     "Благотворительность может удовлетворять конкретные нужды."
    ],
@@ -6509,7 +6509,7 @@ const FOUNDATION_GROUPS = [
   "base",
   "Кому? Кого? С кем?",
   "Pronomes na conversa",
-  "Me, te, nos — формы дополнения. В разговоре часто используют você вместо te; с предлогами — mim, comigo, com você.",
+  "Me, te, nos — формы дополнения. В разговорной речи Бразилии te часто сочетается с você. С предлогами употребляются mim, comigo, com você.",
   "Me, te e nos são pronomes de objeto; com preposições, use mim, comigo, com você.",
   [
    [
