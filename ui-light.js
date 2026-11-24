@@ -1,5 +1,5 @@
 /* Compact navigation and bounded course lists; existing IDs and local state remain unchanged. */
-let uxCatalog={map:{level:'all',query:'',at:0},grammar:{level:'all',query:'',at:0}},uxAudioLoading=false,uxAudioError=false;
+let uxCatalog={map:{level:'all',query:'',at:0},grammar:{level:'all',query:'',at:0}},uxAudioLoading=false,uxAudioError=false,uxAudioTicket=null;
 const uxPageSize=20;
 function uxTile(p,icon,ru,pt,ruSub,ptSub){return '<button class="ux-tile" onclick="uxNavigate('+arg(p)+')"><span class="ux-icon" aria-hidden="true">'+icon+'</span><span><strong>'+esc(tr(ru,pt))+'</strong><small>'+esc(tr(ruSub,ptSub))+'</small></span></button>'}
 function uxNavigate(p){if(p==='estudo'){bTab='estudo';go('bible')}else go(p)}
@@ -27,7 +27,7 @@ function uxNav(){
  let nav=$('#nav');if(!nav)return;
  let rows=[['home','⌂','Главная','Início'],['map','▤','Уроки','Lições'],['bible','📖','Библия','Bíblia'],['dict','📚','Словарь','Palavras'],['profile','⚙','Профиль','Perfil']];
  let h=rows.map(([p,i,r,t])=>'<button type="button" '+(current===p?'aria-current="page" ':'')+'onclick="uxNavigate('+arg(p)+')"><span class="nav-icon" aria-hidden="true">'+i+'</span>'+tr(r,t)+'</button>').join('');
- if(nav.innerHTML!==h)nav.innerHTML=h;
+ if(nav.dataset.content!==h){nav.innerHTML=h;nav.dataset.content=h}
 }
 function uxCatalogFilter(kind,level){if(!uxCatalog[kind]||!['all','A1','A2','B1','B2'].includes(level))return;Object.assign(uxCatalog[kind],{level,at:0});render()}
 function uxCatalogSearch(kind,q){if(!uxCatalog[kind])return;Object.assign(uxCatalog[kind],{query:String(q).slice(0,200),at:0});uxUpdateList(kind)}
@@ -58,11 +58,11 @@ function uxLoadAudio(){
  if(typeof DORA_AUDIO==='object'||uxAudioLoading)return;
  uxAudioLoading=true;uxAudioError=false;
  let e=document.createElement('script');e.src='./dora-audio-index.js';e.async=true;
- e.onload=()=>{uxAudioLoading=false;uxAudioError=false;if(page==='profile')refreshVoicePanel();if($('#global-audio-status')?.dataset.loading==='yes'){delete $('#global-audio-status').dataset.loading;audioStatus(tr('Каталог Dora готов. Нажми на аудио.','Catálogo Dora pronto. Toque no áudio.'))}};
- e.onerror=()=>{uxAudioLoading=false;uxAudioError=true;e.remove();if(page==='profile')refreshVoicePanel();if($('#global-audio-status')?.dataset.loading==='yes'){delete $('#global-audio-status').dataset.loading;audioStatus(tr('Каталог Dora не загрузился. Нажми ещё раз или выбери голос устройства.','O catálogo Dora não carregou. Tente novamente ou use a voz do dispositivo.'))}};
+ e.onload=()=>{uxAudioLoading=false;uxAudioError=false;if(page==='profile')refreshVoicePanel();if(uxAudioTicket===speechTicket){uxAudioTicket=null;audioStatus(tr('Каталог Dora готов. Нажми на аудио.','Catálogo Dora pronto. Toque no áudio.'))}};
+ e.onerror=()=>{uxAudioLoading=false;uxAudioError=true;e.remove();if(page==='profile')refreshVoicePanel();if(uxAudioTicket===speechTicket){uxAudioTicket=null;audioStatus(tr('Каталог Dora не загрузился. Нажми ещё раз или выбери голос устройства.','O catálogo Dora não carregou. Tente novamente ou use a voz do dispositivo.'))}};
  document.head.appendChild(e);
 }
 function uxAudioPending(){
  if(typeof DORA_AUDIO==='object')return false;
- uxLoadAudio();let e=$('#global-audio-status');if(e)e.dataset.loading='yes';audioStatus(tr('Загружается каталог Dora. Можно читать дальше; нажми на звук после загрузки.','Carregando o catálogo Dora. Continue lendo e toque no áudio quando estiver pronto.'));return true;
+ uxLoadAudio();uxAudioTicket=speechTicket;audioStatus(tr('Загружается каталог Dora. Можно читать дальше; нажми на звук после загрузки.','Carregando o catálogo Dora. Continue lendo e toque no áudio quando estiver pronto.'));return true;
 }
