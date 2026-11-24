@@ -8,10 +8,10 @@ function oralPool(level,theme){
  // Put curated everyday expressions first for beginning speakers.
  if((theme==='daily'||theme==='all')&&['A1','A2'].includes(level))for(let g of FOUNDATION_GROUPS){
   let conversation=g[0]==='conversation',isPhrase=g[1]==='phrases',isDaily=g[1]==='daily';
-  if(level==='A1'&&(isPhrase&&!conversation||isDaily)||level==='A2'&&conversation){
+  if(level==='A1'&&(isPhrase&&!conversation||isDaily||['objectpronouns','quantities','positions'].includes(g[0]))||level==='A2'&&(conversation||['needs','plans','smalltalk','spokenquestions'].includes(g[0]))){
    for(let [pt,ru,example,translation] of g[6]){
     if(isPhrase||isDaily&&/[.!?…]$/.test(pt))add(pt,ru,g[3],'daily');
-    if(isDaily&&example&&translation)add(example,translation,g[3],'daily')
+    if(example&&translation&&(isDaily||g[1]==='base'||isPhrase&&level==='A2'))add(example,translation,g[3],'daily')
    }
   }
  }
