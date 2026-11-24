@@ -42,6 +42,11 @@ def course_texts(scope):
         if len(lesson) > 10 and lesson[0] in ("B1", "B2") and lesson[10]:
             texts.append(lesson[10][2])
     if scope == "all":
+        for task in js_data("interpreter-data.js", "INTERPRETER_TASKS"):
+            segments = task[5]
+            texts.extend(segment[0] for segment in segments)
+            if task[1] in ("B1", "B2"):
+                texts.append(" ".join(segment[0] for segment in segments))
         for pt, ru, category, example, translation in js_data("extra-vocab.js", "EXTRA_VOCAB"):
             texts.extend([pt, example])
         for row in js_data("index.html", "IURD"):
