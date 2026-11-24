@@ -2,25 +2,24 @@
 let uxCatalog={map:{level:'all',query:'',at:0},grammar:{level:'all',query:'',at:0}},uxAudioLoading=false,uxAudioError=false,uxAudioTicket=null;
 const uxPageSize=20;
 function uxTile(p,icon,ru,pt,ruSub,ptSub){return '<button class="ux-tile" onclick="uxNavigate('+arg(p)+')"><span class="ux-icon" aria-hidden="true">'+icon+'</span><span><strong>'+esc(tr(ru,pt))+'</strong><small>'+esc(tr(ruSub,ptSub))+'</small></span></button>'}
-function uxNavigate(p){if(p==='estudo'){bTab='estudo';go('bible')}else go(p)}
+function uxNavigate(p){if(p==='estudo'||p==='bible'){bTab='estudo';ebScreen='home';go('bible')}else go(p)}
 function uxHome(){
- let completed=S.done.length,percent=Math.round(100*completed/Math.max(1,L.length));
- return '<article class="hero"><div><span class="tag">A1 → B2 · Estudo A1–C2</span><h1>Português com a Bíblia</h1><p>'+tr('Португальский шаг за шагом, вместе с Luz.','Português passo a passo, com Luz.')+'</p><button onclick="go(\'map\')">'+tr('Выбрать урок','Escolher lição')+'</button></div>'+sheep+'</article>'+resumeCard()+
- '<article class="ux-progress"><div><b>'+percent+'%</b><p class="muted">'+completed+' / '+L.length+' '+tr('уроков пройдено','lições concluídas')+' · '+S.xp+' XP</p><progress aria-label="'+tr('Прогресс курса','Progresso do curso')+'" max="'+L.length+'" value="'+completed+'"></progress></div></article>'+
- '<div class="ux-heading"><h2>'+tr('Учиться','Estudar')+'</h2></div><div class="ux-grid">'+
- uxTile('map','🎓','Уроки','Lições','Курс A1–B2','Curso A1–B2')+
- uxTile('estudo','📖','Изучение Библии','Estudo Bíblico','Главы, стихи и слова','Capítulos, versículos e palavras')+
- uxTile('dict','📚','Словарь','Vocabulário','Поиск, примеры, озвучка','Busca, exemplos e áudio')+
- uxTile('cards','🗂','Карточки','Cartões','Запоминай новые слова','Memorize palavras')+
- '</div><div class="ux-heading"><h2>'+tr('Практика','Prática')+'</h2></div><div class="ux-grid">'+
+ let completed=S.done.length,percent=Math.round(100*completed/Math.max(1,L.length)),resume=resumeCard();
+ return '<article class="hero"><div><h1>Português com a Bíblia</h1><p>'+tr('Учись в своём темпе, вместе с Luz.','Aprenda no seu ritmo, com Luz.')+'</p></div>'+sheep+'</article>'+resume+
+ '<div class="ux-heading"><h2>'+tr('Что будем изучать?','O que vamos estudar?')+'</h2></div><div class="eb-list home-main">'+
+ uxTile('estudo','📖','Библия','Bíblia','Один стих за раз','Um versículo de cada vez')+
+ uxTile('map','🎓','Португальский','Português','Уроки A1–B2','Lições A1–B2')+
+ uxTile('dict','📚','Слова','Palavras','Словарь и карточки','Vocabulário e cartões')+
+ '</div><details class="eb-detail"><summary>'+tr('Другие тренировки','Outras práticas')+'</summary><div class="eb-detail-body ux-grid">'+
  uxTile('grammar','✏️','Грамматика','Gramática','Правила по уровням','Regras por nível')+
- uxTile('verbs','📝','Глаголы','Verbos','Таблицы спряжения','Tabelas de conjugação')+
- uxTile('preps','🧩','Предлоги','Preposições','Упражнения и примеры','Exercícios e exemplos')+
+ uxTile('verbs','📝','Глаголы','Verbos','Спряжения','Conjugações')+
+ uxTile('preps','🧩','Предлоги','Preposições','Правила и практика','Regras e prática')+
  uxTile('speaking','🎙','Говорение','Falar','Слушай и повторяй','Ouça e repita')+
- uxTile('interpreters','🎧','Школа переводчиков','Escola de Intérpretes','Перевод RU ↔ PT','Tradução RU ↔ PT')+
- uxTile('prayer','🙏','Молитва','Oração','Личная запись и практика','Anotações e prática')+
+ uxTile('interpreters','🎧','Перевод','Interpretação','Школа переводчиков','Escola de intérpretes')+
+ uxTile('prayer','🙏','Молитва','Oração','Записи и практика','Anotações e prática')+
  uxTile('review','↻','Повторение','Revisão','Карточки и ошибки','Cartões e erros')+
- uxTile('profile','⚙','Настройки','Configurações','Язык, голос и прогресс','Idioma, voz e progresso')+'</div>';
+ uxTile('cards','🗂','Карточки','Cartões','Запоминание слов','Memorize palavras')+
+ '</div></details><p class="muted">'+completed+' / '+L.length+' '+tr('уроков пройдено','lições concluídas')+' · '+percent+'% · '+S.xp+' XP</p>';
 }
 function uxNav(){
  let current=['intro','quiz','result'].includes(page)?'map':page==='cards'||page==='cardrun'||page==='review'?'dict':page;
