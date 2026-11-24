@@ -17,6 +17,8 @@ on:
       - "generate-dora.py"
       - "a2-writing.js"
       - "extra-vocab.js"
+      - "foundation-data.js"
+      - "estudo-data.js"
       - "interpreter-data.js"
       - "bible-data.js"
       - "bible-topics.js"
