@@ -4,8 +4,8 @@ const uxPageSize=20;
 function uxTile(p,icon,ru,pt,ruSub,ptSub){return '<button class="ux-tile" onclick="uxNavigate('+arg(p)+')"><span class="ux-icon" aria-hidden="true">'+icon+'</span><span><strong>'+esc(tr(ru,pt))+'</strong><small>'+esc(tr(ruSub,ptSub))+'</small></span></button>'}
 function uxNavigate(p){if(p==='estudo'||p==='bible'){bTab='estudo';ebScreen='home';go('bible')}else go(p)}
 function uxHome(){
- let completed=S.done.length,percent=Math.round(100*completed/Math.max(1,L.length)),resume=resumeCard();
- return '<article class="hero"><div><h1>Português com a Bíblia</h1><p>'+tr('Учись в своём темпе, вместе с Luz.','Aprenda no seu ritmo, com Luz.')+'</p></div>'+sheep+'</article>'+resume+
+ let completed=S.done.length,percent=Math.round(100*completed/Math.max(1,L.length)),s=gameState(),src=gameSource(s.last||''),resuming=src&&gameValid(s.sessions[s.last]),next=gameSource('c:'+gameNextCourse());
+ return '<article class="hero"><div><h1>Português com a Bíblia</h1><p>'+tr('Учись в своём темпе, вместе с Luz.','Aprenda no seu ritmo, com Luz.')+'</p></div>'+sheep+'</article><article class="game-start"><span class="tag">'+tr('Твой следующий шаг','Seu próximo passo')+'</span><h2>'+esc(tr((resuming?src:next).ru,(resuming?src:next).title))+'</h2>'+gameBtn(resuming||validDraft(S.drafts[S.resume])?tr('Продолжить урок','Continuar lição'):tr('Начать урок','Começar lição'),'gameContinue()')+'</article>'+
  '<div class="ux-heading"><h2>'+tr('Что будем изучать?','O que vamos estudar?')+'</h2></div><div class="eb-list home-main">'+
  uxTile('estudo','📖','Библия','Bíblia','Один стих за раз','Um versículo de cada vez')+
  uxTile('map','🎓','Португальский','Português','Уроки A1–B2','Lições A1–B2')+
@@ -22,7 +22,7 @@ function uxHome(){
  '</div></details><p class="muted">'+completed+' / '+L.length+' '+tr('уроков пройдено','lições concluídas')+' · '+percent+'% · '+S.xp+' XP</p>';
 }
 function uxNav(){
- let current=['intro','quiz','result'].includes(page)?'map':page==='cards'||page==='cardrun'||page==='review'?'dict':page;
+ let current=['intro','quiz','result','game','game-result'].includes(page)?'map':page==='cards'||page==='cardrun'||page==='review'?'dict':page;
  let nav=$('#nav');if(!nav)return;
  let rows=[['home','⌂','Главная','Início'],['map','▤','Уроки','Lições'],['bible','📖','Библия','Bíblia'],['dict','📚','Словарь','Palavras'],['profile','⚙','Профиль','Perfil']];
  let h=rows.map(([p,i,r,t])=>'<button type="button" '+(current===p?'aria-current="page" ':'')+'onclick="uxNavigate('+arg(p)+')"><span class="nav-icon" aria-hidden="true">'+i+'</span>'+tr(r,t)+'</button>').join('');
@@ -39,7 +39,7 @@ function uxList(kind){
  let s=uxCatalog[kind],rows=uxCatalogRows(kind),pages=Math.max(1,Math.ceil(rows.length/uxPageSize));s.at=Math.min(pages-1,Math.max(0,s.at));
  let start=s.at*uxPageSize,done=new Set(S.done);
  let h='<p class="muted" role="status">'+tr('Найдено','Encontradas')+': '+rows.length+(rows.length?' · '+(start+1)+'–'+Math.min(start+uxPageSize,rows.length):'')+'</p><div class="ux-list '+(kind==='grammar'?'ux-grammar':'')+'">';
- h+=rows.slice(start,start+uxPageSize).map(({l,i})=>kind==='grammar'?'<article><span class="tag">'+esc(l[0])+'</span><h3>'+esc(tr(l[3],l[2]))+'</h3><p>'+esc(tr(l[6],l[5]))+'</p><button class="secondary" onclick="intro('+i+')">'+tr('Открыть урок','Abrir lição')+'</button></article>':'<article class="ux-lesson"><div class="ux-lesson-main"><span class="tag">'+esc(l[0])+' · '+esc(l[4]==='Brasil'?tr('Повседневное','Cotidiano'):tr('Библия','Bíblia'))+'</span><h3>'+ (done.has(i)?'✓ ':'')+esc(tr(l[3],l[2]))+'</h3><p class="muted">'+esc(S.lang==='pt'?l[1]:l[2])+'</p></div><button class="secondary" onclick="intro('+i+')">'+(validDraft(S.drafts[String(i)])?tr('Продолжить','Continuar'):tr('Открыть','Abrir'))+'</button></article>').join('');
+ h+=rows.slice(start,start+uxPageSize).map(({l,i})=>kind==='grammar'?'<article><span class="tag">'+esc(l[0])+'</span><h3>'+esc(tr(l[3],l[2]))+'</h3><p>'+esc(tr(l[6],l[5]))+'</p><button class="secondary" onclick="intro('+i+')">'+tr('Открыть урок','Abrir lição')+'</button></article>':'<article class="ux-lesson"><div class="ux-lesson-main"><span class="tag">'+esc(l[0])+' · '+esc(l[4]==='Brasil'?tr('Повседневное','Cotidiano'):tr('Библия','Bíblia'))+'</span><h3>'+ (done.has(i)?'✓ ':'')+esc(tr(l[3],l[2]))+'</h3><p class="muted">'+esc(S.lang==='pt'?l[1]:l[2])+'</p></div><button class="secondary" onclick="intro('+i+')">'+((validDraft(S.drafts[String(i)])||gameValid(gameState().sessions['c:'+i]))?tr('Продолжить','Continuar'):tr('Открыть','Abrir'))+'</button></article>').join('');
  h+='</div>';if(!rows.length)h+='<article>'+tr('Ничего не найдено. Попробуй другой запрос.','Nenhum resultado. Tente outra busca.')+'</article>';
  if(pages>1)h+='<div class="ux-pager"><button class="secondary" '+(s.at===0?'disabled ':'')+'onclick="uxPage('+arg(kind)+',-1)">‹ '+tr('Назад','Anterior')+'</button><span>'+ (s.at+1)+' / '+pages+'</span><button class="secondary" '+(s.at===pages-1?'disabled ':'')+'onclick="uxPage('+arg(kind)+',1)">'+tr('Далее','Próxima')+' ›</button></div>';
  return h;
