@@ -9,6 +9,7 @@ function uxHome(){
  '<div class="ux-heading"><h2>'+tr('Что будем изучать?','O que vamos estudar?')+'</h2></div><div class="eb-list home-main">'+
  uxTile('estudo','📖','Библия','Bíblia','Один стих за раз','Um versículo de cada vez')+
  uxTile('map','🎓','Португальский','Português','Игровая дорожка A1–B2','Caminho A1–B2')+
+ uxTile('foundations','🔤','Основы португальского','Português essencial','Местоимения, глаголы, разговорные фразы','Pronomes, verbos e frases do dia a dia')+
  uxTile('interpreters','🎧','Перевод служений','Interpretação','Тренировка перевода RU ↔ PT','Prática RU ↔ PT')+
  uxTile('speaking','🎙','Говорение','Falar','Послушай, повтори, переведи','Ouça, repita, traduza')+
  uxTile('dict','📚','Слова','Palavras','Словарь и карточки','Vocabulário e cartões')+
@@ -22,7 +23,7 @@ function uxHome(){
  '</div></details><details class="eb-detail"><summary>'+tr('Поделиться с другом','Compartilhar com um amigo')+'</summary>'+journeyShareHTML()+'</details><p class="muted">'+completed+' / '+L.length+' '+tr('уроков пройдено','lições concluídas')+' · '+percent+'% · '+S.xp+' XP</p>';
 }
 function uxNav(){
- let current=['intro','quiz','result','game','game-result'].includes(page)?'map':page==='cards'||page==='cardrun'||page==='review'?'dict':page;
+ let current=['intro','quiz','result','game','game-result'].includes(page)?'map':page==='foundations'||page==='cards'||page==='cardrun'||page==='review'?'dict':page;
  let nav=$('#nav');if(!nav)return;
  let rows=[['home','⌂','Главная','Início'],['map','▤','Уроки','Lições'],['bible','📖','Библия','Bíblia'],['dict','📚','Словарь','Palavras'],['profile','⚙','Профиль','Perfil']];
  let h=rows.map(([p,i,r,t])=>'<button type="button" '+(current===p?'aria-current="page" ':'')+'onclick="uxNavigate('+arg(p)+')"><span class="nav-icon" aria-hidden="true">'+i+'</span>'+tr(r,t)+'</button>').join('');
