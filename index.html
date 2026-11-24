@@ -216,19 +216,19 @@ function systemSpeak(s,rate=1,mode=S.voicePrefs.mode){let engine=voiceEngine();i
 let doraWorker=null,doraContext=null,doraSource=null,doraJob=null,doraTimer=null,doraLast=null;
 function doraNotice(message,allowFallback=false){let p=$('#dora-notice'),m=$('#dora-message'),f=$('#dora-fallback');if(p)p.hidden=!message;if(m)m.textContent=message;if(f)f.hidden=!allowFallback}
 function cancelDora(){if(doraTimer)clearTimeout(doraTimer);doraTimer=null;if(doraJob&&doraWorker){doraWorker.terminate();doraWorker=null}doraJob=null;if(doraSource){try{doraSource.stop()}catch(e){}doraSource=null}doraLast=null;doraNotice('')}
-function doraFailure(id){if(!doraJob||doraJob.id!==id)return;if(doraTimer)clearTimeout(doraTimer);doraTimer=null;if(doraWorker)doraWorker.terminate();doraWorker=null;doraJob=null;doraNotice(tr('Dora не загрузилась или не смогла воспроизвести фразу. Можно попробовать снова или выбрать системный голос.','Dora não conseguiu carregar ou reproduzir. Tente novamente ou use a voz do dispositivo.'),true)}
+function doraFailure(id,code='UNKNOWN',detail=''){if(!doraJob||doraJob.id!==id)return;if(doraTimer)clearTimeout(doraTimer);doraTimer=null;if(doraWorker)doraWorker.terminate();doraWorker=null;doraJob=null;doraNotice(tr('Dora: не удалось воспроизвести. Код ошибки: ','Dora: não foi possível reproduzir. Código: ')+code+(detail?' — '+String(detail).slice(0,180):'')+'. '+tr('Можно выбрать системный голос.','Use a voz do dispositivo.'),true)}
 function fallbackSpeech(){if(!doraLast)return;let {text,rate}=doraLast;stopSpeech();systemSpeak(text,rate,S.voicePrefs.mode)}
 function handleDora(e){let m=e.data;if(!doraJob||m.id!==doraJob.id)return;let id=m.id;
- if(m.stage==='loading'){doraNotice(tr('Dora: первая загрузка модели (может потребоваться около 100 МБ и больше).','Dora: primeiro download do modelo (cerca de 100 MB ou mais).'));return}
+ if(m.stage==='loading'){let stages={LIBRARY:tr('Загрузка библиотек','Carregando bibliotecas'),PHONEMIZER:tr('Проверка португальского произношения','Preparando português'),VOICE:tr('Загрузка голоса Dora','Carregando voz Dora'),MODEL:tr('Загрузка модели (около 100 МБ и больше)','Carregando modelo (cerca de 100 MB ou mais)')};doraNotice('Dora · '+(stages[m.phase]||m.phase||'...')+(Number.isFinite(m.percent)?' · '+m.percent+'%':''));return}
  if(m.stage==='generating'){doraNotice(tr('Dora готовит озвучку…','Dora está preparando o áudio…'));return}
- if(m.stage==='error'){doraFailure(id);return}
+ if(m.stage==='error'){doraFailure(id,m.phase||'WORKER',m.detail||'');return}
  if(m.stage!=='done')return;
  try{if(!(m.samples instanceof Float32Array)||!m.samples.length||m.sampleRate!==24000)throw Error('waveform');
   let buffer=doraContext.createBuffer(1,m.samples.length,m.sampleRate);buffer.copyToChannel(m.samples,0);
   let source=doraContext.createBufferSource();source.buffer=buffer;source.connect(doraContext.destination);doraSource=source;
   source.onended=()=>{if(doraSource===source){doraSource=null;doraNotice('')}};
   source.start();clearTimeout(doraTimer);doraTimer=null;doraJob=null;doraNotice(tr('🔊 Dora · Português (Brasil)','🔊 Dora · Português (Brasil)'));
- }catch(e){doraFailure(id)}
+ }catch(e){doraFailure(id,'PLAYBACK',e.message)}
 }
 function speak(text,rate=1,mode){if(mode!==undefined||S.ttsEngine==='system'){stopSpeech();return systemSpeak(text,rate,mode===undefined?S.voicePrefs.mode:mode)}
  text=String(text).trim();if(!text||text.length>2000){audioStatus(tr('Выбери более короткую фразу.','Escolha uma frase mais curta.'));return false}
@@ -236,14 +236,14 @@ function speak(text,rate=1,mode){if(mode!==undefined||S.ttsEngine==='system'){st
  stopSpeech();let id=++speechTicket;doraLast={text,rate};doraJob={id,text,rate};
  try{let C=typeof AudioContext!=='undefined'?AudioContext:typeof webkitAudioContext!=='undefined'?webkitAudioContext:null;if(!C||typeof Worker==='undefined')throw Error('Unsupported');
   if(!doraContext)doraContext=new C();
-  let resumed=doraContext.resume();if(resumed&&typeof resumed.catch==='function')resumed.catch(()=>doraFailure(id));
-  if(!doraWorker){doraWorker=new Worker('./dora-worker.js',{type:'module'});doraWorker.onmessage=handleDora;doraWorker.onerror=()=>{if(doraJob)doraFailure(doraJob.id)}}
+  let resumed=doraContext.resume();if(resumed&&typeof resumed.catch==='function')resumed.catch(e=>doraFailure(id,'AUDIO_CONTEXT',e.message));
+  if(!doraWorker){doraWorker=new Worker('./dora-worker.js?v=084',{type:'module'});doraWorker.onmessage=handleDora;doraWorker.onerror=e=>{if(doraJob)doraFailure(doraJob.id,'WORKER',e.message||'')}}
   doraNotice(tr('Dora готовится. При первом запуске модель загружается из интернета.','Dora está iniciando. Na primeira vez, o modelo é baixado da internet.'));
-  doraTimer=setTimeout(()=>doraFailure(id),180000);doraWorker.postMessage({id,text,rate:rate===.75?.75:1});return true;
- }catch(e){doraFailure(id);return false}
+  doraTimer=setTimeout(()=>doraFailure(id,'TIMEOUT'),180000);doraWorker.postMessage({id,text,rate:rate===.75?.75:1});return true;
+ }catch(e){doraFailure(id,'START',e.message);return false}
 }
 function setTTSEngine(v){if(!['dora','system'].includes(v))return;stopSpeech();S.ttsEngine=v;save();refreshVoicePanel()}
-function doraSettings(){return '<h2>🇧🇷 Dora · Kokoro</h2><p>'+tr('Нейросетевая озвучка pt-BR (экспериментальная). Не нужен платный сервер. Модель загружается только при нажатии на звук и работает в браузере. Первая загрузка может занять время и использовать более 100 МБ трафика.','Voz neural pt-BR (experimental). Sem servidor pago. O modelo é baixado ao tocar no áudio e funciona no navegador. A primeira carga pode usar mais de 100 MB.')+'</p><label>'+tr('Движок озвучивания','Motor de voz')+'<select onchange="setTTSEngine(this.value)"><option value="dora" '+(S.ttsEngine==='dora'?'selected':'')+'>Dora — Kokoro (experimental)</option><option value="system" '+(S.ttsEngine==='system'?'selected':'')+'>'+tr('Системный голос','Voz do dispositivo')+'</option></select></label><div class="audio-group"><button onclick="speak(voiceSample,1)">▶ '+tr('Прослушать','Ouvir')+' 1×</button><button class="secondary" onclick="speak(voiceSample,.75)">🐢 0,75×</button><button class="secondary" onclick="stopSpeech()">'+tr('Стоп','Parar')+'</button></div><p class="muted">'+tr('Голос бразильский, региональный акцент не подтверждён. При сбое используй системный голос или письменную альтернативу.','Voz brasileira; sotaque regional não confirmado. Em caso de falha, use a voz do dispositivo ou alternativa escrita.')+' <a href="https://huggingface.co/hexgrad/Kokoro-82M" target="_blank" rel="noopener noreferrer">Kokoro · Apache 2.0</a></p>'}
+function doraSettings(){return '<h2>🇧🇷 Dora · Kokoro</h2><p>'+tr('Нейросетевая озвучка pt-BR (экспериментальная). Не нужен платный сервер. Модель загружается только при нажатии на звук и работает в браузере. Первая загрузка может занять время и использовать более 100 МБ трафика.','Voz neural pt-BR (experimental). Sem servidor pago. O modelo é baixado ao tocar no áudio e funciona no navegador. A primeira carga pode usar mais de 100 MB.')+'</p><label>'+tr('Движок озвучивания','Motor de voz')+'<select onchange="setTTSEngine(this.value)"><option value="dora" '+(S.ttsEngine==='dora'?'selected':'')+'>Dora — Kokoro (v0.8.4 experimental)</option><option value="system" '+(S.ttsEngine==='system'?'selected':'')+'>'+tr('Системный голос','Voz do dispositivo')+'</option></select></label><div class="audio-group"><button onclick="speak(voiceSample,1)">▶ '+tr('Прослушать','Ouvir')+' 1×</button><button class="secondary" onclick="speak(voiceSample,.75)">🐢 0,75×</button><button class="secondary" onclick="stopSpeech()">'+tr('Стоп','Parar')+'</button></div><p class="muted">'+tr('Голос бразильский, региональный акцент не подтверждён. При сбое используй системный голос или письменную альтернативу.','Voz brasileira; sotaque regional não confirmado. Em caso de falha, use a voz do dispositivo ou alternativa escrita.')+' <a href="https://huggingface.co/hexgrad/Kokoro-82M" target="_blank" rel="noopener noreferrer">Kokoro · Apache 2.0</a></p>'}
 
 function audio(s){return '<span class="audio-group"><button class="secondary" type="button" aria-label="'+tr('Нормальная скорость','Velocidade normal')+'" onclick="speak('+esc(JSON.stringify(s))+',1)">🔊 1×</button><button class="secondary" type="button" aria-label="'+tr('Медленная скорость','Velocidade lenta')+'" onclick="speak('+esc(JSON.stringify(s))+',0.75)">🐢 0,75×</button></span>'}
 function setVoiceMode(mode){if(!['auto','female','male'].includes(mode))return;stopSpeech();S.voicePrefs.mode=mode;save();refreshVoicePanel()}
