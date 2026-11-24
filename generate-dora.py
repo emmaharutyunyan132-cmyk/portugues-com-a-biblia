@@ -83,6 +83,37 @@ def course_texts(scope):
         texts.extend(["Vocês têm esperança.", "Que a paz esteja com vocês."])
     return list(dict.fromkeys(normalize(t) for t in texts if isinstance(t, str) and t.strip()))
 
+def dictionary_texts():
+    # Match the first spelling retained by baseVocabulary() for each stable word ID.
+    texts = [word[0] for lesson in lesson_data() for word in lesson[7]]
+    texts += [row[0] for row in js_data("index.html", "IURD")]
+    texts += [row[0] for row in js_data("extra-vocab.js", "EXTRA_VOCAB")]
+    texts += [row[0] for group in js_data("foundation-data.js", "FOUNDATION_GROUPS") for row in group[6]]
+    words = {}
+    for text in texts:
+        words.setdefault(unicodedata.normalize("NFC", text).lower().strip(), normalize(text))
+    return list(words.values())
+
+def verify_audio(scope):
+    index = read_index()
+    texts = course_texts(scope)
+    missing = []
+    for text in texts:
+        expected = "audio-dora/" + hashlib.sha256(text.encode("utf-8")).hexdigest() + ".mp3"
+        if index.get(text) != expected or not (ROOT / expected).is_file() or (ROOT / expected).stat().st_size <= 1000:
+            missing.append(text)
+    if scope == "all":
+        word_texts = dictionary_texts()
+        missing_set = set(missing)
+        text_set = set(texts)
+        word_missing = [t for t in word_texts if t in missing_set or t not in text_set]
+        print("Dictionary audio coverage:", len(word_texts) - len(word_missing), "/", len(word_texts), flush=True)
+        if word_missing:
+            raise RuntimeError("Missing dictionary audio: " + repr(word_missing[:15]))
+    print("Audio coverage:", len(texts) - len(missing), "/", len(texts), flush=True)
+    if missing:
+        raise RuntimeError("Missing audio: " + repr(missing[:15]))
+
 def read_index():
     if not INDEX.exists():
         return {}
@@ -137,8 +168,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--scope", choices=["pilot", "all"], default="pilot")
     parser.add_argument("--list-only", action="store_true", help="Count public course phrases without loading Kokoro")
+    parser.add_argument("--verify-only", action="store_true", help="Verify manifest and MP3 coverage without loading Kokoro")
     args = parser.parse_args()
     if args.list_only:
         print(json.dumps(course_texts(args.scope), ensure_ascii=False))
+    elif args.verify_only:
+        verify_audio(args.scope)
     else:
         generate(args.scope)
+        verify_audio(args.scope)
