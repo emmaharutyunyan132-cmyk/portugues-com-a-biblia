@@ -42,6 +42,11 @@ def course_texts(scope):
         if len(lesson) > 10 and lesson[0] in ("B1", "B2") and lesson[10]:
             texts.append(lesson[10][2])
     if scope == "all":
+        for chapter in js_data("estudo-data.js", "ESTUDO_CHAPTERS"):
+            texts.append(chapter[4])
+            for verse in chapter[8]:
+                texts.extend([verse[1], verse[7]])
+                texts.extend(word[0] for word in verse[6])
         for task in js_data("interpreter-data.js", "INTERPRETER_TASKS"):
             segments = task[5]
             texts.extend(segment[0] for segment in segments)
