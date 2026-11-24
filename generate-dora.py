@@ -52,6 +52,11 @@ def course_texts(scope):
             texts.extend(segment[0] for segment in segments)
             if task[1] in ("B1", "B2"):
                 texts.append(" ".join(segment[0] for segment in segments))
+        for group in js_data("foundation-data.js", "FOUNDATION_GROUPS"):
+            for row in group[6]:
+                texts.append(row[0])
+                if len(row) == 4:
+                    texts.append(row[2])
         for pt, ru, category, example, translation in js_data("extra-vocab.js", "EXTRA_VOCAB"):
             texts.extend([pt, example])
         for row in js_data("index.html", "IURD"):
