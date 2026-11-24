@@ -39,7 +39,7 @@ def course_texts(scope):
     texts = [SAMPLE, "Eu creio em Deus.", "Hoje vou à reunião.", "Muito obrigada pela atenção."]
     for lesson in selected:
         texts.extend(row[0] for row in lesson[7] + lesson[8])
-        if len(lesson) > 10 and lesson[0] == "B1" and lesson[10]:
+        if len(lesson) > 10 and lesson[0] in ("B1", "B2") and lesson[10]:
             texts.append(lesson[10][2])
     if scope == "all":
         for row in js_data("index.html", "IURD"):
