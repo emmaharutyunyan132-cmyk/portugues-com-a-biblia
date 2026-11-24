@@ -367,20 +367,80 @@ const FOUNDATION_GROUPS = [
     "быть должным"
    ],
    [
-    "saber",
-    "знать, уметь"
-   ],
-   [
-    "conhecer",
-    "быть знакомым, знать"
-   ],
-   [
     "ficar",
     "оставаться, находиться, становиться"
    ],
    [
     "dar",
     "давать"
+   ],
+   [
+    "começar",
+    "начинать"
+   ],
+   [
+    "terminar",
+    "заканчивать"
+   ],
+   [
+    "conseguir",
+    "справляться, суметь"
+   ],
+   [
+    "colocar",
+    "класть, ставить"
+   ],
+   [
+    "pegar",
+    "брать"
+   ],
+   [
+    "deixar",
+    "оставлять, позволять",
+    "Deixei o caderno na mesa.",
+    "Я оставила тетрадь на столе."
+   ],
+   [
+    "usar",
+    "использовать",
+    "Posso usar este lápis?",
+    "Могу я воспользоваться этим карандашом?"
+   ],
+   [
+    "fechar",
+    "закрывать",
+    "Pode fechar a janela, por favor?",
+    "Можешь закрыть окно, пожалуйста?"
+   ],
+   [
+    "escolher",
+    "выбирать",
+    "Podemos escolher outro horário.",
+    "Мы можем выбрать другое время."
+   ],
+   [
+    "viver",
+    "жить",
+    "Ela vive em uma cidade pequena.",
+    "Она живёт в небольшом городе."
+   ]
+  ]
+ ],
+ [
+  "communicationverbs",
+  "base",
+  "Глаголы речи и мышления",
+  "Verbos de fala e pensamento",
+  "Запоминай глагол вместе с дополнением: gostar de, pensar em, saber fazer.",
+  "Aprenda com o complemento: gostar de, pensar em, saber fazer.",
+  [
+   [
+    "saber",
+    "знать, уметь"
+   ],
+   [
+    "conhecer",
+    "быть знакомым, знать"
    ],
    [
     "dizer",
@@ -423,42 +483,10 @@ const FOUNDATION_GROUPS = [
     "обучать"
    ],
    [
-    "começar",
-    "начинать"
-   ],
-   [
-    "terminar",
-    "заканчивать"
-   ],
-   [
-    "conseguir",
-    "справляться, суметь"
-   ],
-   [
-    "colocar",
-    "класть, ставить"
-   ],
-   [
-    "pegar",
-    "брать"
-   ],
-   [
-    "deixar",
-    "оставлять, позволять",
-    "Deixei o caderno na mesa.",
-    "Я оставила тетрадь на столе."
-   ],
-   [
     "parecer",
     "казаться",
     "O exercício parece fácil.",
     "Упражнение кажется лёгким."
-   ],
-   [
-    "usar",
-    "использовать",
-    "Posso usar este lápis?",
-    "Могу я воспользоваться этим карандашом?"
    ],
    [
     "escrever",
@@ -467,28 +495,10 @@ const FOUNDATION_GROUPS = [
     "Я напишу предложение на португальском."
    ],
    [
-    "fechar",
-    "закрывать",
-    "Pode fechar a janela, por favor?",
-    "Можешь закрыть окно, пожалуйста?"
-   ],
-   [
     "esquecer",
     "забывать",
     "Esqueci de levar o livro.",
     "Я забыла взять книгу."
-   ],
-   [
-    "escolher",
-    "выбирать",
-    "Podemos escolher outro horário.",
-    "Мы можем выбрать другое время."
-   ],
-   [
-    "viver",
-    "жить",
-    "Ela vive em uma cidade pequena.",
-    "Она живёт в небольшом городе."
    ]
   ]
  ],
@@ -1049,6 +1059,76 @@ const FOUNDATION_GROUPS = [
     "воскресенье"
    ],
    [
+    "dia",
+    "день"
+   ],
+   [
+    "semana",
+    "неделя"
+   ],
+   [
+    "mês",
+    "месяц"
+   ],
+   [
+    "ano",
+    "год"
+   ],
+   [
+    "hora",
+    "час"
+   ],
+   [
+    "minuto",
+    "минута"
+   ],
+   [
+    "manhã",
+    "утро"
+   ],
+   [
+    "tarde",
+    "день, после полудня"
+   ],
+   [
+    "noite",
+    "вечер, ночь"
+   ],
+   [
+    "madrugada",
+    "предрассветное время, глубокая ночь",
+    "A madrugada antecede o amanhecer.",
+    "Предрассветное время предшествует рассвету."
+   ],
+   [
+    "amanhecer",
+    "рассветать; рассвет",
+    "O céu ficou claro ao amanhecer.",
+    "Небо посветлело на рассвете."
+   ],
+   [
+    "anoitecer",
+    "смеркаться",
+    "Começou a anoitecer cedo.",
+    "Начало рано смеркаться."
+   ],
+   [
+    "fim de semana",
+    "выходные",
+    "Gosto de ler no fim de semana.",
+    "Я люблю читать на выходных."
+   ]
+  ]
+ ],
+ [
+  "months",
+  "base",
+  "Месяцы года",
+  "Meses do ano",
+  "Названия месяцев пишутся с маленькой буквы.",
+  "Os nomes dos meses são escritos com letra minúscula.",
+  [
+   [
     "janeiro",
     "январь"
    ],
@@ -1095,43 +1175,17 @@ const FOUNDATION_GROUPS = [
    [
     "dezembro",
     "декабрь"
-   ],
-   [
-    "dia",
-    "день"
-   ],
-   [
-    "semana",
-    "неделя"
-   ],
-   [
-    "mês",
-    "месяц"
-   ],
-   [
-    "ano",
-    "год"
-   ],
-   [
-    "hora",
-    "час"
-   ],
-   [
-    "minuto",
-    "минута"
-   ],
-   [
-    "manhã",
-    "утро"
-   ],
-   [
-    "tarde",
-    "день, после полудня"
-   ],
-   [
-    "noite",
-    "вечер, ночь"
-   ],
+   ]
+  ]
+ ],
+ [
+  "frequency",
+  "base",
+  "Когда и как часто",
+  "Quando e com que frequência",
+  "Используй эти слова, чтобы говорить о времени и привычках.",
+  "Use estas palavras para falar de tempo e hábitos.",
+  [
    [
     "hoje",
     "сегодня"
@@ -1261,30 +1315,6 @@ const FOUNDATION_GROUPS = [
     "рано утром, очень рано",
     "A biblioteca abre cedinho.",
     "Библиотека открывается рано утром."
-   ],
-   [
-    "madrugada",
-    "предрассветное время, глубокая ночь",
-    "A madrugada antecede o amanhecer.",
-    "Предрассветное время предшествует рассвету."
-   ],
-   [
-    "amanhecer",
-    "рассветать; рассвет",
-    "O céu ficou claro ao amanhecer.",
-    "Небо посветлело на рассвете."
-   ],
-   [
-    "anoitecer",
-    "смеркаться",
-    "Começou a anoitecer cedo.",
-    "Начало рано смеркаться."
-   ],
-   [
-    "fim de semana",
-    "выходные",
-    "Gosto de ler no fim de semana.",
-    "Я люблю читать на выходных."
    ],
    [
     "hoje em dia",
@@ -2561,7 +2591,17 @@ const FOUNDATION_GROUPS = [
     "директор, режиссёр (жен.)",
     "A diretora apresentou o filme.",
     "Режиссёр представила фильм."
-   ],
+   ]
+  ]
+ ],
+ [
+  "education",
+  "daily",
+  "Образование и изучение языка",
+  "Educação e aprendizagem de idiomas",
+  "Слова для учёбы и языковой практики.",
+  "Palavras para estudos e prática de idiomas.",
+  [
    [
     "faculdade",
     "факультет, вуз",
