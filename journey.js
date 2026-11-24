@@ -23,22 +23,23 @@ function journeyHTML(){
  return h
 }
 function journeyToggleAudio(){let j=journeyState();j.autoAudio=!j.autoAudio;save();if(!j.autoAudio)stopSpeech();render()}
-function journeyAutoPlay(){if(page!=='game'||!journeyState().autoAudio)return;let q=gameCurrent();if(!q||gameSession()?.feedback)return;let p=q.kind==='listen'?q.listen:q.kind==='choice'&&q.target==='ru'?(q.pt||q.prompt):null;if(p)speak(p)}
-function journeyBoundary(d){return d.at>0&&d.at%JOURNEY_BLOCK===0&&!d.feedback&&d.blockSeen!==d.at}
+function journeyAutoPlay(){if(page!=='game'||!journeyState().autoAudio||journeyBoundary(gameSession()))return;let q=gameCurrent();if(!q||gameSession()?.feedback)return;let p=q.kind==='listen'?q.listen:q.kind==='choice'&&q.target==='ru'?(q.pt||q.prompt):null;if(p)speak(p)}
+function journeyBoundary(d){return !!d&&d.at>0&&d.at%JOURNEY_BLOCK===0&&!d.feedback&&d.blockSeen!==d.at}
 function journeyResumeBlock(){let d=gameSession();if(!d)return;d.blockSeen=d.at;save();render();journeyAutoPlay()}
 function journeyBlockHTML(d){return '<article class="game-card game-end"><span class="game-celebrate">🌿</span><h1>'+tr('Отличный шаг!','Ótimo passo!')+'</h1><p>'+tr('Часть урока завершена. Можно продолжить сейчас или позже.','Uma parte da lição terminou. Continue agora ou mais tarde.')+'</p>'+gameBtn(tr('Продолжить','Continuar'),'journeyResumeBlock()')+gameBtn(tr('Сохранить и выйти','Salvar e sair'),'go("home")',true)+'</article>'}
 function journeyWordDue(id,p,now=Date.now()){if(!p||!(p.seen>0))return false;return !Number.isFinite(p.due)||p.due<=now}
 function journeyReviewEntries(src,limit=3,now=Date.now()){
  let s=gameState(),excluded=new Set(src.words.map(w=>wordId(w[0]))),known=baseVocabulary().filter(e=>!excluded.has(e.id)&&journeyWordDue(e.id,s.words[e.id],now));
- return known.sort((a,b)=>{let x=s.words[a.id],y=s.words[b.id];return ((y.misses||0)-(x.misses||0))||((x.due||0)-(y.due||0))||a.pt.localeCompare(b.pt)}).slice(0,limit)
+ return known.sort((a,b)=>{let x=s.words[a.id],y=s.words[b.id];return Number(!!y.missedIn)-Number(!!x.missedIn)||((y.misses||0)-(x.misses||0))||((x.due||0)-(y.due||0))||a.pt.localeCompare(b.pt)}).slice(0,limit)
 }
 function journeyReviewTasks(src){let entries=journeyReviewEntries(src),pool=src.words.map(w=>w[1]).concat(entries.map(e=>e.ru));return entries.map((e,i)=>({id:'review:'+i,kind:'choice',prompt:e.pt,answer:e.ru,opts:gameChoices(e.ru,pool),pt:e.pt,ru:e.ru,target:'ru',word:e.pt,adaptive:true})).filter(q=>q.opts.length>1)}
 function journeyRecord(q,ok){
  if(!q.word)return;
  let p=gameState().words[wordId(q.word)];if(!p)return;
  let step=Number.isInteger(p.step)?p.step:0;
- if(ok){p.step=Math.min(5,step+1);p.due=Date.now()+[0,1,3,7,14,30][p.step]*86400000}
- else{p.misses=(p.misses||0)+1;p.step=0;p.due=Date.now()}
+ let now=Date.now();if(!ok){p.misses=(p.misses||0)+1;p.step=0;p.due=now;p.missedIn=gameKey;return}
+ if(p.missedIn===gameKey&&!q.adaptive)return;
+ if(p.missedIn&&p.missedIn!==gameKey||!Number.isFinite(p.due)||p.due<=now){delete p.missedIn;p.step=Math.min(5,step+1);p.due=now+[0,1,3,7,14,30][p.step]*86400000}
 }
 function journeyReviewCount(){let now=Date.now(),w=gameState().words;return Object.entries(w).filter(([id,p])=>journeyWordDue(id,p,now)).length}
 function journeyShareHTML(){return '<article><h2>'+tr('Поделиться игрой','Compartilhar o jogo')+'</h2><p class="muted">'+tr('Бесплатный гостевой режим. У каждого браузера свой прогресс; заметки и ответы не передаются по ссылке.','Modo visitante gratuito. Cada navegador tem seu próprio progresso; anotações e respostas não são compartilhadas.')+'</p>'+gameBtn(tr('Поделиться ссылкой','Compartilhar link'),'journeyShare()')+'<p id="share-status" role="status" class="muted"></p><label>'+tr('Ссылка','Link')+'<input id="share-url" readonly value="https://emmaharutyunyan132-cmyk.github.io/portugues-com-a-biblia/"></label></article>'}
