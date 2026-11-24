@@ -20,8 +20,8 @@ function oralStart(){
 function oralClear(){oralTranscript='';oralSource='';oralReveal=false;micText='';micPartial='';micFinal=''}
 function oralCurrent(){return oralSession?.items[oralSession.at]||null}
 function oralExpected(){return oralCurrent()?.pt||''}
-function oralSetMode(v){if(!['whisper','browser','manual'].includes(v))return;micCancel();oralClear();oralState().engine=v;micAllowed=false;if(v!=='manual')micEngine=v;save();render()}
-function oralEngine(){let o=oralState();if(!['whisper','browser','manual'].includes(o.engine))o.engine=whisperSupported()?'whisper':micConstructor()?'browser':'manual';return o.engine}
+function oralSetMode(v){if(!['browser','manual'].includes(v))return;micCancel();oralClear();oralState().engine=v;micAllowed=false;save();render()}
+function oralEngine(){let o=oralState();if(!['browser','manual'].includes(o.engine))o.engine=micConstructor()?'browser':'manual';return o.engine}
 function oralWords(t){return micNormalize(t).split(' ').filter(Boolean)}
 function oralCompare(expected,actual){
  let a=oralWords(expected),b=oralWords(actual),m=a.length,n=b.length;
@@ -43,15 +43,15 @@ function oralRetry(){stopSpeech();oralClear();render()}
 function oralNext(kind){
  let s=oralSession,q=oralCurrent();if(!s||!q||!['self','skip'].includes(kind))return;
  stopSpeech();let o=oralState(),p=o.practice[q.id]||{count:0};if(kind!=='skip'){p.last=Date.now();p.count++;o.practice[q.id]=p;}
- if(kind==='skip')s.skipped++;else{s.done++;if(oralTranscript&&['whisper','browser'].includes(oralSource)&&oralCompare(q.pt,oralTranscript).exact)s.matched++;else s.self++}
+ if(kind==='skip')s.skipped++;else{s.done++;if(oralTranscript&&oralSource==='browser'&&oralCompare(q.pt,oralTranscript).exact)s.matched++;else s.self++}
  s.at++;oralClear();save();if(s.at>=s.items.length){oralResult={...s};oralSession=null;render();scrollTo(0,0);return}render();scrollTo(0,0)
 }
 function oralExit(){stopSpeech();oralClear();oralSession=null;oralResult=null;render()}
 function oralMicrophone(){
- let engine=oralEngine();if(engine!=='manual')micEngine=engine;let supported=engine!=='manual'&&micSupported();
- let h='<div class="oral-mic"><div class="oral-engine"><label>'+tr('Способ ответа','Modo de resposta')+'<select onchange="oralSetMode(this.value)"><option value="whisper" '+(engine==='whisper'?'selected':'')+'>'+tr('Whisper · на устройстве','Whisper · no dispositivo')+'</option><option value="browser" '+(engine==='browser'?'selected':'')+'>'+tr('Распознавание браузера','Reconhecimento do navegador')+'</option><option value="manual" '+(engine==='manual'?'selected':'')+'>'+tr('Без микрофона / диктовка','Sem microfone / ditado')+'</option></select></label></div>';
- if(engine!=='manual'){h+='<p class="muted">'+(engine==='whisper'?tr('Первая загрузка модели может занять время. Обработка на устройстве, сайт не сохраняет запись.','O primeiro download pode demorar. Processamento no dispositivo; o site não salva a gravação.'):tr('Браузер может отправлять запись своей службе распознавания. Сайт не сохраняет запись.','O navegador pode enviar áudio ao serviço de reconhecimento. O site não salva a gravação.'))+'</p>';
- if(supported)h+='<label class="mic-consent"><input type="checkbox" '+(micAllowed?'checked':'')+' onchange="micConsent(this.checked)">'+tr('Разрешаю распознавание в этой сессии','Autorizo o reconhecimento nesta sessão')+'</label><div class="oral-actions"><button id="mic-start" onclick="micStart(\'oral\')" '+(micAllowed&&Date.now()>=micCooldownUntil?'':'disabled')+'>'+(engine==='whisper'&&!whisperReady?tr('Подготовить микрофон','Preparar microfone'):tr('🎙 Говорить','🎙 Falar'))+'</button><button class="secondary" id="mic-stop" onclick="micStop()" disabled>'+tr('Остановить','Parar')+'</button></div>';
+ let engine=oralEngine();let supported=engine!=='manual'&&micSupported();
+ let h='<div class="oral-mic"><div class="oral-engine"><label>'+tr('Способ ответа','Modo de resposta')+'<select onchange="oralSetMode(this.value)"><option value="browser" '+(engine==='browser'?'selected':'')+'>'+tr('Распознавание браузера','Reconhecimento do navegador')+'</option><option value="manual" '+(engine==='manual'?'selected':'')+'>'+tr('Без микрофона / диктовка','Sem microfone / ditado')+'</option></select></label></div>';
+ if(engine!=='manual'){h+='<p class="muted">'+tr('Браузер может отправлять запись своей службе распознавания. Сайт не сохраняет запись.','O navegador pode enviar áudio ao serviço de reconhecimento. O site não salva a gravação.')+'</p>';
+ if(supported)h+='<label class="mic-consent"><input type="checkbox" '+(micAllowed?'checked':'')+' onchange="micConsent(this.checked)">'+tr('Разрешаю распознавание в этой сессии','Autorizo o reconhecimento nesta sessão')+'</label><div class="oral-actions"><button id="mic-start" onclick="micStart(\'oral\')" '+(micAllowed&&Date.now()>=micCooldownUntil?'':'disabled')+'>'+tr('🎙 Говорить','🎙 Falar')+'</button><button class="secondary" id="mic-stop" onclick="micStop()" disabled>'+tr('Остановить','Parar')+'</button></div>';
  else h+='<p class="muted">'+tr('Этот режим недоступен. Выбери другой способ или используй диктовку клавиатуры.','Modo indisponível. Escolha outro modo ou use o ditado do teclado.')+'</p>'}
  h+='<p id="mic-status" role="status" aria-live="polite" class="muted"></p><label>'+tr('Распознанный текст / ручной ответ','Texto reconhecido / resposta manual')+'<textarea id="oral-transcript" lang="pt-BR" rows="2" maxlength="1000" oninput="oralManual(this.value)" placeholder="Fale ou escreva em português…">'+esc(oralTranscript)+'</textarea></label><div id="oral-feedback" aria-live="polite">'+oralFeedback()+'</div><p class="muted">'+tr('Говори только учебные фразы, без личных сведений. При желании используй микрофон португальской клавиатуры.','Fale apenas frases de estudo, sem dados pessoais. Se quiser, use o microfone do teclado português.')+'</p></div>';
  return h
