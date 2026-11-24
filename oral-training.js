@@ -5,6 +5,16 @@ function oralState(){let s=gameState();if(!s.oral||typeof s.oral!=='object'||Arr
 function oralPool(level,theme){
  let rows=[],seen=new Set();
  let add=(pt,ru,ref,kind)=>{let id=micNormalize(pt);if(!id||seen.has(id)||!ru)return;seen.add(id);rows.push({id,pt,ru,ref,kind})};
+ // Put curated everyday expressions first for beginning speakers.
+ if((theme==='daily'||theme==='all')&&['A1','A2'].includes(level))for(let g of FOUNDATION_GROUPS){
+  let conversation=g[0]==='conversation',isPhrase=g[1]==='phrases',isDaily=g[1]==='daily';
+  if(level==='A1'&&(isPhrase&&!conversation||isDaily)||level==='A2'&&conversation){
+   for(let [pt,ru,example,translation] of g[6]){
+    if(isPhrase||isDaily&&/[.!?…]$/.test(pt))add(pt,ru,g[3],'daily');
+    if(isDaily&&example&&translation)add(example,translation,g[3],'daily')
+   }
+  }
+ }
  for(let l of L){if(l[0]!==level)continue;let k=l[4]==='Brasil'?'daily':/reunião|igreja|pastor|obreir|serviço|equipe|pregação|evangeliza|acolh|mídia|volunt|oração/i.test(l[2])?'church':'bible';if(theme==='all'||theme===k)for(let [pt,ru] of l[8])add(pt,ru,l[2],k)}
  if(theme==='bible'||theme==='all')for(let c of ESTUDO_CHAPTERS)for(let v of c[8])if(v[3]===level)add(v[1],v[2],ebLabel(c,v[0]),'bible');
  return rows
