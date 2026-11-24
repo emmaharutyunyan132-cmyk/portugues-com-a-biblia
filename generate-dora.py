@@ -26,13 +26,43 @@ def lesson_data():
         raise RuntimeError("Cannot find lesson array")
     return json.loads(m.group(1))
 
+def js_data(path, name):
+    source = (ROOT / path).read_text(encoding="utf-8")
+    match = re.search(r"(?:\bconst\s+|,\s*)" + re.escape(name) + r"\s*=\s*", source)
+    if not match:
+        raise RuntimeError("Missing course data: " + name)
+    return json.JSONDecoder().raw_decode(source[match.end():])[0]
+
 def course_texts(scope):
     lessons = lesson_data()
     selected = lessons[:2] if scope == "pilot" else lessons
     texts = [SAMPLE, "Eu creio em Deus.", "Hoje vou à reunião.", "Muito obrigada pela atenção."]
     for lesson in selected:
         texts.extend(row[0] for row in lesson[7] + lesson[8])
-    return list(dict.fromkeys(normalize(t) for t in texts if t.strip()))
+    if scope == "all":
+        for row in js_data("index.html", "IURD"):
+            texts.extend([row[0], row[3]])
+        for row in js_data("index.html", "VERBS"):
+            texts.append(row[0])
+        for row in js_data("a2-writing.js", "A2_WRITING").values():
+            texts.append(row[2])
+        books = js_data("bible-data.js", "BB")
+        texts.extend(book[0] for book in books)
+        for row in js_data("bible-data.js", "BJ"):
+            texts.extend([row[3], row[7], row[8]])
+            texts.extend(item.split("=", 1)[0] for item in row[5].split(";"))
+        for name in ["BP", "BM", "BR"]:
+            for row in js_data("bible-topics.js", name):
+                texts.append(row[0])
+                if len(row) > 4 and row[4]:
+                    texts.append(row[4])
+        for i, chapter, verse in js_data("bible-core.js", "BQ"):
+            texts.append(f"{books[i][0]}, capítulo {chapter}, versículo {verse}")
+        for path in ["index.html", "bible-view.js"]:
+            source = (ROOT / path).read_text(encoding="utf-8")
+            texts.extend(re.findall(r"(?<![\w.])audio\('([^'\\]+)'\)", source))
+        texts.extend(["Vocês têm esperança.", "Que a paz esteja com vocês."])
+    return list(dict.fromkeys(normalize(t) for t in texts if isinstance(t, str) and t.strip()))
 
 def read_index():
     if not INDEX.exists():
@@ -51,14 +81,16 @@ def generate(scope):
     torch.set_num_threads(min(4, os.cpu_count() or 1))
     OUT.mkdir(exist_ok=True)
     index = read_index()
-    pipeline = KPipeline(lang_code="p", device="cpu")
     texts = course_texts(scope)
+    pipeline = None
     for i, text in enumerate(texts, 1):
         digest = hashlib.sha256(text.encode("utf-8")).hexdigest()
         rel = "audio-dora/" + digest + ".mp3"
         target = ROOT / rel
         if index.get(text) == rel and target.is_file() and target.stat().st_size > 1000:
             continue
+        if pipeline is None:
+            pipeline = KPipeline(lang_code="p", device="cpu")
         parts = []
         for _, _, audio in pipeline(text, voice=VOICE, speed=1):
             arr = np.asarray(audio, dtype=np.float32).reshape(-1)
@@ -85,5 +117,9 @@ def generate(scope):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--scope", choices=["pilot", "all"], default="pilot")
+    parser.add_argument("--list-only", action="store_true", help="Count public course phrases without loading Kokoro")
     args = parser.parse_args()
-    generate(args.scope)
+    if args.list_only:
+        print(json.dumps(course_texts(args.scope), ensure_ascii=False))
+    else:
+        generate(args.scope)
