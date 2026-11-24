@@ -5,7 +5,7 @@ function uxTile(p,icon,ru,pt,ruSub,ptSub){return '<button class="ux-tile" onclic
 function uxNavigate(p){if(p==='estudo'||p==='bible'){bTab='estudo';ebScreen='home';go('bible')}else go(p)}
 function uxHome(){
  let completed=S.done.length,percent=Math.round(100*completed/Math.max(1,L.length)),s=gameState(),src=gameSource(s.last||''),resuming=src&&gameValid(s.sessions[s.last]),next=gameSource('c:'+gameNextCourse()),old=validDraft(S.drafts[S.resume]),oldTitle=old?(S.resume==='review'?tr('Повторение ошибок','Revisão de erros'):tr(L[Number(S.resume)]?.[3]||'Урок',L[Number(S.resume)]?.[2]||'Lição')):'';
- return '<article class="hero"><div><h1>Português com a Bíblia</h1><p>'+tr('Учись в своём темпе, вместе с Luz.','Aprenda no seu ritmo, com Luz.')+'</p></div>'+sheep+'</article><article class="game-start"><span class="tag">'+tr('Твой следующий шаг','Seu próximo passo')+'</span><h2>'+esc(!resuming&&old?oldTitle:tr((resuming?src:next).ru,(resuming?src:next).title))+'</h2>'+gameBtn(resuming||validDraft(S.drafts[S.resume])?tr('Продолжить урок','Continuar lição'):tr('Начать урок','Começar lição'),'gameContinue()')+(Object.keys(s.words).length?gameBtn(tr('Повторить слова','Revisar palavras')+' · '+journeyReviewCount(),'cardMode="learned";go("cards")',true):'')+'</article>'+
+ return '<article class="hero"><div><h1>Português com a Bíblia</h1><p class="muted">Versão 1.0</p><p>'+tr('Учись в своём темпе, вместе с Luz.','Aprenda no seu ritmo, com Luz.')+'</p></div>'+sheep+'</article><article class="game-start"><span class="tag">'+tr('Твой следующий шаг','Seu próximo passo')+'</span><h2>'+esc(!resuming&&old?oldTitle:tr((resuming?src:next).ru,(resuming?src:next).title))+'</h2>'+gameBtn(resuming||validDraft(S.drafts[S.resume])?tr('Продолжить урок','Continuar lição'):tr('Начать урок','Começar lição'),'gameContinue()')+(Object.keys(s.words).length?gameBtn(tr('Повторить слова','Revisar palavras')+' · '+journeyReviewCount(),'cardMode="learned";go("cards")',true):'')+'</article>'+
  '<div class="ux-heading"><h2>'+tr('Что будем изучать?','O que vamos estudar?')+'</h2></div><div class="eb-list home-main">'+
  uxTile('estudo','📖','Библия','Bíblia','Один стих за раз','Um versículo de cada vez')+
  uxTile('map','🎓','Португальский','Português','Игровая дорожка A1–B2','Caminho A1–B2')+
@@ -57,7 +57,7 @@ function uxCatalogHTML(kind){
 function uxLoadAudio(){
  if(typeof DORA_AUDIO==='object'||uxAudioLoading)return;
  uxAudioLoading=true;uxAudioError=false;
- let e=document.createElement('script');e.src='./dora-audio-index.js';e.async=true;
+ let e=document.createElement('script');e.src='./dora-audio-index.js?v=1000';e.async=true;
  e.onload=()=>{uxAudioLoading=false;uxAudioError=false;if(page==='profile')refreshVoicePanel();if(uxAudioTicket===speechTicket){uxAudioTicket=null;audioStatus(tr('Каталог Dora готов. Нажми на аудио.','Catálogo Dora pronto. Toque no áudio.'))}};
  e.onerror=()=>{uxAudioLoading=false;uxAudioError=true;e.remove();if(page==='profile')refreshVoicePanel();if(uxAudioTicket===speechTicket){uxAudioTicket=null;audioStatus(tr('Каталог Dora не загрузился. Нажми ещё раз или выбери голос устройства.','O catálogo Dora não carregou. Tente novamente ou use a voz do dispositivo.'))}};
  document.head.appendChild(e);
