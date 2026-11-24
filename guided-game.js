@@ -39,18 +39,18 @@ function gameValid(d){return !!d&&d.version===GAME_VERSION&&Array.isArray(d.task
 function gameSession(){let d=gameState().sessions[gameKey];return gameValid(d)?d:null}
 function gameStart(key,restart=false){
  let src=gameSource(key);if(!src)return;
- let s=gameState(),d=s.sessions[key];if(!gameValid(d)||restart){d={version:GAME_VERSION,tasks:gameBuild(src),at:0,mastered:{},retries:[],first:{},input:'',picked:[],selected:null,feedback:null,revealed:false,misses:0};s.sessions[key]=d}
+ let s=gameState(),d=s.sessions[key];if(!gameValid(d)||restart){d={version:GAME_VERSION,tasks:[...journeyReviewTasks(src),...gameBuild(src)],at:0,mastered:{},retries:[],first:{},input:'',picked:[],selected:null,feedback:null,revealed:false,misses:0};s.sessions[key]=d}
  // Preserve already completed work and current answers when resuming an older session.
  let old=d.tasks[d.at],before=d.tasks.slice(0,d.at),remaining=d.tasks.slice(d.at).filter(q=>!['learn','phrase','context'].includes(q.kind));
  if(remaining.length&&remaining.length!==d.tasks.length-d.at){d.tasks=before.concat(remaining);if(remaining[0]!==old){d.input='';d.picked=[];d.selected=null;d.feedback=null;d.revealed=false}}
  gameKey=key;gameResult=null;s.last=key;
  if(src.kind==='bible'){ebChapter=src.i;ebVerse=src.v[0];ebBook=src.ch[0];ebState().last=[src.ch[0],src.ch[1],src.v[0]];ebState().step=0}
- save();go('game')
+ if(src.kind==='course'){journeyState().level=src.level;journeyOffset=null}save();go('game');journeyAutoPlay()
 }
 function gameCourse(i){if(!Number.isInteger(i)||!L[i])return;let k=String(i);if(validDraft(S.drafts[k])){resumeLesson(k);return}gameStart('c:'+i)}
 function gameBible(i,v){gameStart(gameBibleKey(i,v))}
 function gameOrder(){return L.map((l,i)=>({i,level:l[0]})).sort((a,b)=>a.level.localeCompare(b.level)||a.i-b.i).map(x=>x.i)}
-function gameNextCourse(){return gameOrder().find(i=>!S.done.includes(i))??0}
+function gameNextCourse(){return journeyNext()}
 function gameContinue(){let s=gameState();if(gameSource(s.last)&&gameValid(s.sessions[s.last]))gameStart(s.last);else if(validDraft(S.drafts[S.resume]))resumeLesson(S.resume);else gameCourse(gameNextCourse())}
 function gameCurrent(){let d=gameSession();return d?d.tasks[d.at]:null}
 function gameRemember(q){if(!q.word)return;let s=gameState(),id=wordId(q.word),p=s.words[id];if(!p||typeof p!=='object')p=s.words[id]={seen:0,correct:0};p.seen++;if(gameSession().feedback?.ok)p.correct++;p.last=Date.now()}
@@ -66,7 +66,7 @@ function gameCheck(){
  let variants=[q.answer,...(q.accept||[])],ok=variants.some(a=>norm(a)===norm(input)),accent=ok&&q.target==='pt'&&!variants.some(a=>canonical(a)===canonical(input));
  d.feedback={ok,accent};if(!Object.prototype.hasOwnProperty.call(d.first,q.id))d.first[q.id]=ok;
  if(ok)d.mastered[q.id]=true;else{d.misses++;if(!q.retry&&!d.retries.some(x=>x.id===q.id))d.retries.push({...q,retry:true})}
- gameRemember(q);save();render()
+ gameRemember(q);journeyRecord(q,ok);save();render()
 }
 function gameSelf(){let d=gameSession(),q=gameCurrent();if(!d||!q||!q.selfCheck||!d.feedback||d.feedback.ok)return;d.feedback.ok=true;d.feedback.self=true;d.mastered[q.id]=true;d.retries=d.retries.filter(x=>x.id!==q.id);save();render()}
 function gameAdvance(){
@@ -78,10 +78,10 @@ function gameAdvance(){
  stopSpeech();d.at++;
  if(d.at>=d.tasks.length&&d.retries.length){d.tasks.push(...d.retries.filter(x=>!d.mastered[x.id]));d.retries=[]}
  if(d.at>=d.tasks.length){gameFinish(d);return}
- d.input='';d.selected=null;d.picked=[];d.feedback=null;d.revealed=false;let upcoming=d.tasks[d.at],src=gameSource(gameKey);if(upcoming?.kind==='free'&&src?.kind==='course'){let field=src.level==='A2'?'a2Writing':src.level==='B1'?'b1Writing':'b2Writing';d.input=typeof S[field][src.i]==='string'?S[field][src.i].slice(0,6000):''}save();render();scrollTo(0,0)
+ d.input='';d.selected=null;d.picked=[];d.feedback=null;d.revealed=false;let upcoming=d.tasks[d.at],src=gameSource(gameKey);if(upcoming?.kind==='free'&&src?.kind==='course'){let field=src.level==='A2'?'a2Writing':src.level==='B1'?'b1Writing':'b2Writing';d.input=typeof S[field][src.i]==='string'?S[field][src.i].slice(0,6000):''}save();render();scrollTo(0,0);journeyAutoPlay()
 }
 function gameFinish(d){
- let src=gameSource(gameKey);if(!src)return;let ids=[...new Set(d.tasks.filter(q=>['choice','listen','write','tiles'].includes(q.kind)).map(q=>q.id))],correct=ids.filter(id=>d.mastered[id]).length,passed=correct>=Math.ceil(ids.length*.8),already=src.kind==='course'?S.done.includes(src.i):!!ebState().done[ebKey(src.ch,src.v[0])],xp=0;
+ let src=gameSource(gameKey);if(!src)return;let ids=[...new Set(d.tasks.filter(q=>!q.adaptive&&['choice','listen','write','tiles'].includes(q.kind)).map(q=>q.id))],correct=ids.filter(id=>d.mastered[id]).length,passed=correct>=Math.ceil(ids.length*.8),already=src.kind==='course'?S.done.includes(src.i):!!ebState().done[ebKey(src.ch,src.v[0])],xp=0;
  if(passed&&!already){if(src.kind==='course')S.done.push(src.i);else ebState().done[ebKey(src.ch,src.v[0])]=true;xp=correct*10;S.xp+=xp;let day=new Date().toLocaleDateString('en-CA');if(!S.days.includes(day))S.days.push(day)}
  gameResult={key:gameKey,passed,correct,total:ids.length,xp,misses:d.misses};delete gameState().sessions[gameKey];if(gameState().last===gameKey)delete gameState().last;save();go('game-result')
 }
@@ -92,8 +92,9 @@ function gameDetails(src){if(src.kind!=='bible')return '';let v=src.v,c=src.ch;r
 function gameWordExtra(q){let e=baseVocabulary().find(x=>x.id===wordId(q.pt));if(!e||!e.example)return '';return '<details><summary>'+tr('Пример в предложении','Exemplo em uma frase')+'</summary><p lang="pt-BR">'+esc(e.example)+' '+audio(e.example)+'</p>'+(e.translation?'<p class="muted">'+esc(e.translation)+'</p>':'')+'</details>'}
 function gameHTML(){
  let src=gameSource(gameKey||''),d=gameSession(),q=gameCurrent();if(!src||!d||!q)return '<article>'+gameBtn(tr('К урокам','Voltar às lições'),'go("map")')+'</article>';
- let h='<div class="game-top"><button class="secondary game-close" aria-label="'+tr('Сохранить и выйти','Salvar e sair')+'" onclick="go(\'home\')">×</button><progress aria-label="'+tr('Прогресс урока','Progresso da lição')+'" max="'+(d.tasks.length+d.retries.length)+'" value="'+d.at+'"></progress><span>'+ (d.at+1)+'/'+(d.tasks.length+d.retries.length)+'</span></div><p class="muted game-topic">'+esc(tr(src.ru,src.title))+' · '+esc(src.level)+'</p><section class="game-card">';
- let next=tr('Продолжить','Continuar'),check=tr('Проверить','Verificar');
+ if(journeyBoundary(d))return journeyBlockHTML(d);
+ let h='<div class="game-top"><button class="secondary game-close" aria-label="'+tr('Сохранить и выйти','Salvar e sair')+'" onclick="go(\'home\')">×</button><progress aria-label="'+tr('Прогресс урока','Progresso da lição')+'" max="'+(d.tasks.length+d.retries.length)+'" value="'+d.at+'"></progress><span>'+ (d.at+1)+'/'+(d.tasks.length+d.retries.length)+'</span><button class="secondary game-close" aria-label="'+tr('Автоозвучка','Áudio automático')+'" aria-pressed="'+journeyState().autoAudio+'" onclick="journeyToggleAudio()">'+(journeyState().autoAudio?'🔊':'🔇')+'</button></div><p class="muted game-topic">'+esc(tr(src.ru,src.title))+' · '+esc(src.level)+'</p><section class="game-card">';
+ let next=tr('Продолжить','Continuar'),check=tr('Проверить','Verificar');if(q.adaptive)h+='<p class="game-kicker">'+tr('Повторение знакомого слова','Revisão de palavra conhecida')+'</p>';
  if(q.kind==='learn'||q.kind==='phrase'){h+='<p class="game-kicker">'+tr(q.kind==='learn'?'Новое слово':'Новая фраза',q.kind==='learn'?'Palavra nova':'Nova frase')+'</p><h2 class="game-word" lang="pt-BR">'+esc(q.pt)+'</h2><p class="game-translation" lang="ru">'+esc(q.ru)+'</p>'+gameSound(q.pt)+'<p class="muted">'+tr('Послушай и повтори вслух.','Ouça e repita em voz alta.')+'</p>'+(q.kind==='learn'?gameWordExtra(q):'')+(q.bible?'<p class="muted">'+tr('Учебный пересказ, не дословный текст ACF.','Resumo didático, não texto literal da ACF.')+'</p>':'')+gameBtn(next,'gameAdvance()')}
  else if(q.kind==='context'){h+='<p class="game-kicker">'+tr('Заметь закономерность','Observe o padrão')+'</p><h2>'+esc(tr(q.ru,q.pt))+'</h2><p lang="pt-BR">'+esc(q.example)+'</p>'+gameSound(q.example)+gameBtn(next,'gameAdvance()')}
  else if(q.kind==='reflect'){h+='<h2>'+tr('Пойми смысл','Compreenda o sentido')+'</h2>'+(src.kind==='bible'?'<p class="muted">'+tr('Учебный пересказ (не цитата ACF)','Resumo didático (não é citação da ACF)')+'</p><p lang="pt-BR">'+esc(src.v[1])+'</p>'+audio(src.v[1]):'')+'<p class="game-word">'+esc(q.prompt)+'</p>'+gameSound(q.prompt)+(d.revealed?'<div class="game-feedback"><b>'+esc(q.answer)+'</b><details><summary>'+tr('Подробнее','Saiba mais')+'</summary><p>'+esc(tr(q.ru,q.pt))+'</p></details></div>'+gameBtn(next,'gameAdvance()'):gameBtn(tr('Сравнить с ответом','Conferir resposta'),'gameReveal()'))}
