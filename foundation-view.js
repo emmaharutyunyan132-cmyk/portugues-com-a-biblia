@@ -6,7 +6,7 @@ const foundationGroupMap=new Map(FOUNDATION_GROUPS.map(g=>[g[0],g]));
 function foundationRows(g){return g[6]}
 function foundationMerge(map){
  for(let g of FOUNDATION_GROUPS)for(let [pt,ru,example,translation] of foundationRows(g)){
-  let id=wordId(pt),e=map.get(id);if(!e){e={id,pt,ru,levels:['A1'],category:g[1]==='faith'?(g[0]==='church'||g[0]==='interpreting'?'igreja':'bíblico'):'cotidiano',supplemental:true};map.set(id,e)}
+  let id=wordId(pt),e=map.get(id);if(!e){e={id,pt,ru,levels:['A1'],category:g[1]==='faith'?(/^church/.test(g[0])||g[0]==='interpreting'||g[0]==='volunteering'?'igreja':'bíblico'):'cotidiano',supplemental:true};map.set(id,e)}
   if(!e.groups)e.groups=[];if(!e.groups.includes(g[0]))e.groups.push(g[0]);
   if(!e.ru.split(' / ').includes(ru)&&!e.ru.includes(ru))e.ru+=' / '+ru;
   if(example&&!e.example){e.example=example;e.translation=translation}
