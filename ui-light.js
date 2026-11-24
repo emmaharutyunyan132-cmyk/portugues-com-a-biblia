@@ -5,21 +5,21 @@ function uxTile(p,icon,ru,pt,ruSub,ptSub){return '<button class="ux-tile" onclic
 function uxNavigate(p){if(p==='estudo'||p==='bible'){bTab='estudo';ebScreen='home';go('bible')}else go(p)}
 function uxHome(){
  let completed=S.done.length,percent=Math.round(100*completed/Math.max(1,L.length)),s=gameState(),src=gameSource(s.last||''),resuming=src&&gameValid(s.sessions[s.last]),next=gameSource('c:'+gameNextCourse()),old=validDraft(S.drafts[S.resume]),oldTitle=old?(S.resume==='review'?tr('Повторение ошибок','Revisão de erros'):tr(L[Number(S.resume)]?.[3]||'Урок',L[Number(S.resume)]?.[2]||'Lição')):'';
- return '<article class="hero"><div><h1>Português com a Bíblia</h1><p>'+tr('Учись в своём темпе, вместе с Luz.','Aprenda no seu ritmo, com Luz.')+'</p></div>'+sheep+'</article><article class="game-start"><span class="tag">'+tr('Твой следующий шаг','Seu próximo passo')+'</span><h2>'+esc(!resuming&&old?oldTitle:tr((resuming?src:next).ru,(resuming?src:next).title))+'</h2>'+gameBtn(resuming||validDraft(S.drafts[S.resume])?tr('Продолжить урок','Continuar lição'):tr('Начать урок','Começar lição'),'gameContinue()')+(Object.keys(s.words).length?gameBtn(tr('Повторить знакомые слова','Revisar palavras conhecidas'),'cardMode="learned";go("cards")',true):'')+'</article>'+
+ return '<article class="hero"><div><h1>Português com a Bíblia</h1><p>'+tr('Учись в своём темпе, вместе с Luz.','Aprenda no seu ritmo, com Luz.')+'</p></div>'+sheep+'</article><article class="game-start"><span class="tag">'+tr('Твой следующий шаг','Seu próximo passo')+'</span><h2>'+esc(!resuming&&old?oldTitle:tr((resuming?src:next).ru,(resuming?src:next).title))+'</h2>'+gameBtn(resuming||validDraft(S.drafts[S.resume])?tr('Продолжить урок','Continuar lição'):tr('Начать урок','Começar lição'),'gameContinue()')+(Object.keys(s.words).length?gameBtn(tr('Повторить слова','Revisar palavras')+' · '+journeyReviewCount(),'cardMode="learned";go("cards")',true):'')+'</article>'+
  '<div class="ux-heading"><h2>'+tr('Что будем изучать?','O que vamos estudar?')+'</h2></div><div class="eb-list home-main">'+
  uxTile('estudo','📖','Библия','Bíblia','Один стих за раз','Um versículo de cada vez')+
- uxTile('map','🎓','Португальский','Português','Уроки A1–B2','Lições A1–B2')+
+ uxTile('map','🎓','Португальский','Português','Игровая дорожка A1–B2','Caminho A1–B2')+
+ uxTile('interpreters','🎧','Перевод служений','Interpretação','Тренировка перевода RU ↔ PT','Prática RU ↔ PT')+
  uxTile('dict','📚','Слова','Palavras','Словарь и карточки','Vocabulário e cartões')+
  '</div><details class="eb-detail"><summary>'+tr('Другие тренировки','Outras práticas')+'</summary><div class="eb-detail-body ux-grid">'+
  uxTile('grammar','✏️','Грамматика','Gramática','Правила по уровням','Regras por nível')+
  uxTile('verbs','📝','Глаголы','Verbos','Спряжения','Conjugações')+
  uxTile('preps','🧩','Предлоги','Preposições','Правила и практика','Regras e prática')+
  uxTile('speaking','🎙','Говорение','Falar','Слушай и повторяй','Ouça e repita')+
- uxTile('interpreters','🎧','Перевод','Interpretação','Школа переводчиков','Escola de intérpretes')+
  uxTile('prayer','🙏','Молитва','Oração','Записи и практика','Anotações e prática')+
  uxTile('review','↻','Повторение','Revisão','Карточки и ошибки','Cartões e erros')+
  uxTile('cards','🗂','Карточки','Cartões','Запоминание слов','Memorize palavras')+
- '</div></details><p class="muted">'+completed+' / '+L.length+' '+tr('уроков пройдено','lições concluídas')+' · '+percent+'% · '+S.xp+' XP</p>';
+ '</div></details><details class="eb-detail"><summary>'+tr('Поделиться с другом','Compartilhar com um amigo')+'</summary>'+journeyShareHTML()+'</details><p class="muted">'+completed+' / '+L.length+' '+tr('уроков пройдено','lições concluídas')+' · '+percent+'% · '+S.xp+' XP</p>';
 }
 function uxNav(){
  let current=['intro','quiz','result','game','game-result'].includes(page)?'map':page==='cards'||page==='cardrun'||page==='review'?'dict':page;
