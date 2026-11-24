@@ -8,9 +8,9 @@ function foundationMerge(map){
  for(let g of FOUNDATION_GROUPS)for(let [pt,ru,example,translation] of foundationRows(g)){
   let id=wordId(pt),e=map.get(id);if(!e){e={id,pt,ru,levels:['A1'],category:g[1]==='faith'?(g[0]==='church'||g[0]==='interpreting'?'igreja':'bíblico'):'cotidiano',supplemental:true};map.set(id,e)}
   if(!e.groups)e.groups=[];if(!e.groups.includes(g[0]))e.groups.push(g[0]);
-  if(!e.ru.includes(ru)&&!e.ru.split(' / ').includes(ru))e.ru+=' / '+ru;
+  if(!e.ru.split(' / ').includes(ru)&&!e.ru.includes(ru))e.ru+=' / '+ru;
   if(example&&!e.example){e.example=example;e.translation=translation}
-  if(g[1]==='phrases'||/[.!?…]$/.test(pt))e.everydayPhrase=g[1]!=='faith'||e.everydayPhrase;
+  if(g[1]==='phrases'||g[1]==='daily'&&/[.!?…]$/.test(pt))e.everydayPhrase=true;
  }
 }
 function foundationGroup(mode){if(typeof mode!=='string')return null;if(mode.startsWith('topic:'))return foundationGroupMap.get(mode.slice(6));if(/^lesson:\d+$/.test(mode)){let i=Number(mode.slice(7)),l=L[i];if(l)return ['lesson:'+i,'course',l[3],l[2],tr('Слова из существующего урока.','Palavras de uma lição existente.'),'Palavras de uma lição existente.',l[7]]}return null}
