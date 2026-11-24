@@ -89,3 +89,35 @@ details summary{cursor:pointer;color:#245c39;font-weight:650}
  .book-list{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;scroll-behavior:auto!important}}
+
+/* Guided Bible flow: one task per screen, optional tools behind disclosure. */
+.eb-list{display:grid;gap:9px;margin:12px 0}
+.eb-choice{display:flex;align-items:center;gap:12px;text-align:left;width:100%;background:#fff;color:var(--pcb-ink);border:1px solid var(--pcb-line);padding:15px;margin:0;min-height:66px}
+.eb-choice>span:nth-child(2){flex:1;min-width:0}
+.eb-choice>span:last-child{font-size:22px;color:var(--pcb-green)}
+.eb-choice strong,.eb-choice small{display:block}
+.eb-choice small{color:var(--pcb-muted);font-weight:400;margin-top:3px}
+.eb-number{display:grid;place-items:center;min-width:36px;height:36px;border-radius:10px;background:var(--pcb-soft);font-weight:700;color:var(--pcb-green)}
+.eb-welcome{background:#eaf4ea;border-color:#d0e4d0}
+.eb-welcome h2{margin-top:10px}
+.eb-welcome progress{margin-top:18px;height:10px}
+.eb-welcome p:last-child{margin-bottom:0}
+.eb-detail{border:1px solid var(--pcb-line);border-radius:14px;background:#fff;margin:10px 0;padding:0 14px}
+.eb-detail>summary{padding:13px 0;min-height:44px}
+.eb-detail-body{padding-bottom:13px;min-width:0}
+.eb-detail-body>h3:first-child{margin-top:0}
+.eb-detail-body .eb-list{margin:0}
+.eb-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:14px 0}
+.eb-steps span{font-size:12px;text-align:center;border-radius:9px;padding:8px 5px;background:#e8ece7;color:var(--pcb-muted);line-height:1.25}
+.eb-steps span.active{background:var(--pcb-green);color:white;font-weight:700}
+.eb-steps span.past{background:var(--pcb-soft);color:#225539}
+.eb-reading{font-size:20px;line-height:1.55}
+.eb-source{display:inline-block;padding:10px 12px;background:var(--pcb-soft);border-radius:10px;font-weight:650}
+.eb-lesson .wide,.eb-welcome .wide{display:block;margin-top:18px}
+.eb-verse-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(54px,1fr));gap:6px}
+.eb-verse-grid button{margin:0}
+.eb-back{margin:0 0 8px}
+.home-main .ux-tile{flex-direction:row;min-height:74px;align-items:center}
+.home-main .ux-icon{flex:0 0 40px;width:40px;height:40px}
+.home-main .ux-tile strong{font-size:17px}
+@media(max-width:520px){.eb-reading{font-size:18px}.eb-choice{padding:12px}.eb-steps span{font-size:11px}.home-main .ux-tile{min-height:74px}}
