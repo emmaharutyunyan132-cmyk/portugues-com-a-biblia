@@ -6503,5 +6503,2593 @@ const FOUNDATION_GROUPS = [
     "Какова цель этого собрания?"
    ]
   ]
+ ],
+ [
+  "objectpronouns",
+  "base",
+  "Кому? Кого? С кем?",
+  "Pronomes na conversa",
+  "Me, te, nos — формы дополнения. В разговоре часто используют você вместо te; с предлогами — mim, comigo, com você.",
+  "Me, te e nos são pronomes de objeto; com preposições, use mim, comigo, com você.",
+  [
+   [
+    "me",
+    "меня, мне",
+    "Você me conhece?",
+    "Ты меня знаешь?"
+   ],
+   [
+    "te",
+    "тебя, тебе",
+    "Eu te ajudo.",
+    "Я тебе помогу."
+   ],
+   [
+    "lhe",
+    "ему, ей, вам",
+    "Eu lhe agradeço.",
+    "Я благодарю вас."
+   ],
+   [
+    "mim",
+    "мне, меня (после предлога)",
+    "Isso é para mim?",
+    "Это для меня?"
+   ],
+   [
+    "ti",
+    "тебе, тебя (после предлога, с tu)",
+    "Gosto de ti.",
+    "Ты мне нравишься."
+   ],
+   [
+    "comigo",
+    "со мной",
+    "Venha comigo.",
+    "Пойдём со мной."
+   ],
+   [
+    "contigo",
+    "с тобой (с tu)",
+    "Quero falar contigo.",
+    "Я хочу поговорить с тобой."
+   ],
+   [
+    "com você",
+    "с тобой, с вами",
+    "Posso ir com você?",
+    "Могу я пойти с тобой?"
+   ],
+   [
+    "com ele",
+    "с ним",
+    "Eu falei com ele.",
+    "Я говорила с ним."
+   ],
+   [
+    "com ela",
+    "с ней",
+    "Vou estudar com ela.",
+    "Я буду учиться с ней."
+   ],
+   [
+    "conosco",
+    "с нами",
+    "Você vem conosco?",
+    "Ты идёшь с нами?"
+   ],
+   [
+    "com a gente",
+    "с нами (разг.)",
+    "Vem com a gente!",
+    "Пойдём с нами!"
+   ],
+   [
+    "para mim",
+    "для меня, мне",
+    "É importante para mim.",
+    "Это важно для меня."
+   ],
+   [
+    "para você",
+    "для тебя, для вас",
+    "Isso é para você.",
+    "Это для тебя."
+   ],
+   [
+    "para nós",
+    "для нас",
+    "É fácil para nós.",
+    "Это легко для нас."
+   ],
+   [
+    "nos",
+    "нас, нам",
+    "Ela nos ajuda.",
+    "Она помогает нам."
+   ]
+  ]
+ ],
+ [
+  "quantities",
+  "base",
+  "Количество и выбор",
+  "Quantidades e escolhas",
+  "Todo, algum, nenhum согласуются с существительным; alguém, ninguém, tudo и nada не меняются по роду.",
+  "Todo, algum e nenhum concordam com o substantivo; alguém, ninguém, tudo e nada são invariáveis.",
+  [
+   [
+    "tudo",
+    "всё",
+    "Tudo está pronto.",
+    "Всё готово."
+   ],
+   [
+    "nada",
+    "ничего",
+    "Não sei nada sobre isso.",
+    "Я ничего об этом не знаю."
+   ],
+   [
+    "alguém",
+    "кто-то",
+    "Tem alguém aqui?",
+    "Здесь кто-нибудь есть?"
+   ],
+   [
+    "ninguém",
+    "никто",
+    "Não conheço ninguém aqui.",
+    "Я здесь никого не знаю."
+   ],
+   [
+    "algo",
+    "что-то",
+    "Quero dizer algo.",
+    "Я хочу кое-что сказать."
+   ],
+   [
+    "alguma coisa",
+    "что-нибудь",
+    "Quer comer alguma coisa?",
+    "Хочешь что-нибудь поесть?"
+   ],
+   [
+    "todo",
+    "весь, каждый",
+    "Estudo todo dia.",
+    "Я учусь каждый день."
+   ],
+   [
+    "toda",
+    "вся, каждая",
+    "Fiquei em casa toda a manhã.",
+    "Я была дома всё утро."
+   ],
+   [
+    "todos",
+    "все",
+    "Todos estão aqui.",
+    "Все здесь."
+   ],
+   [
+    "todas",
+    "все (ж. р.)",
+    "Todas as portas estão abertas.",
+    "Все двери открыты."
+   ],
+   [
+    "cada",
+    "каждый",
+    "Cada pessoa tem um nome.",
+    "У каждого человека есть имя."
+   ],
+   [
+    "algum",
+    "какой-нибудь",
+    "Você tem algum livro?",
+    "У тебя есть какая-нибудь книга?"
+   ],
+   [
+    "alguma",
+    "какая-нибудь",
+    "Tem alguma pergunta?",
+    "Есть какой-нибудь вопрос?"
+   ],
+   [
+    "nenhum",
+    "ни один",
+    "Não tenho nenhum problema.",
+    "У меня нет никаких проблем."
+   ],
+   [
+    "nenhuma",
+    "ни одна",
+    "Não tenho nenhuma dúvida.",
+    "У меня нет никаких вопросов."
+   ],
+   [
+    "outro",
+    "другой",
+    "Quero outro copo.",
+    "Я хочу другой стакан."
+   ],
+   [
+    "outra",
+    "другая",
+    "Vou tentar outra vez.",
+    "Я попробую ещё раз."
+   ],
+   [
+    "qualquer",
+    "любой",
+    "Pode escolher qualquer livro.",
+    "Можешь выбрать любую книгу."
+   ],
+   [
+    "ambos",
+    "оба",
+    "Ambos estão certos.",
+    "Оба правы."
+   ],
+   [
+    "bastante",
+    "достаточно, довольно много",
+    "Tenho bastante tempo.",
+    "У меня достаточно времени."
+   ]
+  ]
+ ],
+ [
+  "movement",
+  "daily",
+  "Движение и действия",
+  "Movimento e ações",
+  "Учи действия в коротких предложениях: движение, положение и повседневные задачи.",
+  "Aprenda ações em frases curtas sobre movimento e posição.",
+  [
+   [
+    "andar",
+    "ходить",
+    "Eu gosto de andar a pé.",
+    "Я люблю ходить пешком."
+   ],
+   [
+    "correr",
+    "бегать",
+    "Ela corre no parque.",
+    "Она бегает в парке."
+   ],
+   [
+    "caminhar",
+    "гулять, ходить пешком",
+    "Vamos caminhar um pouco.",
+    "Давай немного прогуляемся."
+   ],
+   [
+    "parar",
+    "останавливаться",
+    "O ônibus vai parar aqui.",
+    "Автобус остановится здесь."
+   ],
+   [
+    "continuar",
+    "продолжать",
+    "Vamos continuar amanhã.",
+    "Продолжим завтра."
+   ],
+   [
+    "seguir",
+    "следовать, продолжать идти",
+    "Siga esta rua.",
+    "Идите по этой улице."
+   ],
+   [
+    "voltar",
+    "возвращаться",
+    "Vou voltar cedo.",
+    "Я вернусь рано."
+   ],
+   [
+    "entrar",
+    "входить",
+    "Pode entrar.",
+    "Можешь войти."
+   ],
+   [
+    "esperar",
+    "ждать, надеяться",
+    "Vou esperar aqui.",
+    "Я подожду здесь."
+   ],
+   [
+    "sentar",
+    "садиться",
+    "Pode sentar aqui.",
+    "Можешь сесть здесь."
+   ],
+   [
+    "levantar",
+    "поднимать, вставать",
+    "Vou me levantar.",
+    "Я встану."
+   ],
+   [
+    "virar",
+    "поворачивать",
+    "Vire à esquerda.",
+    "Поверни налево."
+   ],
+   [
+    "passar",
+    "проходить, проводить (время)",
+    "Vou passar na loja.",
+    "Я зайду в магазин."
+   ],
+   [
+    "atravessar",
+    "переходить, пересекать",
+    "Vamos atravessar a rua.",
+    "Давай перейдём улицу."
+   ],
+   [
+    "levar",
+    "относить, брать с собой",
+    "Vou levar o livro.",
+    "Я возьму книгу с собой."
+   ],
+   [
+    "trazer",
+    "приносить",
+    "Pode trazer água?",
+    "Можешь принести воду?"
+   ],
+   [
+    "buscar",
+    "забирать, искать",
+    "Vou buscar minha bolsa.",
+    "Я пойду за сумкой."
+   ],
+   [
+    "encontrar",
+    "встречать, находить",
+    "Vou encontrar uma amiga.",
+    "Я встречусь с подругой."
+   ],
+   [
+    "perder",
+    "терять, пропускать",
+    "Não quero perder o ônibus.",
+    "Я не хочу опоздать на автобус."
+   ],
+   [
+    "mudar",
+    "менять, переезжать",
+    "Quero mudar de lugar.",
+    "Я хочу поменяться местом."
+   ]
+  ]
+ ],
+ [
+  "actions",
+  "daily",
+  "Действия с предметами",
+  "Ações com objetos",
+  "Глаголы, которые легко использовать в быту: предмет, действие, результат.",
+  "Verbos úteis para falar de objetos e tarefas.",
+  [
+   [
+    "abrir",
+    "открывать",
+    "Pode abrir a janela?",
+    "Можешь открыть окно?"
+   ],
+   [
+    "fechar",
+    "закрывать",
+    "Vou fechar a porta.",
+    "Я закрою дверь."
+   ],
+   [
+    "tirar",
+    "снимать, вынимать",
+    "Tire o livro da bolsa.",
+    "Достань книгу из сумки."
+   ],
+   [
+    "botar",
+    "класть, ставить (разг.)",
+    "Bote o copo na mesa.",
+    "Поставь стакан на стол."
+   ],
+   [
+    "colocar",
+    "класть, ставить",
+    "Vou colocar aqui.",
+    "Я положу здесь."
+   ],
+   [
+    "guardar",
+    "убирать, хранить",
+    "Guarde a chave na bolsa.",
+    "Убери ключ в сумку."
+   ],
+   [
+    "arrumar",
+    "приводить в порядок",
+    "Preciso arrumar o quarto.",
+    "Мне нужно убрать комнату."
+   ],
+   [
+    "limpar",
+    "чистить, убирать",
+    "Vou limpar a mesa.",
+    "Я протру стол."
+   ],
+   [
+    "lavar",
+    "мыть",
+    "Preciso lavar as mãos.",
+    "Мне нужно помыть руки."
+   ],
+   [
+    "secar",
+    "сушить, вытирать",
+    "Vou secar o copo.",
+    "Я вытру стакан."
+   ],
+   [
+    "cortar",
+    "резать",
+    "Pode cortar o pão?",
+    "Можешь нарезать хлеб?"
+   ],
+   [
+    "juntar",
+    "собирать, соединять",
+    "Vamos juntar os papéis.",
+    "Давай соберём бумаги."
+   ],
+   [
+    "separar",
+    "разделять, откладывать",
+    "Separe os livros.",
+    "Разложи книги отдельно."
+   ],
+   [
+    "trocar",
+    "менять, обменивать",
+    "Quero trocar de roupa.",
+    "Я хочу переодеться."
+   ],
+   [
+    "procurar",
+    "искать",
+    "Estou procurando a chave.",
+    "Я ищу ключ."
+   ],
+   [
+    "mostrar",
+    "показывать",
+    "Pode me mostrar?",
+    "Можешь мне показать?"
+   ],
+   [
+    "receber",
+    "получать, принимать",
+    "Recebi sua mensagem.",
+    "Я получила твоё сообщение."
+   ],
+   [
+    "entregar",
+    "передавать, доставлять",
+    "Vou entregar o caderno.",
+    "Я передам тетрадь."
+   ],
+   [
+    "emprestar",
+    "одалживать",
+    "Pode me emprestar uma caneta?",
+    "Можешь одолжить мне ручку?"
+   ],
+   [
+    "devolver",
+    "возвращать (вещь)",
+    "Vou devolver o livro.",
+    "Я верну книгу."
+   ]
+  ]
+ ],
+ [
+  "conversationverbs",
+  "daily",
+  "Глаголы для общения",
+  "Verbos da comunicação",
+  "Фразы с глаголами речи, просьбы, помощи и понимания.",
+  "Frases com verbos de fala, pedidos, ajuda e compreensão.",
+  [
+   [
+    "conversar",
+    "разговаривать",
+    "Podemos conversar?",
+    "Можем поговорить?"
+   ],
+   [
+    "contar",
+    "рассказывать, считать",
+    "Me conta o que aconteceu.",
+    "Расскажи мне, что произошло."
+   ],
+   [
+    "perguntar",
+    "спрашивать",
+    "Posso perguntar uma coisa?",
+    "Могу кое-что спросить?"
+   ],
+   [
+    "responder",
+    "отвечать",
+    "Vou responder depois.",
+    "Я отвечу позже."
+   ],
+   [
+    "chamar",
+    "звать, называть",
+    "Como posso te chamar?",
+    "Как мне к тебе обращаться?"
+   ],
+   [
+    "ligar",
+    "звонить, включать",
+    "Vou te ligar mais tarde.",
+    "Я позвоню тебе позже."
+   ],
+   [
+    "desligar",
+    "выключать, класть трубку",
+    "Pode desligar a luz?",
+    "Можешь выключить свет?"
+   ],
+   [
+    "mandar",
+    "посылать, отправлять",
+    "Vou mandar uma mensagem.",
+    "Я отправлю сообщение."
+   ],
+   [
+    "enviar",
+    "отправлять",
+    "Pode enviar a foto?",
+    "Можешь отправить фото?"
+   ],
+   [
+    "avisar",
+    "предупреждать, сообщать",
+    "Me avise quando chegar.",
+    "Сообщи мне, когда приедешь."
+   ],
+   [
+    "pedir",
+    "просить, заказывать",
+    "Vou pedir ajuda.",
+    "Я попрошу помощи."
+   ],
+   [
+    "ajudar",
+    "помогать",
+    "Posso ajudar?",
+    "Могу помочь?"
+   ],
+   [
+    "explicar",
+    "объяснять",
+    "Pode explicar de novo?",
+    "Можешь объяснить ещё раз?"
+   ],
+   [
+    "repetir",
+    "повторять",
+    "Vou repetir a frase.",
+    "Я повторю фразу."
+   ],
+   [
+    "lembrar",
+    "помнить, вспоминать",
+    "Não lembro o nome.",
+    "Я не помню имя."
+   ],
+   [
+    "esquecer",
+    "забывать",
+    "Esqueci a palavra.",
+    "Я забыла слово."
+   ],
+   [
+    "combinar",
+    "договариваться, сочетаться",
+    "Vamos combinar um horário.",
+    "Давай договоримся о времени."
+   ],
+   [
+    "decidir",
+    "решать",
+    "Ainda não decidi.",
+    "Я ещё не решила."
+   ],
+   [
+    "tentar",
+    "пытаться",
+    "Vou tentar mais uma vez.",
+    "Я попробую ещё раз."
+   ],
+   [
+    "acontecer",
+    "происходить",
+    "O que aconteceu?",
+    "Что случилось?"
+   ]
+  ]
+ ],
+ [
+  "quickanswers",
+  "phrases",
+  "Короткие ответы и реакции",
+  "Respostas rápidas",
+  "Короткие ответы для естественного разговора. Упражняйся без длинных объяснений.",
+  "Respostas curtas para conversas naturais.",
+  [
+   [
+    "Claro!",
+    "Конечно!",
+    "Claro, posso ajudar.",
+    "Конечно, могу помочь."
+   ],
+   [
+    "Com certeza!",
+    "Безусловно!",
+    "Com certeza, vou.",
+    "Конечно, я пойду."
+   ],
+   [
+    "Pode ser.",
+    "Можно, подойдёт.",
+    "Pode ser amanhã.",
+    "Можно завтра."
+   ],
+   [
+    "Tá bom.",
+    "Хорошо. (разг.)",
+    "Tá bom, até mais!",
+    "Хорошо, до встречи!"
+   ],
+   [
+    "Está bem.",
+    "Хорошо.",
+    "Está bem, eu espero.",
+    "Хорошо, я подожду."
+   ],
+   [
+    "Beleza!",
+    "Отлично! (разг.)",
+    "Beleza, combinado!",
+    "Отлично, договорились!"
+   ],
+   [
+    "Combinado!",
+    "Договорились!",
+    "Combinado, até amanhã.",
+    "Договорились, до завтра."
+   ],
+   [
+    "Fechado!",
+    "Договорились! (разг.)",
+    "Fechado, às duas.",
+    "Договорились, в два."
+   ],
+   [
+    "Tudo bem.",
+    "Хорошо, всё в порядке.",
+    "Tudo bem, sem pressa.",
+    "Хорошо, не спеши."
+   ],
+   [
+    "Sem problema.",
+    "Без проблем.",
+    "Sem problema, eu ajudo.",
+    "Без проблем, я помогу."
+   ],
+   [
+    "Tudo bem, então.",
+    "Ну хорошо, тогда.",
+    "Tudo bem, então vamos.",
+    "Ну хорошо, тогда пойдём."
+   ],
+   [
+    "Acho que sim.",
+    "Думаю, да.",
+    "Acho que sim, mas vou ver.",
+    "Думаю, да, но проверю."
+   ],
+   [
+    "Acho que não.",
+    "Думаю, нет.",
+    "Acho que não, desculpa.",
+    "Думаю, нет, извини."
+   ],
+   [
+    "Talvez.",
+    "Возможно.",
+    "Talvez amanhã.",
+    "Может быть, завтра."
+   ],
+   [
+    "Ainda não.",
+    "Ещё нет.",
+    "Ainda não terminei.",
+    "Я ещё не закончила."
+   ],
+   [
+    "Já.",
+    "Уже. / Да, уже.",
+    "Já, obrigada.",
+    "Уже, спасибо."
+   ],
+   [
+    "Mais ou menos.",
+    "Более-менее.",
+    "Estou mais ou menos.",
+    "Я более-менее."
+   ],
+   [
+    "Que pena!",
+    "Как жаль!",
+    "Que pena! Até a próxima.",
+    "Как жаль! До следующего раза."
+   ],
+   [
+    "Nossa!",
+    "Ого! / Ничего себе!",
+    "Nossa, que legal!",
+    "Ого, как здорово!"
+   ],
+   [
+    "Ah, entendi.",
+    "А, понятно.",
+    "Ah, entendi agora.",
+    "А, теперь понятно."
+   ],
+   [
+    "Isso mesmo!",
+    "Именно так!",
+    "Isso mesmo, é aqui.",
+    "Именно так, это здесь."
+   ],
+   [
+    "Exatamente!",
+    "Точно!",
+    "Exatamente, você tem razão.",
+    "Точно, ты права."
+   ],
+   [
+    "Verdade!",
+    "Правда! / Точно!",
+    "Verdade, eu esqueci.",
+    "Точно, я забыла."
+   ],
+   [
+    "Tudo certo.",
+    "Всё в порядке.",
+    "Tudo certo por aqui.",
+    "Здесь всё в порядке."
+   ]
+  ]
+ ],
+ [
+  "requests",
+  "phrases",
+  "Просьбы и уточнения",
+  "Pedidos e esclarecimentos",
+  "Pode + инфинитив — очень частая конструкция; posso — «могу я».",
+  "Pode + infinitivo é uma construção muito frequente; posso indica um pedido de permissão.",
+  [
+   [
+    "Pode me esperar?",
+    "Можешь меня подождать?",
+    "Pode me esperar aqui?",
+    "Можешь подождать меня здесь?"
+   ],
+   [
+    "Pode me mostrar?",
+    "Можешь показать мне?",
+    "Pode me mostrar o caminho?",
+    "Можешь показать мне дорогу?"
+   ],
+   [
+    "Pode me explicar?",
+    "Можешь объяснить мне?",
+    "Pode me explicar isso?",
+    "Можешь объяснить мне это?"
+   ],
+   [
+    "Pode me dizer?",
+    "Можешь сказать мне?",
+    "Pode me dizer a hora?",
+    "Можешь сказать мне время?"
+   ],
+   [
+    "Pode deixar aqui.",
+    "Можешь оставить здесь.",
+    "Pode deixar o livro aqui.",
+    "Можешь оставить книгу здесь."
+   ],
+   [
+    "Pode falar.",
+    "Можешь говорить.",
+    "Pode falar, estou ouvindo.",
+    "Говори, я слушаю."
+   ],
+   [
+    "Pode continuar.",
+    "Можешь продолжать.",
+    "Pode continuar a leitura.",
+    "Можешь продолжать чтение."
+   ],
+   [
+    "Posso usar?",
+    "Могу использовать?",
+    "Posso usar sua caneta?",
+    "Можно воспользоваться твоей ручкой?"
+   ],
+   [
+    "Posso sentar aqui?",
+    "Могу сесть здесь?",
+    "Com licença, posso sentar aqui?",
+    "Извините, могу сесть здесь?"
+   ],
+   [
+    "Posso ir junto?",
+    "Могу пойти вместе?",
+    "Posso ir junto com vocês?",
+    "Могу пойти вместе с вами?"
+   ],
+   [
+    "Me ajuda, por favor.",
+    "Помоги мне, пожалуйста.",
+    "Me ajuda com isso, por favor.",
+    "Помоги мне с этим, пожалуйста."
+   ],
+   [
+    "Espera um pouco.",
+    "Подожди немного.",
+    "Espera um pouco aqui.",
+    "Подожди немного здесь."
+   ],
+   [
+    "Só um minuto.",
+    "Одну минуту.",
+    "Só um minuto, já vou.",
+    "Одну минуту, уже иду."
+   ],
+   [
+    "Fala mais alto, por favor.",
+    "Говори громче, пожалуйста.",
+    "Fala mais alto, não ouvi.",
+    "Говори громче, я не услышала."
+   ],
+   [
+    "Não ouvi direito.",
+    "Я не расслышала.",
+    "Desculpa, não ouvi direito.",
+    "Извини, я не расслышала."
+   ],
+   [
+    "Como foi?",
+    "Как прошло? / Как было?",
+    "Como foi a aula?",
+    "Как прошёл урок?"
+   ],
+   [
+    "O que aconteceu?",
+    "Что случилось?",
+    "Me conta o que aconteceu.",
+    "Расскажи мне, что случилось."
+   ],
+   [
+    "O que foi?",
+    "Что такое? / Что случилось?",
+    "O que foi, tudo bem?",
+    "Что такое, всё хорошо?"
+   ],
+   [
+    "É isso?",
+    "Это всё? / Это оно?",
+    "É isso que você quer?",
+    "Это то, что ты хочешь?"
+   ],
+   [
+    "Tem certeza?",
+    "Ты уверен(а)?",
+    "Tem certeza de que é aqui?",
+    "Ты уверена, что это здесь?"
+   ]
+  ]
+ ],
+ [
+  "plans",
+  "phrases",
+  "Планы и встречи",
+  "Planos e encontros",
+  "Будущее в живой речи: vou / vai / vamos + инфинитив.",
+  "Futuro na fala: vou, vai ou vamos + infinitivo.",
+  [
+   [
+    "O que vamos fazer?",
+    "Что будем делать?",
+    "O que vamos fazer amanhã?",
+    "Что будем делать завтра?"
+   ],
+   [
+    "Você vai hoje?",
+    "Ты сегодня пойдёшь?",
+    "Você vai à aula hoje?",
+    "Ты сегодня пойдёшь на урок?"
+   ],
+   [
+    "Vamos juntos?",
+    "Пойдём вместе?",
+    "Vamos juntos para casa?",
+    "Пойдём вместе домой?"
+   ],
+   [
+    "Vamos combinar.",
+    "Давай договоримся.",
+    "Vamos combinar para amanhã.",
+    "Давай договоримся на завтра."
+   ],
+   [
+    "Que horas?",
+    "Во сколько?",
+    "Que horas vamos sair?",
+    "Во сколько мы выйдем?"
+   ],
+   [
+    "A que horas começa?",
+    "Во сколько начинается?",
+    "A que horas começa a aula?",
+    "Во сколько начинается урок?"
+   ],
+   [
+    "A que horas termina?",
+    "Во сколько заканчивается?",
+    "A que horas termina a reunião?",
+    "Во сколько заканчивается собрание?"
+   ],
+   [
+    "Estou livre agora.",
+    "Я сейчас свободна / свободен.",
+    "Estou livre agora, podemos falar.",
+    "Я сейчас свободна, можем поговорить."
+   ],
+   [
+    "Não posso hoje.",
+    "Я сегодня не могу.",
+    "Não posso hoje, mas amanhã posso.",
+    "Сегодня не могу, но завтра могу."
+   ],
+   [
+    "Pode ser amanhã?",
+    "Можно завтра?",
+    "Pode ser amanhã de manhã?",
+    "Можно завтра утром?"
+   ],
+   [
+    "Vou ver.",
+    "Я посмотрю / проверю.",
+    "Vou ver se posso ir.",
+    "Я посмотрю, смогу ли пойти."
+   ],
+   [
+    "Vou tentar.",
+    "Я попробую.",
+    "Vou tentar chegar cedo.",
+    "Я попробую прийти рано."
+   ],
+   [
+    "Já estou indo.",
+    "Я уже иду.",
+    "Já estou indo para casa.",
+    "Я уже иду домой."
+   ],
+   [
+    "Estou chegando.",
+    "Я уже подхожу / подъезжаю.",
+    "Estou chegando, me espera.",
+    "Я уже подхожу, подожди меня."
+   ],
+   [
+    "Cheguei!",
+    "Я пришла! / Я приехала!",
+    "Cheguei em casa!",
+    "Я приехала домой!"
+   ],
+   [
+    "Estou a caminho.",
+    "Я в пути.",
+    "Estou a caminho da escola.",
+    "Я по дороге в школу."
+   ],
+   [
+    "Vou chegar mais tarde.",
+    "Я приду позже.",
+    "Vou chegar mais tarde hoje.",
+    "Я сегодня приду позже."
+   ],
+   [
+    "Te vejo lá.",
+    "Увидимся там.",
+    "Te vejo lá às três.",
+    "Увидимся там в три."
+   ],
+   [
+    "Até daqui a pouco!",
+    "До скорой встречи!",
+    "Até daqui a pouco, tchau!",
+    "До скорого, пока!"
+   ],
+   [
+    "Me avisa.",
+    "Сообщи мне.",
+    "Me avisa quando chegar.",
+    "Сообщи мне, когда придёшь."
+   ]
+  ]
+ ],
+ [
+  "needs",
+  "phrases",
+  "Хочу, могу, нужно",
+  "Quero, posso, preciso",
+  "Готовые конструкции для выражения желания, необходимости и возможности.",
+  "Construções para expressar desejos, necessidades e possibilidades.",
+  [
+   [
+    "Eu quero.",
+    "Я хочу.",
+    "Eu quero aprender mais.",
+    "Я хочу больше узнать."
+   ],
+   [
+    "Eu não quero.",
+    "Я не хочу.",
+    "Eu não quero sair agora.",
+    "Я не хочу сейчас выходить."
+   ],
+   [
+    "Eu preciso.",
+    "Мне нужно.",
+    "Eu preciso estudar.",
+    "Мне нужно учиться."
+   ],
+   [
+    "Não preciso.",
+    "Мне не нужно.",
+    "Não preciso comprar nada.",
+    "Мне ничего не нужно покупать."
+   ],
+   [
+    "Eu posso.",
+    "Я могу.",
+    "Eu posso ajudar você.",
+    "Я могу тебе помочь."
+   ],
+   [
+    "Não posso.",
+    "Я не могу.",
+    "Não posso falar agora.",
+    "Я не могу сейчас говорить."
+   ],
+   [
+    "Eu tenho que...",
+    "Мне нужно... / Я должна...",
+    "Eu tenho que ir.",
+    "Мне нужно идти."
+   ],
+   [
+    "Tenho vontade de...",
+    "Мне хочется...",
+    "Tenho vontade de conversar.",
+    "Мне хочется поговорить."
+   ],
+   [
+    "Eu gostaria de...",
+    "Я бы хотела...",
+    "Eu gostaria de saber mais.",
+    "Я бы хотела узнать больше."
+   ],
+   [
+    "Eu prefiro...",
+    "Я предпочитаю...",
+    "Eu prefiro ficar em casa.",
+    "Я предпочитаю остаться дома."
+   ],
+   [
+    "Eu gosto de...",
+    "Мне нравится...",
+    "Eu gosto de ler.",
+    "Мне нравится читать."
+   ],
+   [
+    "Não gosto de...",
+    "Мне не нравится...",
+    "Não gosto de chegar atrasada.",
+    "Мне не нравится опаздывать."
+   ],
+   [
+    "Estou tentando...",
+    "Я пытаюсь...",
+    "Estou tentando entender.",
+    "Я пытаюсь понять."
+   ],
+   [
+    "Não consigo.",
+    "У меня не получается.",
+    "Não consigo abrir a porta.",
+    "У меня не получается открыть дверь."
+   ],
+   [
+    "Consegui!",
+    "У меня получилось!",
+    "Consegui terminar a tarefa!",
+    "Мне удалось закончить задание!"
+   ],
+   [
+    "Preciso de ajuda.",
+    "Мне нужна помощь.",
+    "Preciso de ajuda com a tarefa.",
+    "Мне нужна помощь с заданием."
+   ],
+   [
+    "Estou com pressa.",
+    "Я спешу.",
+    "Estou com pressa, desculpa.",
+    "Я спешу, извини."
+   ],
+   [
+    "Tenho tempo.",
+    "У меня есть время.",
+    "Tenho tempo para conversar.",
+    "У меня есть время поговорить."
+   ],
+   [
+    "Não tenho tempo.",
+    "У меня нет времени.",
+    "Não tenho tempo agora.",
+    "У меня сейчас нет времени."
+   ],
+   [
+    "Não faz mal.",
+    "Ничего страшного.",
+    "Não faz mal, podemos tentar de novo.",
+    "Ничего страшного, можем попробовать ещё раз."
+   ]
+  ]
+ ],
+ [
+  "clothes",
+  "daily",
+  "Одежда и обувь",
+  "Roupas e calçados",
+  "Слова, которые можно использовать в магазине и при описании вещей.",
+  "Palavras para compras e descrição de roupas.",
+  [
+   [
+    "roupa",
+    "одежда",
+    "Vou trocar de roupa.",
+    "Я переоденусь."
+   ],
+   [
+    "camiseta",
+    "футболка",
+    "Esta camiseta é azul.",
+    "Эта футболка синяя."
+   ],
+   [
+    "camisa",
+    "рубашка",
+    "A camisa é branca.",
+    "Рубашка белая."
+   ],
+   [
+    "calça",
+    "брюки",
+    "Quero comprar uma calça.",
+    "Я хочу купить брюки."
+   ],
+   [
+    "jeans",
+    "джинсы",
+    "Estou usando jeans.",
+    "Я в джинсах."
+   ],
+   [
+    "saia",
+    "юбка",
+    "A saia é preta.",
+    "Юбка чёрная."
+   ],
+   [
+    "vestido",
+    "платье",
+    "Gostei do vestido.",
+    "Мне понравилось платье."
+   ],
+   [
+    "casaco",
+    "пальто, куртка",
+    "Leve um casaco.",
+    "Возьми куртку."
+   ],
+   [
+    "blusa",
+    "блузка, кофта",
+    "Onde está minha blusa?",
+    "Где моя кофта?"
+   ],
+   [
+    "moletom",
+    "толстовка",
+    "O moletom está na cadeira.",
+    "Толстовка на стуле."
+   ],
+   [
+    "shorts",
+    "шорты",
+    "Ela comprou um par de shorts.",
+    "Она купила шорты."
+   ],
+   [
+    "sapato",
+    "туфля, обувь",
+    "O sapato está apertado.",
+    "Туфля тесная."
+   ],
+   [
+    "tênis",
+    "кроссовки",
+    "Vou usar tênis.",
+    "Я надену кроссовки."
+   ],
+   [
+    "meia",
+    "носок",
+    "Preciso de um par de meias.",
+    "Мне нужна пара носков."
+   ],
+   [
+    "chinelo",
+    "шлёпанец",
+    "Onde estão meus chinelos?",
+    "Где мои шлёпанцы?"
+   ],
+   [
+    "cinto",
+    "ремень",
+    "Este cinto é marrom.",
+    "Этот ремень коричневый."
+   ],
+   [
+    "bolso",
+    "карман",
+    "A chave está no bolso.",
+    "Ключ в кармане."
+   ],
+   [
+    "vestir",
+    "одевать, надевать",
+    "Vou vestir uma camiseta.",
+    "Я надену футболку."
+   ],
+   [
+    "experimentar",
+    "примерять",
+    "Posso experimentar esta blusa?",
+    "Можно примерить эту кофту?"
+   ],
+   [
+    "ficar bem",
+    "хорошо смотреться, подходить",
+    "A camisa ficou bem em você.",
+    "Рубашка тебе подходит."
+   ]
+  ]
+ ],
+ [
+  "kitchen",
+  "daily",
+  "Кухня и посуда",
+  "Cozinha e utensílios",
+  "Предметы, действия и фразы, которые употребляются вместе на кухне.",
+  "Objetos e ações usados juntos na cozinha.",
+  [
+   [
+    "prato",
+    "тарелка, блюдо",
+    "O prato está na mesa.",
+    "Тарелка на столе."
+   ],
+   [
+    "copo",
+    "стакан",
+    "Quero um copo de água.",
+    "Я хочу стакан воды."
+   ],
+   [
+    "xícara",
+    "чашка",
+    "Uma xícara de café, por favor.",
+    "Чашку кофе, пожалуйста."
+   ],
+   [
+    "colher",
+    "ложка",
+    "Preciso de uma colher.",
+    "Мне нужна ложка."
+   ],
+   [
+    "garfo",
+    "вилка",
+    "Onde está o garfo?",
+    "Где вилка?"
+   ],
+   [
+    "faca",
+    "нож (столовый)",
+    "A faca está ao lado do prato.",
+    "Столовый нож рядом с тарелкой."
+   ],
+   [
+    "panela",
+    "кастрюля",
+    "A panela está na cozinha.",
+    "Кастрюля на кухне."
+   ],
+   [
+    "frigideira",
+    "сковорода",
+    "A frigideira está limpa.",
+    "Сковорода чистая."
+   ],
+   [
+    "fogão",
+    "плита",
+    "O fogão está desligado.",
+    "Плита выключена."
+   ],
+   [
+    "forno",
+    "духовка",
+    "O pão está no forno.",
+    "Хлеб в духовке."
+   ],
+   [
+    "pia",
+    "раковина",
+    "Os copos estão na pia.",
+    "Стаканы в раковине."
+   ],
+   [
+    "garrafa",
+    "бутылка",
+    "A garrafa está vazia.",
+    "Бутылка пустая."
+   ],
+   [
+    "pote",
+    "контейнер, баночка",
+    "Guarde o arroz no pote.",
+    "Убери рис в контейнер."
+   ],
+   [
+    "comer",
+    "есть",
+    "Vamos comer?",
+    "Будем есть?"
+   ],
+   [
+    "beber",
+    "пить",
+    "Quer beber água?",
+    "Хочешь воды?"
+   ],
+   [
+    "cozinhar",
+    "готовить",
+    "Gosto de cozinhar.",
+    "Мне нравится готовить."
+   ],
+   [
+    "preparar",
+    "готовить, подготавливать",
+    "Vou preparar o café.",
+    "Я приготовлю кофе."
+   ],
+   [
+    "misturar",
+    "смешивать",
+    "Misture o leite com o café.",
+    "Смешай молоко с кофе."
+   ],
+   [
+    "esquentar",
+    "разогревать",
+    "Vou esquentar a sopa.",
+    "Я разогрею суп."
+   ],
+   [
+    "lavar a louça",
+    "мыть посуду",
+    "Vou lavar a louça depois.",
+    "Я помою посуду позже."
+   ]
+  ]
+ ],
+ [
+  "foodmarket",
+  "daily",
+  "Продукты в магазине",
+  "Alimentos no mercado",
+  "Распространённые продукты, которые часто встречаются в покупках и меню.",
+  "Alimentos comuns nas compras e nos cardápios.",
+  [
+   [
+    "legume",
+    "овощ",
+    "Comprei legumes no mercado.",
+    "Я купила овощи на рынке."
+   ],
+   [
+    "verdura",
+    "листовые овощи, зелень",
+    "Tem verdura fresca?",
+    "Есть свежая зелень?"
+   ],
+   [
+    "cenoura",
+    "морковь",
+    "Preciso de cenoura.",
+    "Мне нужна морковь."
+   ],
+   [
+    "cebola",
+    "лук",
+    "A cebola está na cozinha.",
+    "Лук на кухне."
+   ],
+   [
+    "alho",
+    "чеснок",
+    "Tem alho em casa?",
+    "Дома есть чеснок?"
+   ],
+   [
+    "pepino",
+    "огурец",
+    "Vou comprar pepino.",
+    "Я куплю огурцы."
+   ],
+   [
+    "alface",
+    "листовой салат",
+    "Quero alface e tomate.",
+    "Я хочу листовой салат и помидоры."
+   ],
+   [
+    "repolho",
+    "капуста",
+    "Comprei repolho.",
+    "Я купила капусту."
+   ],
+   [
+    "uva",
+    "виноград",
+    "Gosto de uva.",
+    "Мне нравится виноград."
+   ],
+   [
+    "morango",
+    "клубника",
+    "O morango está doce.",
+    "Клубника сладкая."
+   ],
+   [
+    "limão",
+    "лимон",
+    "Coloque um pouco de limão.",
+    "Добавь немного лимона."
+   ],
+   [
+    "melancia",
+    "арбуз",
+    "A melancia está na geladeira.",
+    "Арбуз в холодильнике."
+   ],
+   [
+    "manteiga",
+    "сливочное масло",
+    "Quero pão com manteiga.",
+    "Я хочу хлеб с маслом."
+   ],
+   [
+    "iogurte",
+    "йогурт",
+    "Comprei iogurte.",
+    "Я купила йогурт."
+   ],
+   [
+    "farinha",
+    "мука",
+    "Tem farinha em casa?",
+    "Дома есть мука?"
+   ],
+   [
+    "macarrão",
+    "макароны",
+    "Vamos fazer macarrão.",
+    "Давай приготовим макароны."
+   ],
+   [
+    "biscoito",
+    "печенье",
+    "Quer um biscoito?",
+    "Хочешь печенье?"
+   ],
+   [
+    "bolo",
+    "торт, кекс",
+    "Ela fez um bolo.",
+    "Она испекла торт."
+   ],
+   [
+    "sanduíche",
+    "бутерброд, сэндвич",
+    "Vou pedir um sanduíche.",
+    "Я закажу сэндвич."
+   ],
+   [
+    "sorvete",
+    "мороженое",
+    "Quer sorvete?",
+    "Хочешь мороженое?"
+   ],
+   [
+    "óleo",
+    "масло (растительное)",
+    "Preciso comprar óleo.",
+    "Мне нужно купить растительное масло."
+   ],
+   [
+    "azeite",
+    "оливковое масло",
+    "Tem azeite na mesa.",
+    "На столе есть оливковое масло."
+   ]
+  ]
+ ],
+ [
+  "phone",
+  "daily",
+  "Телефон и сообщения",
+  "Celular e mensagens",
+  "Повседневные слова для общения по телефону и в интернете.",
+  "Vocabulário para conversar pelo celular e pela internet.",
+  [
+   [
+    "telefone",
+    "телефон",
+    "Qual é o seu telefone?",
+    "Какой у тебя номер телефона?"
+   ],
+   [
+    "número",
+    "номер, число",
+    "Não tenho o número dela.",
+    "У меня нет её номера."
+   ],
+   [
+    "mensagem",
+    "сообщение",
+    "Recebi uma mensagem.",
+    "Я получила сообщение."
+   ],
+   [
+    "ligação",
+    "звонок",
+    "Vou fazer uma ligação.",
+    "Я позвоню."
+   ],
+   [
+    "foto",
+    "фото",
+    "Pode mandar uma foto?",
+    "Можешь отправить фото?"
+   ],
+   [
+    "vídeo",
+    "видео",
+    "Estou vendo um vídeo.",
+    "Я смотрю видео."
+   ],
+   [
+    "áudio",
+    "аудио, голосовое сообщение",
+    "Vou mandar um áudio.",
+    "Я отправлю голосовое сообщение."
+   ],
+   [
+    "internet",
+    "интернет",
+    "A internet está lenta.",
+    "Интернет медленный."
+   ],
+   [
+    "Wi-Fi",
+    "вай-фай",
+    "Tem Wi-Fi aqui?",
+    "Здесь есть Wi-Fi?"
+   ],
+   [
+    "senha",
+    "пароль",
+    "Esqueci a senha.",
+    "Я забыла пароль."
+   ],
+   [
+    "tela",
+    "экран",
+    "A tela está ligada.",
+    "Экран включён."
+   ],
+   [
+    "bateria",
+    "аккумулятор, заряд",
+    "A bateria está acabando.",
+    "Заряд заканчивается."
+   ],
+   [
+    "aplicativo",
+    "приложение",
+    "Uso este aplicativo.",
+    "Я пользуюсь этим приложением."
+   ],
+   [
+    "link",
+    "ссылка",
+    "Pode enviar o link?",
+    "Можешь отправить ссылку?"
+   ],
+   [
+    "arquivo",
+    "файл",
+    "Recebi o arquivo.",
+    "Я получила файл."
+   ],
+   [
+    "baixar",
+    "скачивать",
+    "Vou baixar o arquivo.",
+    "Я скачаю файл."
+   ],
+   [
+    "salvar",
+    "сохранять",
+    "Preciso salvar a foto.",
+    "Мне нужно сохранить фото."
+   ],
+   [
+    "apagar",
+    "удалять, гасить",
+    "Vou apagar a mensagem.",
+    "Я удалю сообщение."
+   ],
+   [
+    "carregar",
+    "заряжать, нести",
+    "Preciso carregar o celular.",
+    "Мне нужно зарядить телефон."
+   ],
+   [
+    "conectar",
+    "подключать",
+    "Não consigo conectar ao Wi-Fi.",
+    "У меня не получается подключиться к Wi-Fi."
+   ]
+  ]
+ ],
+ [
+  "weatherwords",
+  "daily",
+  "Погода и улица",
+  "Tempo e clima",
+  "О погоде часто говорят с fazer: faz frio, faz calor.",
+  "Para falar do tempo, use fazer: faz frio, faz calor.",
+  [
+   [
+    "tempo",
+    "погода; время",
+    "Como está o tempo?",
+    "Какая погода?"
+   ],
+   [
+    "sol",
+    "солнце",
+    "Hoje tem sol.",
+    "Сегодня солнечно."
+   ],
+   [
+    "chuva",
+    "дождь",
+    "A chuva começou.",
+    "Начался дождь."
+   ],
+   [
+    "vento",
+    "ветер",
+    "Está ventando muito.",
+    "Очень ветрено."
+   ],
+   [
+    "nuvem",
+    "облако",
+    "Tem muitas nuvens.",
+    "Много облаков."
+   ],
+   [
+    "neve",
+    "снег",
+    "Tem neve na rua.",
+    "На улице снег."
+   ],
+   [
+    "calor",
+    "жара",
+    "Está fazendo calor.",
+    "Жарко."
+   ],
+   [
+    "frio",
+    "холод",
+    "Está fazendo frio.",
+    "Холодно."
+   ],
+   [
+    "chover",
+    "идти (о дожде)",
+    "Vai chover amanhã.",
+    "Завтра будет дождь."
+   ],
+   [
+    "nevar",
+    "идти (о снеге)",
+    "Pode nevar hoje.",
+    "Сегодня может пойти снег."
+   ],
+   [
+    "ensolarado",
+    "солнечный",
+    "O dia está ensolarado.",
+    "День солнечный."
+   ],
+   [
+    "nublado",
+    "облачный",
+    "Hoje está nublado.",
+    "Сегодня облачно."
+   ],
+   [
+    "guarda-chuva",
+    "зонт",
+    "Leve o guarda-chuva.",
+    "Возьми зонт."
+   ],
+   [
+    "casaco",
+    "куртка, пальто",
+    "Vou levar um casaco.",
+    "Я возьму куртку."
+   ],
+   [
+    "Está chovendo.",
+    "Идёт дождь.",
+    "Está chovendo agora.",
+    "Сейчас идёт дождь."
+   ],
+   [
+    "Está quente.",
+    "Жарко.",
+    "Está quente lá fora.",
+    "На улице жарко."
+   ],
+   [
+    "Está frio.",
+    "Холодно.",
+    "Está frio de manhã.",
+    "Утром холодно."
+   ],
+   [
+    "Que tempo bom!",
+    "Какая хорошая погода!",
+    "Que tempo bom para caminhar!",
+    "Какая хорошая погода для прогулки!"
+   ]
+  ]
+ ],
+ [
+  "places",
+  "daily",
+  "Места и услуги в городе",
+  "Lugares e serviços",
+  "Слова для повседневных дел в городе и коротких вопросов о месте.",
+  "Palavras para tarefas na cidade e perguntas sobre lugares.",
+  [
+   [
+    "farmácia",
+    "аптека",
+    "Onde fica a farmácia?",
+    "Где аптека?"
+   ],
+   [
+    "hospital",
+    "больница",
+    "O hospital fica perto.",
+    "Больница находится рядом."
+   ],
+   [
+    "posto de saúde",
+    "поликлиника, медпункт",
+    "Onde fica o posto de saúde?",
+    "Где поликлиника?"
+   ],
+   [
+    "banco",
+    "банк",
+    "Vou ao banco.",
+    "Я пойду в банк."
+   ],
+   [
+    "correios",
+    "почта",
+    "Preciso ir aos correios.",
+    "Мне нужно сходить на почту."
+   ],
+   [
+    "padaria",
+    "пекарня",
+    "Vou comprar pão na padaria.",
+    "Я куплю хлеб в пекарне."
+   ],
+   [
+    "restaurante",
+    "ресторан",
+    "O restaurante está aberto.",
+    "Ресторан открыт."
+   ],
+   [
+    "lanchonete",
+    "закусочная",
+    "Vamos à lanchonete.",
+    "Пойдём в закусочную."
+   ],
+   [
+    "cafeteria",
+    "кофейня",
+    "Tem uma cafeteria perto.",
+    "Рядом есть кофейня."
+   ],
+   [
+    "parque",
+    "парк",
+    "Vamos ao parque.",
+    "Пойдём в парк."
+   ],
+   [
+    "biblioteca",
+    "библиотека",
+    "Estudo na biblioteca.",
+    "Я учусь в библиотеке."
+   ],
+   [
+    "shopping",
+    "торговый центр",
+    "Vamos ao shopping.",
+    "Пойдём в торговый центр."
+   ],
+   [
+    "cinema",
+    "кинотеатр",
+    "O cinema fica ali.",
+    "Кинотеатр вон там."
+   ],
+   [
+    "aeroporto",
+    "аэропорт",
+    "Vou ao aeroporto.",
+    "Я еду в аэропорт."
+   ],
+   [
+    "hotel",
+    "гостиница",
+    "O hotel fica no centro.",
+    "Гостиница находится в центре."
+   ],
+   [
+    "centro",
+    "центр",
+    "Moro perto do centro.",
+    "Я живу недалеко от центра."
+   ],
+   [
+    "bairro",
+    "район",
+    "Gosto do meu bairro.",
+    "Мне нравится мой район."
+   ],
+   [
+    "endereço",
+    "адрес",
+    "Qual é o endereço?",
+    "Какой адрес?"
+   ],
+   [
+    "entrada",
+    "вход",
+    "Onde é a entrada?",
+    "Где вход?"
+   ],
+   [
+    "saída",
+    "выход",
+    "A saída fica à direita.",
+    "Выход справа."
+   ]
+  ]
+ ],
+ [
+  "bodyhealth",
+  "daily",
+  "Тело и самочувствие",
+  "Corpo e saúde",
+  "Базовые слова для объяснения самочувствия; это языковая практика.",
+  "Palavras básicas para descrever como se sente; prática de idioma.",
+  [
+   [
+    "cabeça",
+    "голова",
+    "Estou com dor de cabeça.",
+    "У меня болит голова."
+   ],
+   [
+    "rosto",
+    "лицо",
+    "Vou lavar o rosto.",
+    "Я умою лицо."
+   ],
+   [
+    "olho",
+    "глаз",
+    "Feche os olhos.",
+    "Закрой глаза."
+   ],
+   [
+    "orelha",
+    "ухо",
+    "A orelha está fria.",
+    "Ухо холодное."
+   ],
+   [
+    "nariz",
+    "нос",
+    "Meu nariz está entupido.",
+    "У меня заложен нос."
+   ],
+   [
+    "boca",
+    "рот",
+    "Abra a boca.",
+    "Открой рот."
+   ],
+   [
+    "dente",
+    "зуб",
+    "Vou escovar os dentes.",
+    "Я почищу зубы."
+   ],
+   [
+    "garganta",
+    "горло",
+    "Minha garganta está doendo.",
+    "У меня болит горло."
+   ],
+   [
+    "mão",
+    "кисть руки",
+    "Lave as mãos.",
+    "Помой руки."
+   ],
+   [
+    "braço",
+    "рука (от плеча)",
+    "Meu braço está cansado.",
+    "Моя рука устала."
+   ],
+   [
+    "dedo",
+    "палец",
+    "Mostre com o dedo.",
+    "Покажи пальцем."
+   ],
+   [
+    "perna",
+    "нога",
+    "Minha perna está doendo.",
+    "У меня болит нога."
+   ],
+   [
+    "pé",
+    "ступня, нога",
+    "Estou andando a pé.",
+    "Я иду пешком."
+   ],
+   [
+    "costas",
+    "спина",
+    "Estou com dor nas costas.",
+    "У меня болит спина."
+   ],
+   [
+    "barriga",
+    "живот",
+    "Estou com dor de barriga.",
+    "У меня болит живот."
+   ],
+   [
+    "febre",
+    "температура, жар",
+    "Estou com febre.",
+    "У меня температура."
+   ],
+   [
+    "tosse",
+    "кашель",
+    "Estou com tosse.",
+    "У меня кашель."
+   ],
+   [
+    "resfriado",
+    "простуда",
+    "Estou resfriada.",
+    "Я простудилась."
+   ],
+   [
+    "médico",
+    "врач",
+    "Preciso falar com um médico.",
+    "Мне нужно поговорить с врачом."
+   ],
+   [
+    "consulta",
+    "приём, консультация",
+    "Tenho uma consulta amanhã.",
+    "У меня завтра приём."
+   ],
+   [
+    "Não estou me sentindo bem.",
+    "Я плохо себя чувствую.",
+    "Hoje não estou me sentindo bem.",
+    "Сегодня я плохо себя чувствую."
+   ],
+   [
+    "Estou bem melhor.",
+    "Мне намного лучше.",
+    "Obrigada, estou bem melhor.",
+    "Спасибо, мне намного лучше."
+   ]
+  ]
+ ],
+ [
+  "positions",
+  "base",
+  "Где находится предмет?",
+  "Posição e localização",
+  "Учи местоположение вместе с de: em cima de, atrás de, ao lado de.",
+  "Aprenda localização com de: em cima de, atrás de, ao lado de.",
+  [
+   [
+    "dentro",
+    "внутри",
+    "O livro está dentro.",
+    "Книга внутри."
+   ],
+   [
+    "fora",
+    "снаружи",
+    "Ela está lá fora.",
+    "Она на улице."
+   ],
+   [
+    "em cima",
+    "наверху",
+    "A bolsa está em cima.",
+    "Сумка наверху."
+   ],
+   [
+    "embaixo",
+    "внизу",
+    "O sapato está embaixo.",
+    "Туфля внизу."
+   ],
+   [
+    "em cima de",
+    "на, поверх",
+    "O celular está em cima da mesa.",
+    "Телефон на столе."
+   ],
+   [
+    "embaixo de",
+    "под",
+    "A mochila está embaixo da cadeira.",
+    "Рюкзак под стулом."
+   ],
+   [
+    "ao lado de",
+    "рядом с",
+    "A loja fica ao lado da escola.",
+    "Магазин рядом со школой."
+   ],
+   [
+    "atrás de",
+    "позади",
+    "O parque fica atrás do prédio.",
+    "Парк за зданием."
+   ],
+   [
+    "na frente de",
+    "перед",
+    "Estou na frente da igreja.",
+    "Я перед церковью."
+   ],
+   [
+    "dentro de",
+    "внутри чего-то",
+    "A chave está dentro da bolsa.",
+    "Ключ в сумке."
+   ],
+   [
+    "fora de",
+    "вне, за пределами",
+    "Ela está fora de casa.",
+    "Она не дома."
+   ],
+   [
+    "no meio de",
+    "посередине",
+    "A mesa está no meio da sala.",
+    "Стол посередине комнаты."
+   ],
+   [
+    "do lado de",
+    "рядом с, со стороны",
+    "A cadeira está do lado da janela.",
+    "Стул рядом с окном."
+   ],
+   [
+    "à direita de",
+    "справа от",
+    "A porta fica à direita da janela.",
+    "Дверь справа от окна."
+   ],
+   [
+    "à esquerda de",
+    "слева от",
+    "A mesa está à esquerda da porta.",
+    "Стол слева от двери."
+   ],
+   [
+    "em frente a",
+    "напротив, перед",
+    "A padaria fica em frente à escola.",
+    "Пекарня напротив школы."
+   ],
+   [
+    "por aqui",
+    "здесь, в этих местах",
+    "Tem uma loja por aqui?",
+    "Здесь поблизости есть магазин?"
+   ],
+   [
+    "por lá",
+    "там, в тех местах",
+    "Vou passar por lá.",
+    "Я туда загляну."
+   ]
+  ]
+ ],
+ [
+  "timephrases",
+  "phrases",
+  "Время и повседневный график",
+  "Horários e rotina",
+  "Говори о времени с às, de manhã, à tarde, à noite.",
+  "Use às, de manhã, à tarde e à noite para falar de horários.",
+  [
+   [
+    "Que horas são?",
+    "Который час?",
+    "Desculpa, que horas são?",
+    "Извините, который час?"
+   ],
+   [
+    "São duas horas.",
+    "Два часа.",
+    "São duas horas da tarde.",
+    "Два часа дня."
+   ],
+   [
+    "É uma hora.",
+    "Час.",
+    "É uma hora da tarde.",
+    "Час дня."
+   ],
+   [
+    "São duas e meia.",
+    "Половина третьего.",
+    "São duas e meia da tarde.",
+    "Половина третьего дня."
+   ],
+   [
+    "de manhã",
+    "утром",
+    "Estudo de manhã.",
+    "Я учусь утром."
+   ],
+   [
+    "à tarde",
+    "днём, после обеда",
+    "Vou sair à tarde.",
+    "Я выйду после обеда."
+   ],
+   [
+    "à noite",
+    "вечером, ночью",
+    "Leio à noite.",
+    "Я читаю вечером."
+   ],
+   [
+    "ao meio-dia",
+    "в полдень",
+    "Almoço ao meio-dia.",
+    "Я обедаю в полдень."
+   ],
+   [
+    "hoje de manhã",
+    "сегодня утром",
+    "Estudei hoje de manhã.",
+    "Я училась сегодня утром."
+   ],
+   [
+    "ontem à noite",
+    "вчера вечером",
+    "Falei com ela ontem à noite.",
+    "Я говорила с ней вчера вечером."
+   ],
+   [
+    "amanhã cedo",
+    "завтра рано",
+    "Vou sair amanhã cedo.",
+    "Я выйду завтра рано."
+   ],
+   [
+    "daqui a pouco",
+    "скоро, через немного времени",
+    "Vou chegar daqui a pouco.",
+    "Я скоро приду."
+   ],
+   [
+    "agora mesmo",
+    "прямо сейчас",
+    "Preciso sair agora mesmo.",
+    "Мне нужно выйти прямо сейчас."
+   ],
+   [
+    "mais tarde",
+    "позже",
+    "Vou te ligar mais tarde.",
+    "Я позвоню позже."
+   ],
+   [
+    "a tempo",
+    "вовремя, успеть",
+    "Cheguei a tempo.",
+    "Я пришла вовремя."
+   ],
+   [
+    "Estou atrasada.",
+    "Я опаздываю. (жен.)",
+    "Estou atrasada para a aula.",
+    "Я опаздываю на урок."
+   ],
+   [
+    "Já terminou?",
+    "Уже закончил(а)?",
+    "Já terminou a tarefa?",
+    "Ты уже закончила задание?"
+   ],
+   [
+    "Ainda está cedo.",
+    "Ещё рано.",
+    "Ainda está cedo para sair.",
+    "Ещё рано выходить."
+   ]
+  ]
+ ],
+ [
+  "spokenquestions",
+  "phrases",
+  "Самые частые вопросы в разговоре",
+  "Perguntas do dia a dia",
+  "Вопросы, с которых можно начать обычный разговор.",
+  "Perguntas úteis para começar uma conversa.",
+  [
+   [
+    "O que você está fazendo?",
+    "Что ты сейчас делаешь?",
+    "O que você está fazendo agora?",
+    "Что ты делаешь сейчас?"
+   ],
+   [
+    "O que você fez hoje?",
+    "Что ты сегодня делал(а)?",
+    "Me conta, o que você fez hoje?",
+    "Расскажи, что ты сегодня делала?"
+   ],
+   [
+    "Como foi seu dia?",
+    "Как прошёл твой день?",
+    "Oi, como foi seu dia?",
+    "Привет, как прошёл твой день?"
+   ],
+   [
+    "Onde você está?",
+    "Где ты?",
+    "Onde você está agora?",
+    "Где ты сейчас?"
+   ],
+   [
+    "Para onde você vai?",
+    "Куда ты идёшь?",
+    "Para onde você vai hoje?",
+    "Куда ты сегодня идёшь?"
+   ],
+   [
+    "De onde você veio?",
+    "Откуда ты пришёл / пришла?",
+    "De onde você veio agora?",
+    "Откуда ты сейчас пришла?"
+   ],
+   [
+    "Com quem você vai?",
+    "С кем ты идёшь?",
+    "Com quem você vai à escola?",
+    "С кем ты идёшь в школу?"
+   ],
+   [
+    "O que você quer?",
+    "Чего ты хочешь?",
+    "O que você quer fazer?",
+    "Что ты хочешь сделать?"
+   ],
+   [
+    "Do que você gosta?",
+    "Что тебе нравится?",
+    "Do que você gosta mais?",
+    "Что тебе больше нравится?"
+   ],
+   [
+    "Você precisa de alguma coisa?",
+    "Тебе что-нибудь нужно?",
+    "Você precisa de alguma coisa agora?",
+    "Тебе что-нибудь нужно сейчас?"
+   ],
+   [
+    "Você já comeu?",
+    "Ты уже поел(а)?",
+    "Você já comeu hoje?",
+    "Ты уже ела сегодня?"
+   ],
+   [
+    "Você tem tempo?",
+    "У тебя есть время?",
+    "Você tem tempo para conversar?",
+    "У тебя есть время поговорить?"
+   ],
+   [
+    "Você está ocupada?",
+    "Ты занята?",
+    "Você está ocupada agora?",
+    "Ты сейчас занята?"
+   ],
+   [
+    "Você conhece esse lugar?",
+    "Ты знаешь это место?",
+    "Você conhece esse lugar aqui?",
+    "Ты знаешь это место?"
+   ],
+   [
+    "Você se lembra?",
+    "Ты помнишь?",
+    "Você se lembra dessa palavra?",
+    "Ты помнишь это слово?"
+   ],
+   [
+    "O que você acha?",
+    "Что ты думаешь?",
+    "O que você acha disso?",
+    "Что ты думаешь об этом?"
+   ],
+   [
+    "Qual você prefere?",
+    "Какой ты предпочитаешь?",
+    "Qual livro você prefere?",
+    "Какую книгу ты предпочитаешь?"
+   ],
+   [
+    "Tudo pronto?",
+    "Всё готово?",
+    "Tudo pronto para a aula?",
+    "Всё готово к уроку?"
+   ],
+   [
+    "Está tudo bem?",
+    "Всё в порядке?",
+    "Está tudo bem com você?",
+    "У тебя всё в порядке?"
+   ],
+   [
+    "Como posso ajudar?",
+    "Чем я могу помочь?",
+    "Como posso ajudar hoje?",
+    "Чем я могу помочь сегодня?"
+   ]
+  ]
+ ],
+ [
+  "smalltalk",
+  "phrases",
+  "Живой диалог и вежливые реакции",
+  "Conversa casual",
+  "Реакции и фразы для дружеской беседы. Разговорные формы отмечены отдельно.",
+  "Reações e frases para conversas amistosas.",
+  [
+   [
+    "E você?",
+    "А ты? / А вы?",
+    "Estou bem, e você?",
+    "У меня всё хорошо, а у тебя?"
+   ],
+   [
+    "Como vão as coisas?",
+    "Как дела?",
+    "Oi! Como vão as coisas?",
+    "Привет! Как дела?"
+   ],
+   [
+    "Quanto tempo!",
+    "Давно не виделись!",
+    "Oi, quanto tempo!",
+    "Привет, давно не виделись!"
+   ],
+   [
+    "Que saudade!",
+    "Как я соскучилась!",
+    "Que saudade de você!",
+    "Как я по тебе соскучилась!"
+   ],
+   [
+    "Que bom te ver!",
+    "Как здорово тебя видеть!",
+    "Olá, que bom te ver!",
+    "Привет, как здорово тебя видеть!"
+   ],
+   [
+    "Fico feliz por você.",
+    "Я рада за тебя.",
+    "Que notícia boa! Fico feliz por você.",
+    "Какая хорошая новость! Я рада за тебя."
+   ],
+   [
+    "Parabéns!",
+    "Поздравляю!",
+    "Parabéns pelo seu trabalho!",
+    "Поздравляю с твоей работой!"
+   ],
+   [
+    "Boa sorte!",
+    "Удачи!",
+    "Boa sorte na prova!",
+    "Удачи на контрольной!"
+   ],
+   [
+    "Bom trabalho!",
+    "Хорошей работы! / Молодец!",
+    "Bom trabalho hoje!",
+    "Хорошая работа сегодня!"
+   ],
+   [
+    "Bom descanso!",
+    "Хорошего отдыха!",
+    "Até amanhã, bom descanso!",
+    "До завтра, хорошего отдыха!"
+   ],
+   [
+    "Se cuida!",
+    "Береги себя! (разг.)",
+    "Tchau, se cuida!",
+    "Пока, береги себя!"
+   ],
+   [
+    "Tudo de bom!",
+    "Всего хорошего!",
+    "Até logo, tudo de bom!",
+    "До скорого, всего хорошего!"
+   ],
+   [
+    "Não se preocupe.",
+    "Не переживай.",
+    "Não se preocupe, está tudo bem.",
+    "Не переживай, всё в порядке."
+   ],
+   [
+    "Calma.",
+    "Спокойно.",
+    "Calma, vamos resolver isso.",
+    "Спокойно, мы решим это."
+   ],
+   [
+    "Sem pressa.",
+    "Не спеша.",
+    "Pode falar sem pressa.",
+    "Можешь говорить не спеша."
+   ],
+   [
+    "Deixa comigo.",
+    "Оставь это мне.",
+    "Deixa comigo, eu ajudo.",
+    "Оставь это мне, я помогу."
+   ],
+   [
+    "Que interessante!",
+    "Как интересно!",
+    "Que interessante, me conta mais.",
+    "Как интересно, расскажи ещё."
+   ],
+   [
+    "Não acredito!",
+    "Не верю! / Ничего себе!",
+    "Nossa, não acredito!",
+    "Ого, не могу поверить!"
+   ],
+   [
+    "Pode falar comigo.",
+    "Можешь поговорить со мной.",
+    "Se quiser, pode falar comigo.",
+    "Если хочешь, можешь поговорить со мной."
+   ],
+   [
+    "Foi bom conversar com você.",
+    "Было приятно поговорить с тобой.",
+    "Foi bom conversar com você hoje.",
+    "Было приятно поговорить с тобой сегодня."
+   ]
+  ]
  ]
 ];
