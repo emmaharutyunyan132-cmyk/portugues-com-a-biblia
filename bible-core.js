@@ -1,5 +1,5 @@
 
-let bTab='john',bSearch='',bTest='all',bAt=0,bScore=0,bChosen=null,bOrder=[];
+let bTab='estudo',bSearch='',bTest='all',bAt=0,bScore=0,bChosen=null,bOrder=[];
 const BJV=[51,25,36,54,47,71,53,59,41,42,57,50,38,31,27,33,26,40,42,31,25];
 const BQ=[[42,3,16],[18,23,1],[39,5,9],[43,2,4],[44,8,28],[0,12,1],[42,15,5],[45,13,4],[49,4,13],[65,21,4],[41,10,27],[54,3,16]];
 function bState(){if(!S.bibleState||typeof S.bibleState!=='object'||Array.isArray(S.bibleState))S.bibleState={};let x=S.bibleState;for(let k of ['read','retell','memory'])if(!x[k]||typeof x[k]!=='object'||Array.isArray(x[k]))x[k]={};if(!Number.isInteger(x.book)||!BB[x.book])x.book=42;if(!Number.isInteger(x.chapter)||x.chapter<1||x.chapter>BB[x.book][6])x.chapter=1;if(!Number.isInteger(x.verse)||x.verse<0||x.verse>(x.book===42?BJV[x.chapter-1]:176))x.verse=0;if(!Number.isInteger(x.john)||x.john<1||x.john>21)x.john=1;return x}
