@@ -10,12 +10,12 @@ function uxHome(){
  uxTile('estudo','📖','Библия','Bíblia','Один стих за раз','Um versículo de cada vez')+
  uxTile('map','🎓','Португальский','Português','Игровая дорожка A1–B2','Caminho A1–B2')+
  uxTile('interpreters','🎧','Перевод служений','Interpretação','Тренировка перевода RU ↔ PT','Prática RU ↔ PT')+
+ uxTile('speaking','🎙','Говорение','Falar','Послушай, повтори, переведи','Ouça, repita, traduza')+
  uxTile('dict','📚','Слова','Palavras','Словарь и карточки','Vocabulário e cartões')+
  '</div><details class="eb-detail"><summary>'+tr('Другие тренировки','Outras práticas')+'</summary><div class="eb-detail-body ux-grid">'+
  uxTile('grammar','✏️','Грамматика','Gramática','Правила по уровням','Regras por nível')+
  uxTile('verbs','📝','Глаголы','Verbos','Спряжения','Conjugações')+
  uxTile('preps','🧩','Предлоги','Preposições','Правила и практика','Regras e prática')+
- uxTile('speaking','🎙','Говорение','Falar','Слушай и повторяй','Ouça e repita')+
  uxTile('prayer','🙏','Молитва','Oração','Записи и практика','Anotações e prática')+
  uxTile('review','↻','Повторение','Revisão','Карточки и ошибки','Cartões e erros')+
  uxTile('cards','🗂','Карточки','Cartões','Запоминание слов','Memorize palavras')+
