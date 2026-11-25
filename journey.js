@@ -1,7 +1,8 @@
 /* Learning path, adaptive practice and sharing. No account or personal data is transmitted. */
 const JOURNEY_LEVELS=['A1','A2','B1','B2'];
 const JOURNEY_SIZE=8;
-const JOURNEY_BLOCK=12;
+const JOURNEY_BLOCK=8;
+const JOURNEY_PART_SECONDS=270;
 let journeyOffset=null;
 function journeyState(){
  let s=gameState();
@@ -17,16 +18,26 @@ function journeyChoose(level){if(!JOURNEY_LEVELS.includes(level))return;journeyS
 function journeyPage(delta){let rows=journeyRows(),n=journeyNext(),current=journeyOffset??Math.max(0,Math.floor(rows.indexOf(n)/JOURNEY_SIZE)*JOURNEY_SIZE);journeyOffset=Math.max(0,Math.min(Math.floor((rows.length-1)/JOURNEY_SIZE)*JOURNEY_SIZE,current+delta*JOURNEY_SIZE));render();scrollTo(0,0)}
 function journeyHTML(){
  let j=journeyState(),rows=journeyRows(),next=journeyNext(),start=journeyOffset??Math.max(0,Math.floor(rows.indexOf(next)/JOURNEY_SIZE)*JOURNEY_SIZE),done=new Set(S.done),n=rows.filter(i=>done.has(i)).length;
- let h='<div class="journey-head"><h1>'+tr('Твой путь','Seu caminho')+'</h1><p class="muted">'+tr('Выбери уровень и двигайся по одному уроку.','Escolha o nível e avance uma lição por vez.')+'</p><div class="ux-filters">'+JOURNEY_LEVELS.map(l=>'<button class="'+(j.level===l?'':'secondary')+'" aria-pressed="'+(j.level===l)+'" onclick="journeyChoose('+arg(l)+')">'+l+'</button>').join('')+'</div><article><b>'+j.level+' · '+n+'/'+rows.length+'</b><progress aria-label="'+tr('Прогресс уровня','Progresso do nível')+'" max="'+rows.length+'" value="'+n+'"></progress>'+gameBtn(tr('Продолжить путь','Continuar caminho'),'gameCourse('+next+')')+'</article></div>';
+ let h='<div class="journey-head"><h1>'+tr('Твой путь','Seu caminho')+'</h1><p class="muted">'+tr('Выбери уровень. Каждый урок разбит на короткие части примерно по пять минут.','Escolha o nível. Cada lição é dividida em partes de cerca de cinco minutos.')+'</p><div class="ux-filters">'+JOURNEY_LEVELS.map(l=>'<button class="'+(j.level===l?'':'secondary')+'" aria-pressed="'+(j.level===l)+'" onclick="journeyChoose('+arg(l)+')">'+l+'</button>').join('')+'</div><article><b>'+j.level+' · '+n+'/'+rows.length+'</b><progress aria-label="'+tr('Прогресс уровня','Progresso do nível')+'" max="'+rows.length+'" value="'+n+'"></progress>'+gameBtn(tr('Продолжить путь','Continuar caminho'),'gameCourse('+next+')')+'</article></div>';
  h+='<div class="journey-track">'+rows.slice(start,start+JOURNEY_SIZE).map((i,k)=>{let l=L[i],status=done.has(i)?'done':i===next?'next':'available',label=status==='done'?'✓':status==='next'?'▶':String(start+k+1);return '<button class="journey-node '+status+'" onclick="gameCourse('+i+')"><span class="journey-dot" aria-hidden="true">'+label+'</span><span><strong>'+esc(tr(l[3],l[2]))+'</strong><small>'+tr('Урок ','Lição ')+(start+k+1)+(status==='done'?' · '+tr('Пройден','Concluída'):status==='next'?' · '+tr('Следующий','Próxima'):'')+'</small></span></button>'}).join('')+'</div>';
  h+='<div class="ux-pager">'+gameBtn('‹ '+tr('Назад','Anterior'),'journeyPage(-1)',true,start===0)+'<span>'+(start+1)+'–'+Math.min(start+JOURNEY_SIZE,rows.length)+' / '+rows.length+'</span>'+gameBtn(tr('Далее','Próxima')+' ›','journeyPage(1)',true,start+JOURNEY_SIZE>=rows.length)+'</div><div class="ux-quick">'+gameBtn('⌕ '+tr('Все уроки и поиск','Todas as lições e busca'),'uxCatalog.map.level=journeyState().level;uxCatalog.map.query="";uxCatalog.map.at=0;go("lesson-list")',true)+'</div>';
  return h
 }
 function journeyToggleAudio(){let j=journeyState();j.autoAudio=!j.autoAudio;save();if(!j.autoAudio)stopSpeech();render()}
 function journeyAutoPlay(){if(page!=='game'||!journeyState().autoAudio||journeyBoundary(gameSession()))return;let q=gameCurrent();if(!q||gameSession()?.feedback)return;let p=q.kind==='listen'?q.listen:q.kind==='choice'&&q.target==='ru'?(q.pt||q.prompt):null;if(p)speak(p)}
-function journeyBoundary(d){return !!d&&d.at>0&&d.at%JOURNEY_BLOCK===0&&!d.feedback&&d.blockSeen!==d.at}
+function journeyTaskSeconds(q){return ({choice:25,listen:35,write:45,tiles:40,free:90,reflect:60,learn:25,phrase:30,context:35})[q?.kind]||30}
+function journeyParts(d){
+ const tasks=d?.tasks||[],parts=[];let start=0,seconds=0;
+ for(let i=0;i<tasks.length;i++){let t=journeyTaskSeconds(tasks[i]);if(i>start&&(i-start>=JOURNEY_BLOCK||seconds+t>JOURNEY_PART_SECONDS)){parts.push({start,end:i});start=i;seconds=0}seconds+=t}
+ if(start<tasks.length)parts.push({start,end:tasks.length});return parts
+}
+function journeyPartInfo(d){
+ let parts=journeyParts(d),at=d?.at||0,i=parts.findIndex(p=>at>=p.start&&at<p.end);if(i<0)i=Math.max(0,parts.length-1);
+ let p=parts[i]||{start:0,end:1};return {number:i+1,total:Math.max(1,parts.length),size:p.end-p.start,done:Math.max(0,Math.min(p.end-p.start,at-p.start))}
+}
+function journeyBoundary(d){return !!d&&d.at>0&&d.at<d.tasks.length&&!d.feedback&&d.blockSeen!==d.at&&!d.input&&!d.picked?.length&&d.selected==null&&!d.revealed&&journeyParts(d).some(p=>p.start===d.at)}
 function journeyResumeBlock(){let d=gameSession();if(!d)return;d.blockSeen=d.at;save();render();journeyAutoPlay()}
-function journeyBlockHTML(d){return '<article class="game-card game-end"><span class="game-celebrate">🌿</span><h1>'+tr('Отличный шаг!','Ótimo passo!')+'</h1><p>'+tr('Часть урока завершена. Можно продолжить сейчас или позже.','Uma parte da lição terminou. Continue agora ou mais tarde.')+'</p>'+gameBtn(tr('Продолжить','Continuar'),'journeyResumeBlock()')+gameBtn(tr('Сохранить и выйти','Salvar e sair'),'go("home")',true)+'</article>'}
+function journeyBlockHTML(d){let part=journeyPartInfo(d);return '<article class="game-card game-end"><span class="game-celebrate">🌿</span><h1>'+tr('Мини-урок завершён!','Minilição concluída!')+'</h1><p>'+tr('Готово частей: ','Partes concluídas: ')+(part.number-1)+' / '+part.total+'</p><p>'+tr('Следующая часть займёт около пяти минут. Можно продолжить или вернуться позже.','A próxima parte leva cerca de cinco minutos. Continue agora ou volte depois.')+'</p>'+gameBtn(tr('Продолжить','Continuar'),'journeyResumeBlock()')+gameBtn(tr('Сохранить и выйти','Salvar e sair'),'go("home")',true)+'</article>'}
 function journeyWordDue(id,p,now=Date.now()){if(!p||!(p.seen>0))return false;return !Number.isFinite(p.due)||p.due<=now}
 function journeyReviewEntries(src,limit=3,now=Date.now()){
  let s=gameState(),excluded=new Set(src.words.map(w=>wordId(w[0]))),known=baseVocabulary().filter(e=>!excluded.has(e.id)&&journeyWordDue(e.id,s.words[e.id],now));
