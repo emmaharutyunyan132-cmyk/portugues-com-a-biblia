@@ -172,25 +172,51 @@ function gameTapText(t,data){
  t=String(t||'');if(/[а-яё]/i.test(t))return esc(t);
  let h='',last=0;for(const match of t.matchAll(/[\p{L}\p{M}]+(?:-[\p{L}\p{M}]+)*/gu)){h+=esc(t.slice(last,match.index))+gameTapButton(match[0],data);last=match.index+match[0].length}return h+esc(t.slice(last))
 }
-let gameTapActive=null,gameTapAudio='';
-function gameTapPanelHTML(){return '<aside id="game-tap-panel" class="tap-panel" hidden aria-label="'+tr('Перевод слова','Tradução da palavra')+'"><div class="tap-panel-head"><strong id="game-tap-title" lang="pt-BR"></strong><button type="button" class="secondary" onclick="speak(gameTapAudio)" aria-label="'+tr('Прослушать слово','Ouvir palavra')+'">🔊</button><button type="button" class="secondary" onclick="gameTapClose(true)" aria-label="'+tr('Закрыть перевод','Fechar tradução')+'">×</button></div><p id="game-tap-meaning" role="status" aria-live="polite"></p><div id="game-tap-context"></div><div id="game-tap-words"></div></aside>'}
+let gameTapActive=null,gameTapAnchor=null,gameTapAudio='';
+function gameTapPanelHTML(){return '<aside id="game-tap-panel" class="tap-panel tap-anchored" hidden aria-label="'+tr('Перевод слова','Tradução da palavra')+'"><div class="tap-panel-head"><strong id="game-tap-title" lang="pt-BR"></strong><button type="button" class="secondary" onclick="speak(gameTapAudio)" aria-label="'+tr('Прослушать слово','Ouvir palavra')+'">🔊</button><button type="button" class="secondary" onclick="gameTapClose(true)" aria-label="'+tr('Закрыть перевод','Fechar tradução')+'">×</button></div><p id="game-tap-meaning" role="status" aria-live="polite"></p><div id="game-tap-context"></div><div id="game-tap-words"></div></aside>'}
 function gameTapClose(focus=false){
  let panel=$('#game-tap-panel');if(panel)panel.hidden=true;
- if(gameTapActive?.isConnected){gameTapActive.setAttribute('aria-expanded','false');if(focus)gameTapActive.focus()}
- gameTapActive=null;gameTapAudio=''
+ if(gameTapActive?.isConnected)gameTapActive.setAttribute('aria-expanded','false');
+ if(gameTapAnchor?.isConnected){gameTapAnchor.setAttribute('aria-expanded','false');if(focus)gameTapAnchor.focus()}
+ gameTapActive=null;gameTapAnchor=null;gameTapAudio=''
+}
+function gameTapPosition(){
+ const panel=$('#game-tap-panel'),anchor=gameTapAnchor;
+ if(!panel||panel.hidden)return;
+ if(!anchor?.isConnected){gameTapClose();return}
+ const rect=anchor.getBoundingClientRect(),vv=window.visualViewport;
+ const x=vv?.offsetLeft||0,y=vv?.offsetTop||0,w=vv?.width||window.innerWidth,h=vv?.height||window.innerHeight,margin=10,gap=7;
+ if(rect.bottom<y||rect.top>y+h){gameTapClose();return}
+ panel.style.maxWidth=Math.max(120,Math.min(300,w-2*margin))+'px';
+ panel.style.maxHeight=Math.max(70,Math.min(250,h-2*margin))+'px';
+ const box=panel.getBoundingClientRect(),left=Math.max(x+margin,Math.min(rect.left+rect.width/2-box.width/2,x+w-margin-box.width));
+ const below=y+h-margin-rect.bottom-gap,above=rect.top-y-margin-gap;
+ const useAbove=below<box.height&&above>below;
+ const space=Math.max(60,useAbove?above:below);
+ panel.style.maxHeight=Math.min(250,space)+'px';
+ const height=panel.getBoundingClientRect().height;
+ const top=Math.max(y+margin,Math.min(useAbove?rect.top-gap-height:rect.bottom+gap,y+h-margin-height));
+ panel.style.left=left+'px';panel.style.top=top+'px';
+ panel.dataset.placement=useAbove?'above':'below';
+ panel.style.setProperty('--tap-arrow',Math.max(12,Math.min(box.width-12,rect.left+rect.width/2-left))+'px')
 }
 function gameTapShow(el,t,meaning,context){
  const panel=$('#game-tap-panel'),title=$('#game-tap-title'),body=$('#game-tap-meaning'),ctx=$('#game-tap-context'),words=$('#game-tap-words');if(!panel||!title||!body||!ctx||!words)return;
  if(gameTapActive===el&&!panel.hidden){gameTapClose(true);return}
- if(gameTapActive?.isConnected)gameTapActive.setAttribute('aria-expanded','false');
+ const inside=panel.contains(el);
+ if(!inside){if(gameTapAnchor?.isConnected)gameTapAnchor.setAttribute('aria-expanded','false');gameTapAnchor=el}
+ if(gameTapActive?.isConnected&&gameTapActive!==gameTapAnchor)gameTapActive.setAttribute('aria-expanded','false');
  gameTapActive=el;el.setAttribute('aria-expanded','true');gameTapAudio=t;title.textContent=t;
  body.textContent=meaning||tr('Отдельный перевод этой формы пока не добавлен.','Ainda não há uma tradução individual para esta forma.');
  ctx.textContent=context&&context[0]!==t?context.join(' — '):'';
- const isInside=words.contains(el);if(!isInside){
-  words.innerHTML=/\s/.test(t)?'<p class="muted">'+tr('Нажми на отдельное слово:','Toque em uma palavra:')+'</p><p class="tap-inline">'+gameTapText(t,{m:new Map(),phrases:context?[context]:[]})+'</p>':'';
- }
- panel.hidden=false;if(typeof panel.scrollIntoView==='function')panel.scrollIntoView({block:'nearest',behavior:'instant'})
+ if(!inside){words.innerHTML=/\s/.test(t)?'<p class="muted">'+tr('Нажми на отдельное слово:','Toque em uma palavra:')+'</p><p class="tap-inline">'+gameTapText(t,{m:new Map(),phrases:context?[context]:[]})+'</p>':''}
+ panel.hidden=false;gameTapPosition()
 }
+window.addEventListener('resize',gameTapPosition);
+window.addEventListener('scroll',gameTapPosition,{passive:true});
+if(window.visualViewport){window.visualViewport.addEventListener('resize',gameTapPosition);window.visualViewport.addEventListener('scroll',gameTapPosition)}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&gameTapAnchor?.isConnected)gameTapClose(true)});
+document.addEventListener('pointerdown',e=>{const panel=$('#game-tap-panel');if(panel&&!panel.hidden&&!panel.contains(e.target)&&!e.target.closest?.('.tap-word,.tap-option-help,.tap-tile-help'))gameTapClose()});
 function gameTapInstruction(){return '<p class="tap-instruction">'+tr('Нажми на подчёркнутое слово, чтобы увидеть перевод.','Toque na palavra sublinhada para ver a tradução.')+'</p>'}
 function gameTapOption(x,i,button,data,pt){return pt?'<div class="tap-option-row">'+button+gameTapButton(x,data,'Aa','tap-option-help')+'</div>':button}
 function gameTapTile(x,button,data){return '<span class="tap-tile-row">'+button+gameTapButton(x,data,'?','tap-tile-help')+'</span>'}
