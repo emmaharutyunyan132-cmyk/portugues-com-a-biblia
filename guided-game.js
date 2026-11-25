@@ -89,7 +89,7 @@ function gameNext(){let src=gameSource(gameResult?.key||'');if(!src)return go('h
 function gameBtn(text,fn,secondary=false,disabled=false){return '<button type="button" class="'+(secondary?'secondary':'wide')+'" '+(disabled?'disabled ':'')+'onclick="'+esc(fn)+'">'+esc(text)+'</button>'}
 function gameSound(text){return '<div class="game-sound">'+gameBtn('🔊 '+tr('Послушать','Ouvir'),'speak('+JSON.stringify(text)+')')+gameBtn('0,75×','speak('+JSON.stringify(text)+',0.75)',true)+'</div><p id="audio-status" class="muted" role="status"></p>'}
 function gameDetails(src){if(src.kind!=='bible')return '';let v=src.v,c=src.ch;return '<details class="game-more"><summary>'+tr('О стихе и оригинале ACF','Sobre o versículo e a ACF')+'</summary>'+bLinks(c[0],c[1])+'<p>'+esc(tr(v[5],v[4]))+'</p><p>'+esc(tr(v[10],v[9]))+'</p><p>'+esc(tr(c[7],c[6]))+'</p><p>'+v[11].map(esc).join(' · ')+'</p><label>'+tr('Мои заметки','Minhas anotações')+'<textarea rows="3" maxlength="4000" oninput="ebNote(this.value)">'+esc(ebState().notes[ebKey(c,v[0])]||'')+'</textarea></label><button class="secondary" onclick="ebMark(\'memory\')">'+(ebState().memory[ebKey(c,v[0])]?'✓ ':'')+tr('Сверено по памяти','Memorização conferida')+'</button></details>'}
-function gameWordExtra(q){let e=baseVocabulary().find(x=>x.id===wordId(q.pt));if(!e||!e.example)return '';return '<details><summary>'+tr('Пример в предложении','Exemplo em uma frase')+'</summary><p lang="pt-BR">'+esc(e.example)+' '+audio(e.example)+'</p>'+(e.translation?'<p class="muted">'+esc(e.translation)+'</p>':'')+'</details>'}
+function gameWordExtra(q){let e=baseVocabulary().find(x=>x.id===wordId(q.pt));if(!e||!e.example)return '';return '<details><summary>'+tr('Пример в предложении','Exemplo em uma frase')+'</summary><p lang="pt-BR">'+gameTapStudy(e.example,e.translation||'')+' '+audio(e.example)+'</p>'+(e.translation?'<p class="muted">'+esc(e.translation)+'</p>':'')+'</details>'}
 
 /* Optional contextual support. Never guess a translation for an unknown form. */
 const GAME_FORM_GLOSSES = {
@@ -146,8 +146,8 @@ function gameHelpHTML(src,q){
 }
 function gamePrepContent(src){
  let h=src.kind==='course'?'<p>'+esc(tr(src.l[6],src.l[5]))+'</p>':'<p>'+esc(tr(src.v[5],src.v[4]))+'</p>';
- for(const [p,r] of src.words)h+='<p><strong lang="pt-BR">'+esc(p)+'</strong> — '+esc(r)+' '+audio(p)+'</p>';
- for(const [p,r] of src.examples)h+='<p lang="pt-BR"><strong>'+esc(p)+'</strong> '+audio(p)+'</p><p>'+esc(r)+'</p>';
+ for(const [p,r] of src.words)h+='<p><strong lang="pt-BR">'+gameTapStudy(p,r,src.words)+'</strong> — '+esc(r)+' '+audio(p)+'</p>';
+ for(const [p,r] of src.examples)h+='<p lang="pt-BR"><strong>'+gameTapStudy(p,r,src.words)+'</strong> '+audio(p)+'</p><p>'+esc(r)+'</p>';
  return h
 }
 function gamePreparationHTML(src){return '<details class="game-more"><summary>'+tr('📚 Подготовка к уроку: слова и примеры','📚 Prepare-se: palavras e exemplos')+'</summary>'+gamePrepContent(src)+'</details>'}
@@ -159,6 +159,8 @@ function gameTapLookup(src,q){
  for(const [p,r] of [...d.phrases,...d.rows])m.set(gameHelpKey(p),r);
  return {m,phrases:d.phrases}
 }
+function gameTapPair(p,r,words=[]){return gameTapLookup({words,examples:r?[[p,r]]:[]},{kind:'choice',target:'ru',prompt:p,answer:r||''})}
+function gameTapStudy(p,r='',words=[]){return gameTapText(p,gameTapPair(p,r,words))}
 function gameTapMeaning(t,data){
  const k=gameHelpKey(t),meaning=data?.m.get(k)||gameHelpIndex().get(k)||'';
  const context=(data?.phrases||[]).find(([p])=>(' '+gameHelpKey(p).replace(/[^\p{L}\p{M}\p{N}-]+/gu,' ')+' ').includes(' '+k+' ')||gameHelpKey(p)===k);
@@ -229,8 +231,8 @@ function gameHTML(){
  let next=tr('Продолжить','Continuar'),check=tr('Проверить','Verificar');if(q.adaptive)h+='<p class="game-kicker">'+tr('Повторение знакомого слова','Revisão de palavra conhecida')+'</p>';
  if(q.kind==='learn'||q.kind==='phrase'){h+='<p class="game-kicker">'+tr(q.kind==='learn'?'Новое слово':'Новая фраза',q.kind==='learn'?'Palavra nova':'Nova frase')+'</p><h2 class="game-word" lang="pt-BR">'+gameTapText(q.pt,tap)+'</h2><p class="game-translation" lang="ru">'+esc(q.ru)+'</p>'+gameSound(q.pt)+'<p class="muted">'+tr('Послушай и повтори вслух.','Ouça e repita em voz alta.')+'</p>'+(q.kind==='learn'?gameWordExtra(q):'')+(q.bible?'<p class="muted">'+tr('Учебный пересказ, не дословный текст ACF.','Resumo didático, não texto literal da ACF.')+'</p>':'')+gameBtn(next,'gameAdvance()')}
  else if(q.kind==='context'){h+='<p class="game-kicker">'+tr('Заметь закономерность','Observe o padrão')+'</p><h2>'+esc(tr(q.ru,q.pt))+'</h2><p lang="pt-BR">'+gameTapText(q.example,tap)+'</p>'+gameSound(q.example)+gameBtn(next,'gameAdvance()')}
- else if(q.kind==='reflect'){h+='<h2>'+tr('Пойми смысл','Compreenda o sentido')+'</h2>'+(src.kind==='bible'?'<p class="muted">'+tr('Учебный пересказ (не цитата ACF)','Resumo didático (não é citação da ACF)')+'</p><p lang="pt-BR">'+gameTapText(src.v[1],tap)+'</p>'+audio(src.v[1]):'')+'<p class="game-word">'+gameTapText(q.prompt,tap)+'</p>'+gameSound(q.prompt)+(d.revealed?'<div class="game-feedback"><b>'+esc(q.answer)+'</b><details><summary>'+tr('Подробнее','Saiba mais')+'</summary><p>'+esc(tr(q.ru,q.pt))+'</p></details></div>'+gameBtn(next,'gameAdvance()'):gameBtn(tr('Сравнить с ответом','Conferir resposta'),'gameReveal()'))}
- else if(q.kind==='free'){h+='<h2>'+tr('Напиши своими словами','Escreva com suas palavras')+'</h2><p>'+esc(tr(q.ru,q.pt))+'</p><textarea lang="pt-BR" maxlength="6000" rows="4" oninput="gameSetInput(this.value)">'+esc(d.input)+'</textarea><details><summary>'+tr('Образец для самопроверки','Modelo para autoavaliação')+'</summary><p>'+esc(q.model)+'</p>'+audio(q.model)+'</details>'+gameBtn(tr('Сохранить и продолжить','Salvar e continuar'),'gameAdvance()')+'<p class="muted">'+tr('Можно пропустить. Автоматической оценки свободного текста нет.','Opcional. Sem correção automática de texto livre.')+'</p>'}
+ else if(q.kind==='reflect'){h+='<h2>'+tr('Пойми смысл','Compreenda o sentido')+'</h2>'+(src.kind==='bible'?'<p class="muted">'+tr('Учебный пересказ (не цитата ACF)','Resumo didático (não é citação da ACF)')+'</p><p lang="pt-BR">'+gameTapText(src.v[1],tap)+'</p>'+audio(src.v[1]):'')+'<p class="game-word">'+gameTapText(q.prompt,tap)+'</p>'+gameSound(q.prompt)+(d.revealed?'<div class="game-feedback"><b>'+gameTapText(q.answer,tap)+'</b><details><summary>'+tr('Подробнее','Saiba mais')+'</summary><p>'+esc(tr(q.ru,q.pt))+'</p></details></div>'+gameBtn(next,'gameAdvance()'):gameBtn(tr('Сравнить с ответом','Conferir resposta'),'gameReveal()'))}
+ else if(q.kind==='free'){h+='<h2>'+tr('Напиши своими словами','Escreva com suas palavras')+'</h2><p>'+gameTapText(tr(q.ru,q.pt),tap)+'</p><textarea lang="pt-BR" maxlength="6000" rows="4" oninput="gameSetInput(this.value)">'+esc(d.input)+'</textarea><details><summary>'+tr('Образец для самопроверки','Modelo para autoavaliação')+'</summary><p>'+gameTapStudy(q.model)+'</p>'+audio(q.model)+'</details>'+gameBtn(tr('Сохранить и продолжить','Salvar e continuar'),'gameAdvance()')+'<p class="muted">'+tr('Можно пропустить. Автоматической оценки свободного текста нет.','Opcional. Sem correção automática de texto livre.')+'</p>'}
  else{
   h+='<h2>'+tr(q.retry?'Попробуй ещё раз':q.kind==='listen'?'Что ты слышишь?':q.kind==='tiles'?'Собери фразу':q.kind==='write'?'Напиши ответ':'Выбери перевод',q.retry?'Tente outra vez':q.kind==='listen'?'O que você ouve?':q.kind==='tiles'?'Monte a frase':q.kind==='write'?'Escreva a resposta':'Escolha a tradução')+'</h2>';
   if(q.kind==='listen')h+=gameSound(q.listen)+'<details><summary>'+tr('Не слышно? Показать текст','Sem áudio? Mostrar texto')+'</summary><p>'+gameTapText(q.listen,tap)+'</p></details>';
@@ -241,7 +243,7 @@ function gameHTML(){
   h+=gameTapPanelHTML()+gameHelpHTML(src,q);
   if(q.word&&q.target==='ru'&&!d.feedback)h+='<details><summary>'+tr('Показать перевод, если не знаешь','Ver tradução, se precisar')+'</summary><p>'+esc(q.pt)+' — '+esc(q.ru)+'</p></details>';
   if(q.rule&&!d.feedback)h+='<details><summary>'+tr('Подсказка','Dica')+'</summary><p>'+esc(tr(...q.rule))+'</p></details>';
-  if(d.feedback){h+='<div class="game-feedback '+(d.feedback.ok?'':'retry')+'" role="status"><b>'+tr(d.feedback.ok?'Верно!':'Запомни этот ответ',d.feedback.ok?'Muito bem!':'Lembre-se desta resposta')+'</b><p>'+esc(q.answer)+'</p>'+(d.feedback.accent?'<p>'+tr('Проверь ударения и диакритику.','Confira os acentos.')+'</p>':'')+(q.ru?'<p>'+esc(q.ru)+'</p>':'')+(q.ex?'<details><summary>'+tr('Пояснение','Explicação')+'</summary>'+esc(q.ex)+'</details>':'')+(!d.feedback.ok&&!q.retry?'<p class="muted">'+tr('Мы повторим это в конце урока.','Vamos revisar no fim da lição.')+'</p>':'')+'</div>';
+  if(d.feedback){h+='<div class="game-feedback '+(d.feedback.ok?'':'retry')+'" role="status"><b>'+tr(d.feedback.ok?'Верно!':'Запомни этот ответ',d.feedback.ok?'Muito bem!':'Lembre-se desta resposta')+'</b><p>'+gameTapText(q.answer,tap)+'</p>'+(d.feedback.accent?'<p>'+tr('Проверь ударения и диакритику.','Confira os acentos.')+'</p>':'')+(q.ru?'<p>'+esc(q.ru)+'</p>':'')+(q.ex?'<details><summary>'+tr('Пояснение','Explicação')+'</summary>'+esc(q.ex)+'</details>':'')+(!d.feedback.ok&&!q.retry?'<p class="muted">'+tr('Мы повторим это в конце урока.','Vamos revisar no fim da lição.')+'</p>':'')+'</div>';
    if(!d.feedback.ok&&q.selfCheck)h+=gameBtn(tr('Мой перевод тоже верный (самопроверка)','Minha tradução também está correta (autoavaliação)'),'gameSelf()',true);
    h+=gameBtn(next,'gameAdvance()');
   }else {let ready=q.opts?Number.isInteger(d.selected):q.bank?d.picked.length===q.bank.length:!!d.input.trim();h+='<button id="game-check" type="button" class="wide" '+(ready?'':'disabled ')+'onclick="gameCheck()">'+check+'</button>'}
