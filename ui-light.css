@@ -270,3 +270,13 @@ body[data-page="home"] header{display:none}
 .dash-grid .ux-tile small{font-size:12px;line-height:1.35}
 .dash-build{text-align:center;font-size:11px;color:var(--pcb-muted);margin:20px 0 8px}
 @media(max-width:360px){.dash-next-top svg{width:68px;flex-basis:68px}.dash-grid .ux-tile{padding:10px}.dash-grid .ux-tile strong{font-size:14px}}
+
+/* Word translation sits next to the tapped word instead of below the exercise. */
+.tap-panel.tap-anchored{position:fixed;z-index:100;top:10px;left:10px;width:max-content;min-width:120px;max-width:min(300px,calc(100vw - 20px));max-height:250px;margin:0;padding:10px 12px;overflow:auto;overscroll-behavior:contain;background:#fff;border:1px solid #a9cdb0;border-top:3px solid #39965b;box-shadow:0 6px 24px #203a3026;border-radius:12px;font-size:14px;line-height:1.4;text-align:left}
+.tap-panel.tap-anchored .tap-panel-head{gap:5px}
+.tap-panel.tap-anchored .tap-panel-head strong{font-size:18px}
+.tap-panel.tap-anchored .tap-panel-head button{width:36px;min-height:36px;font-size:16px;padding:2px}
+.tap-panel.tap-anchored #game-tap-meaning{font-size:15px;margin:4px 0 0;color:#225539;font-weight:600}
+.tap-panel.tap-anchored #game-tap-context:not(:empty){border-top:1px solid var(--pcb-line);padding-top:7px;margin-top:7px}
+.tap-panel.tap-anchored #game-tap-words p{margin:6px 0}
+.tap-panel.tap-anchored[data-placement="above"]{border-top:1px solid #a9cdb0;border-bottom:3px solid #39965b}
