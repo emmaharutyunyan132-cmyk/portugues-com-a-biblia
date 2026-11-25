@@ -28,7 +28,7 @@ function uxHome(){
  uxTile('interpreters','🎧','Перевод служений','Interpretação','RU ↔ PT','RU ↔ PT')+
  uxTile('prayer','🙏','Молитва','Oração','Заметки и практика','Anotações e prática')+
  uxTile('profile','🏅','Мой прогресс','Meu progresso',S.done.length+' / '+L.length+' уроков',S.done.length+' / '+L.length+' lições')+'</div>';
- h+='<details class="eb-detail"><summary>'+tr('Поделиться игрой','Compartilhar o jogo')+'</summary>'+journeyShareHTML()+'</details><p class="muted dash-build">Interface 1.0.7 · Português com a Bíblia</p>';
+ h+='<details class="eb-detail"><summary>'+tr('Поделиться игрой','Compartilhar o jogo')+'</summary>'+journeyShareHTML()+'</details><p class="muted dash-build">Interface 1.0.9 · Português com a Bíblia</p>';
  return h;
 }
 function uxHomeLevel(level){
