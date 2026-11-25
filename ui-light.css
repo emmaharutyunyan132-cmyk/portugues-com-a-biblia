@@ -299,3 +299,6 @@ body[data-page="verb-run"]{background:#fff}body[data-page="verb-run"] nav,body[d
 .vc-question-header small{font-size:1rem;line-height:1.35}
 .vc-question-header .vc-verb .tap-word{font:inherit;color:inherit}
 @media(max-width:360px){.vc-tense,.vc-verb,.vc-person{padding:11px}.vc-question-pair{gap:8px}}
+
+/* Study conjugations before the quiz */
+.vc-study-forms{display:grid;gap:8px;margin:16px 0 24px}.vc-study-row{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) auto;align-items:center;gap:8px;padding:12px 10px;background:#f4faf3;border:1px solid #d5e6d5;border-radius:12px}.vc-study-row strong,.vc-study-row small{display:block}.vc-study-row strong{font-size:15px}.vc-study-row small{color:var(--pcb-muted);font-size:12px}.vc-study-row b{font-size:clamp(16px,4.5vw,22px);color:#24643d;overflow-wrap:anywhere}.vc-study-row button{margin:0;padding:4px;min-width:44px;min-height:44px}.vc-learn .vc-question-header{margin-top:12px}.vc-learn .game-kicker{color:#226b42;font-weight:750}
