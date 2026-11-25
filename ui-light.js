@@ -23,12 +23,13 @@ function uxHome(){
  uxTile('estudo','📖','Библия','Bíblia','Разбор стихов','Estudo de versículos')+
  uxTile('foundations','🔤','Основы','Português essencial','Слова и фразы','Palavras e frases')+
  uxTile('grammar','✏️','Грамматика','Gramática','Правила A1–B2','Regras A1–B2')+
- uxTile('verbs','📝','Глаголы','Verbos','Спряжения','Conjugações')+
+ uxTile('verbs','📝','Глаголы','Verbos','Таблицы спряжений','Tabelas de conjugação')+
+ uxTile('verb-practice','🎯','Спряжения','Conjugação','Практика глаголов','Treino de verbos')+
  uxTile('preps','🧩','Предлоги','Preposições','Правила и практика','Regras e prática')+
  uxTile('interpreters','🎧','Перевод служений','Interpretação','RU ↔ PT','RU ↔ PT')+
  uxTile('prayer','🙏','Молитва','Oração','Заметки и практика','Anotações e prática')+
  uxTile('profile','🏅','Мой прогресс','Meu progresso',S.done.length+' / '+L.length+' уроков',S.done.length+' / '+L.length+' lições')+'</div>';
- h+='<details class="eb-detail"><summary>'+tr('Поделиться игрой','Compartilhar o jogo')+'</summary>'+journeyShareHTML()+'</details><p class="muted dash-build">Interface 1.0.9 · Português com a Bíblia</p>';
+ h+='<details class="eb-detail"><summary>'+tr('Поделиться игрой','Compartilhar o jogo')+'</summary>'+journeyShareHTML()+'</details><p class="muted dash-build">Interface 1.0.10 · Português com a Bíblia</p>';
  return h;
 }
 function uxHomeLevel(level){
@@ -36,7 +37,7 @@ function uxHomeLevel(level){
  journeyState().level=level;journeyOffset=null;save();go('map')
 }
 function uxNav(){
- let current=['intro','quiz','result','game','game-result','lesson-list'].includes(page)?'map':page==='foundations'||page==='cards'||page==='cardrun'||page==='review'?'dict':page;
+ let current=['intro','quiz','result','game','game-result','lesson-list'].includes(page)?'map':page==='verb-practice'||page==='verb-run'?'home':page==='foundations'||page==='cards'||page==='cardrun'||page==='review'?'dict':page;
  let nav=$('#nav');if(!nav)return;
  let rows=[['home','⌂','Главная','Início'],['map','▤','Уроки','Lições'],['bible','📖','Библия','Bíblia'],['dict','📚','Словарь','Palavras'],['profile','⚙','Профиль','Perfil']];
  let h=rows.map(([p,i,r,t])=>'<button type="button" '+(current===p?'aria-current="page" ':'')+'onclick="uxNavigate('+arg(p)+')"><span class="nav-icon" aria-hidden="true">'+i+'</span>'+tr(r,t)+'</button>').join('');
