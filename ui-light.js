@@ -6,7 +6,7 @@ function uxNavigate(p){if(p==='estudo'||p==='bible'){bTab='estudo';ebScreen='hom
 function uxHome(){
  let completed=S.done.length,percent=Math.round(100*completed/Math.max(1,L.length)),s=gameState(),src=gameSource(s.last||''),resuming=src&&gameValid(s.sessions[s.last]),next=gameSource('c:'+gameNextCourse()),old=validDraft(S.drafts[S.resume]),oldTitle=old?(S.resume==='review'?tr('Повторение ошибок','Revisão de erros'):tr(L[Number(S.resume)]?.[3]||'Урок',L[Number(S.resume)]?.[2]||'Lição')):'';
  return '<article class="hero"><div><h1>Português com a Bíblia</h1><p class="muted">Versão 1.0</p><p>'+tr('Учись в своём темпе, вместе с Luz.','Aprenda no seu ritmo, com Luz.')+'</p></div>'+sheep+'</article>'+releaseWelcomeHTML()+'<article class="game-start"><span class="tag">'+tr('Твой следующий шаг','Seu próximo passo')+'</span><h2>'+esc(!resuming&&old?oldTitle:tr((resuming?src:next).ru,(resuming?src:next).title))+'</h2>'+gameBtn(resuming||validDraft(S.drafts[S.resume])?tr('Продолжить урок','Continuar lição'):tr('Начать урок','Começar lição'),'gameContinue()')+(Object.keys(s.words).length?gameBtn(tr('Повторить слова','Revisar palavras')+' · '+journeyReviewCount(),'cardMode="learned";go("cards")',true):'')+'</article>'+
- '<div class="ux-heading"><h2>'+tr('Что будем изучать?','O que vamos estudar?')+'</h2></div><div class="eb-list home-main">'+
+ uxQuickActions()+'<div class="ux-heading"><h2>'+tr('Что будем изучать?','O que vamos estudar?')+'</h2></div><div class="eb-list home-main">'+
  uxTile('estudo','📖','Библия','Bíblia','Один стих за раз','Um versículo de cada vez')+
  uxTile('map','🎓','Португальский','Português','Игровая дорожка A1–B2','Caminho A1–B2')+
  uxTile('foundations','🔤','Основы португальского','Português essencial','Местоимения, глаголы, разговорные фразы','Pronomes, verbos e frases do dia a dia')+
@@ -23,7 +23,7 @@ function uxHome(){
  '</div></details><details class="eb-detail"><summary>'+tr('Поделиться с другом','Compartilhar com um amigo')+'</summary>'+journeyShareHTML()+'</details><p class="muted">'+completed+' / '+L.length+' '+tr('уроков пройдено','lições concluídas')+' · '+percent+'% · '+S.xp+' XP</p>';
 }
 function uxNav(){
- let current=['intro','quiz','result','game','game-result'].includes(page)?'map':page==='foundations'||page==='cards'||page==='cardrun'||page==='review'?'dict':page;
+ let current=['intro','quiz','result','game','game-result','lesson-list'].includes(page)?'map':page==='foundations'||page==='cards'||page==='cardrun'||page==='review'?'dict':page;
  let nav=$('#nav');if(!nav)return;
  let rows=[['home','⌂','Главная','Início'],['map','▤','Уроки','Lições'],['bible','📖','Библия','Bíblia'],['dict','📚','Словарь','Palavras'],['profile','⚙','Профиль','Perfil']];
  let h=rows.map(([p,i,r,t])=>'<button type="button" '+(current===p?'aria-current="page" ':'')+'onclick="uxNavigate('+arg(p)+')"><span class="nav-icon" aria-hidden="true">'+i+'</span>'+tr(r,t)+'</button>').join('');
@@ -33,7 +33,7 @@ function uxCatalogFilter(kind,level){if(!uxCatalog[kind]||!['all','A1','A2','B1'
 function uxCatalogSearch(kind,q){if(!uxCatalog[kind])return;Object.assign(uxCatalog[kind],{query:String(q).slice(0,200),at:0});uxUpdateList(kind)}
 function uxCatalogRows(kind){
  let state=uxCatalog[kind],q=norm(state.query);
- return L.map((l,i)=>({l,i})).filter(({l})=>(state.level==='all'||l[0]===state.level)&&(!q||norm([l[0],l[1],l[2],l[3],...(kind==='grammar'?[l[5],l[6]]:[])].join(' ')).includes(q))).sort((a,b)=>a.l[0].localeCompare(b.l[0])||a.i-b.i);
+ return L.map((l,i)=>({l,i})).filter(({l})=>(state.level==='all'||l[0]===state.level)&&(!q||norm([l[0],l[1],l[2],l[3],...([l[5],l[6],...l[7].flat()])].join(' ')).includes(q))).sort((a,b)=>a.l[0].localeCompare(b.l[0])||a.i-b.i);
 }
 function uxPage(kind,delta){if(!uxCatalog[kind]||!Number.isInteger(delta))return;let s=uxCatalog[kind],max=Math.max(0,Math.ceil(uxCatalogRows(kind).length/uxPageSize)-1);s.at=Math.min(max,Math.max(0,s.at+delta));uxUpdateList(kind);let e=$('#ux-list');if(e&&typeof e.scrollIntoView==='function')e.scrollIntoView({block:'start'})}
 function uxList(kind){
@@ -97,3 +97,26 @@ function releaseDownloadReport(){
  const report=['Português com a Bíblia · 1.0.0','Categoria: '+kind.value,'Local: '+loc.value.trim().slice(0,160),'Descrição: '+desc.value.trim().slice(0,1200)].join('\n');
  let url=URL.createObjectURL(new Blob([report],{type:'text/plain;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='erro-portugues-biblia.txt';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);status.textContent=tr('Файл подготовлен. Он не был отправлен.','Arquivo preparado. Não foi enviado.')
 }
+
+/* Mobile-friendly shortcuts and unified local search. */
+let uxGlobalQuery='';
+function uxQuickActions(){return '<div class="ux-quick">'+gameBtn('⌕ '+tr('Найти слово или урок','Buscar palavra ou lição'),'uxOpenSearch()',true)+gameBtn('🗂 '+tr('Карточки','Cartões'),'go("cards")',true)+gameBtn('↻ '+tr('Мои ошибки','Meus erros'),'go("review")',true)+'</div>'}
+function uxOpenSearch(){go('search');let e=$('#ux-global-query');if(e)e.focus()}
+function uxSearchRank(q,v){let text=norm(v||'');return text===q?0:text.startsWith(q)?1:text.includes(q)?2:3}
+function uxGlobalResults(){
+ let q=norm(uxGlobalQuery);if(!q)return '<p class="muted">'+tr('Например: confiar, молитва, предлоги, A1.','Por exemplo: confiar, oração, preposições, A1.')+'</p>';
+ let words=dictionary().filter(e=>matches(e,q)).map(e=>({e,rank:Math.min(uxSearchRank(q,e.pt),uxSearchRank(q,e.ru))})).sort((a,b)=>a.rank-b.rank),lessons=L.map((l,i)=>({l,i,rank:Math.min(...[l[2],l[3],l[0]].map(t=>uxSearchRank(q,t)))})).filter(x=>x.rank<3||norm([x.l[5],x.l[6],...x.l[7].flat()].join(' ')).includes(q)).sort((a,b)=>a.rank-b.rank);
+ let h='<section><h2>'+tr('Слова','Palavras')+' · '+words.length+'</h2>';
+ h+=words.slice(0,6).map(({e})=>'<article class="ux-search-result"><div><strong lang="pt-BR">'+esc(e.pt)+'</strong><p>'+esc(e.ru)+'</p></div>'+audio(e.pt)+'</article>').join('')||'<p class="muted">'+tr('Нет совпадений','Nenhuma correspondência')+'</p>';
+ if(words.length)h+=gameBtn(tr('Все результаты словаря','Todos os resultados do vocabulário'),'uxSearchToDict()',true);
+ h+='</section><section><h2>'+tr('Уроки','Lições')+' · '+lessons.length+'</h2>';
+ h+=lessons.slice(0,6).map(({l,i})=>'<button class="ux-search-lesson" onclick="gameCourse('+i+')"><span class="tag">'+esc(l[0])+'</span><span>'+esc(tr(l[3],l[2]))+'</span><span aria-hidden="true">›</span></button>').join('')||'<p class="muted">'+tr('Нет совпадений','Nenhuma correspondência')+'</p>';
+ if(lessons.length)h+=gameBtn(tr('Все найденные уроки','Todas as lições encontradas'),'uxSearchToLessons()',true);
+ return h+'</section>'
+}
+function uxGlobalSearchHTML(){return '<h1>'+tr('Поиск','Busca')+'</h1><label>'+tr('Поиск по всему курсу','Busca em todo o curso')+'<input id="ux-global-query" type="search" maxlength="120" value="'+esc(uxGlobalQuery)+'" placeholder="'+tr('Слово, перевод или тема','Palavra, tradução ou tema')+'" oninput="uxGlobalInput(this.value)"></label><p id="audio-status" role="status" class="muted"></p><div id="ux-global-results">'+uxGlobalResults()+'</div>'}
+function uxGlobalInput(v){uxGlobalQuery=String(v).slice(0,120);let e=$('#ux-global-results');if(e)e.innerHTML=uxGlobalResults()}
+function uxSearchToDict(){dictMode='all';dictQuery=uxGlobalQuery;dictPage=0;go('dict')}
+function uxSearchToLessons(){uxCatalog.map.level='all';uxCatalog.map.query=uxGlobalQuery;uxCatalog.map.at=0;go('lesson-list')}
+function uxDictQuick(){return '<div class="ux-dict-shortcuts">'+[['all','Все','Todas'],['favorites','★ Избранное','★ Favoritos'],['mine','Мой словарь','Meu vocabulário'],['phrases','Фразы','Frases']].map(([m,r,p])=>'<button type="button" class="'+(dictMode===m?'':'secondary')+'" aria-pressed="'+(dictMode===m)+'" onclick="setDictMode('+arg(m)+')">'+esc(tr(r,p))+'</button>').join('')+'</div>'}
+function uxLessonListHTML(){return '<div class="ux-quick">'+gameBtn(tr('← Дорожка уроков','← Caminho das lições'),'go("map")',true)+'</div>'+uxCatalogHTML('map')}
