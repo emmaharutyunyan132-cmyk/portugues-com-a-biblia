@@ -133,11 +133,13 @@ function gameHelpData(src,q){
  const matchKeys=new Set([q.prompt,q.answer,q.listen,q.pt].filter(Boolean).map(key));for(const [p,r] of src?.examples||[]){if(matchKeys.has(key(p))||r===q.context||r===q.prompt){phrases.set(key(p),[p,r]);add(p,false)}}
  return {rows:[...rows.values()],phrases:[...phrases.values()],unresolved:[...unresolved].filter(t=>!rows.has(key(t)))}
 }
+let gameHelpOpenKey='',gameHelpOpen=false;
+function gameHelpRemember(el,key){if(el.isConnected){gameHelpOpenKey=key;gameHelpOpen=el.open}}
 function gameHelpHTML(src,q){
- const d=gameHelpData(src,q);
- let h='<details class="game-more"><summary>'+tr('📘 Незнакомые слова и перевод','📘 Palavras novas e tradução')+'</summary><p class="muted">'+tr('Подсказка может раскрывать ответ. Сначала попробуй самостоятельно, затем посмотри перевод.','A dica pode revelar a resposta. Tente primeiro e consulte a tradução quando precisar.')+'</p>';
- for(const [p,r] of d.phrases)h+='<p><strong lang="pt-BR">'+esc(p)+'</strong> — '+esc(r)+' '+audio(p)+'</p>';
- for(const [p,r] of d.rows)h+='<p><strong lang="pt-BR">'+esc(p)+'</strong> — '+esc(r)+' '+audio(p)+'</p>';
+ const d=gameHelpData(src,q),helpKey=(src?.key||src?.i||'review')+':'+(q.id||q.type||q.kind)+':'+(q.prompt||q.listen||'')+':'+(q.answer||'');
+ let h='<details class="game-more ux-help" '+(gameHelpOpenKey===helpKey&&gameHelpOpen?'open ':'')+'ontoggle="gameHelpRemember(this,'+arg(helpKey)+')"><summary>'+tr('📘 Незнакомые слова и перевод','📘 Palavras novas e tradução')+'</summary><p class="muted">'+tr('Подсказка может раскрывать ответ. Сначала попробуй самостоятельно, затем посмотри перевод.','A dica pode revelar a resposta. Tente primeiro e consulte a tradução quando precisar.')+'</p>';
+ for(const [p,r] of d.rows)h+='<div class="ux-gloss"><div><strong lang="pt-BR">'+esc(p)+'</strong><small>'+esc(r)+'</small></div><button type="button" class="secondary" aria-label="'+esc(tr('Прослушать ','Ouvir ')+p)+'" onclick="speak('+arg(p)+')">🔊</button></div>';
+ if(d.phrases.length)h+='<details><summary>'+tr('Перевод целой фразы','Tradução da frase completa')+'</summary>'+d.phrases.map(([p,r])=>'<p><strong lang="pt-BR">'+esc(p)+'</strong> — '+esc(r)+' '+audio(p)+'</p>').join('')+'</details>';
  if(d.unresolved.length)h+='<p class="muted">'+tr('Для этих форм пока нет отдельной словарной статьи: ','Estas formas ainda não têm uma entrada individual: ')+esc(d.unresolved.join(', '))+'. '+tr('Сверь значение с переводом предложения, если он доступен ниже или в материалах урока.','Consulte a tradução da frase, quando disponível, ou o material da lição.')+'</p>';
  if(src){h+='<details><summary>'+tr('Все слова и примеры этого урока','Todas as palavras e exemplos desta lição')+'</summary>'+gamePrepContent(src)+'</details>'}
  return h+'</details>'
@@ -166,6 +168,7 @@ function gameHTML(){
   if(q.opts)h+='<div class="game-options">'+q.opts.map((x,i)=>'<button class="game-option '+(d.selected===i?'selected ':'')+(d.feedback&&norm(x)===norm(q.answer)?'right ':'')+'" aria-pressed="'+(d.selected===i)+'" '+(d.feedback?'disabled ':'')+'onclick="gameSelect('+i+')">'+esc(x)+'</button>').join('')+'</div>';
   else if(q.bank)h+='<div class="built">'+d.picked.map((n,i)=>'<button class="tile" '+(d.feedback?'disabled ':'')+'onclick="gameUntile('+i+')">'+esc(q.bank[n])+'</button>').join('')+'</div><div class="word-bank">'+q.bank.map((x,i)=>'<button class="tile" '+(d.feedback||d.picked.includes(i)?'disabled ':'')+'onclick="gameTile('+i+')">'+esc(x)+'</button>').join('')+'</div>';
   else h+='<label>'+tr('Твой ответ','Sua resposta')+'<input lang="'+(q.target==='ru'?'ru':'pt-BR')+'" autocomplete="off" value="'+esc(d.input)+'" '+(d.feedback?'disabled ':'')+'oninput="gameSetInput(this.value)" onkeydown="if(event.key===\'Enter\')gameCheck()"></label>';
+  h+=gameHelpHTML(src,q);
   if(q.word&&q.target==='ru'&&!d.feedback)h+='<details><summary>'+tr('Показать перевод, если не знаешь','Ver tradução, se precisar')+'</summary><p>'+esc(q.pt)+' — '+esc(q.ru)+'</p></details>';
   if(q.rule&&!d.feedback)h+='<details><summary>'+tr('Подсказка','Dica')+'</summary><p>'+esc(tr(...q.rule))+'</p></details>';
   if(d.feedback){h+='<div class="game-feedback '+(d.feedback.ok?'':'retry')+'" role="status"><b>'+tr(d.feedback.ok?'Верно!':'Запомни этот ответ',d.feedback.ok?'Muito bem!':'Lembre-se desta resposta')+'</b><p>'+esc(q.answer)+'</p>'+(d.feedback.accent?'<p>'+tr('Проверь ударения и диакритику.','Confira os acentos.')+'</p>':'')+(q.ru?'<p>'+esc(q.ru)+'</p>':'')+(q.ex?'<details><summary>'+tr('Пояснение','Explicação')+'</summary>'+esc(q.ex)+'</details>':'')+(!d.feedback.ok&&!q.retry?'<p class="muted">'+tr('Мы повторим это в конце урока.','Vamos revisar no fim da lição.')+'</p>':'')+'</div>';
@@ -173,6 +176,6 @@ function gameHTML(){
    h+=gameBtn(next,'gameAdvance()');
   }else {let ready=q.opts?Number.isInteger(d.selected):q.bank?d.picked.length===q.bank.length:!!d.input.trim();h+='<button id="game-check" type="button" class="wide" '+(ready?'':'disabled ')+'onclick="gameCheck()">'+check+'</button>'}
  }
- return (!d.feedback&&d.at===0?gamePreparationHTML(src):'')+h+'</section>'+gameHelpHTML(src,q)+gameDetails(src)
+ return (!d.feedback&&d.at===0?gamePreparationHTML(src):'')+h+'</section>'+(['free','reflect','learn','phrase','context'].includes(q.kind)?gameHelpHTML(src,q):'')+gameDetails(src)
 }
 function gameResultHTML(){let r=gameResult,src=gameSource(r?.key||'');if(!r||!src)return gameBtn(tr('Главная','Início'),'go("home")');return '<article class="game-card game-end"><span class="game-celebrate">'+(r.passed?'🌿':'📘')+'</span><h1>'+tr(r.passed?'Урок завершён!':'Продолжим практику?',r.passed?'Lição concluída!':'Vamos praticar mais?')+'</h1><p>'+esc(tr(src.ru,src.title))+'</p><p><b>'+r.correct+' / '+r.total+'</b> '+tr('заданий закреплено','exercícios consolidados')+'</p><p class="muted">'+(r.xp?'+'+r.xp+' XP · ':'')+tr('Ошибки — часть обучения.','Errar faz parte da aprendizagem.')+'</p>'+gameBtn(tr(r.passed?(src.kind==='bible'?(src.v[0]<src.ch[8].length?'Следующий стих':'К главам'):'Следующий урок'):'Повторить урок',r.passed?(src.kind==='bible'?(src.v[0]<src.ch[8].length?'Próximo versículo':'Ver capítulos'):'Próxima lição'):'Repetir lição'),'gameNext()')+gameBtn(tr('На главную','Início'),'go("home")',true)+'</article>'}
