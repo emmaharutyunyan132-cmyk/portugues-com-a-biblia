@@ -90,6 +90,62 @@ function gameBtn(text,fn,secondary=false,disabled=false){return '<button type="b
 function gameSound(text){return '<div class="game-sound">'+gameBtn('🔊 '+tr('Послушать','Ouvir'),'speak('+JSON.stringify(text)+')')+gameBtn('0,75×','speak('+JSON.stringify(text)+',0.75)',true)+'</div><p id="audio-status" class="muted" role="status"></p>'}
 function gameDetails(src){if(src.kind!=='bible')return '';let v=src.v,c=src.ch;return '<details class="game-more"><summary>'+tr('О стихе и оригинале ACF','Sobre o versículo e a ACF')+'</summary>'+bLinks(c[0],c[1])+'<p>'+esc(tr(v[5],v[4]))+'</p><p>'+esc(tr(v[10],v[9]))+'</p><p>'+esc(tr(c[7],c[6]))+'</p><p>'+v[11].map(esc).join(' · ')+'</p><label>'+tr('Мои заметки','Minhas anotações')+'<textarea rows="3" maxlength="4000" oninput="ebNote(this.value)">'+esc(ebState().notes[ebKey(c,v[0])]||'')+'</textarea></label><button class="secondary" onclick="ebMark(\'memory\')">'+(ebState().memory[ebKey(c,v[0])]?'✓ ':'')+tr('Сверено по памяти','Memorização conferida')+'</button></details>'}
 function gameWordExtra(q){let e=baseVocabulary().find(x=>x.id===wordId(q.pt));if(!e||!e.example)return '';return '<details><summary>'+tr('Пример в предложении','Exemplo em uma frase')+'</summary><p lang="pt-BR">'+esc(e.example)+' '+audio(e.example)+'</p>'+(e.translation?'<p class="muted">'+esc(e.translation)+'</p>':'')+'</details>'}
+
+/* Optional contextual support. Never guess a translation for an unknown form. */
+const GAME_FORM_GLOSSES = {
+ "que":"что, который; чтобы (по контексту)","pode":"может; можешь (poder)","é":"есть, является (ser)","deve":"должен, должна (dever)","podemos":"мы можем (poder)","está":"находится; состояние (estar)","tem":"имеет; есть (ter)","fala":"говорит; речь (falar)","vamos":"мы идём; давайте (ir)","precisa":"нуждается; нужно (precisar)","pessoas":"люди","precisamos":"нам нужно (precisar)","exige":"требует (exigir)","apresenta":"представляет (apresentar)","gostaria":"хотел(а) бы (gostar)","diferentes":"разные","depende":"зависит (depender)","vou":"я иду; собираюсь (ir)","tinha":"имел(а); было (ter)","vez":"раз; очередь","tenho":"я имею; у меня есть (ter)","preciso":"мне нужно (precisar); точный (прилагательное)","materiais":"материалы","convém":"стоит, целесообразно (convir)","seja":"форма ser в сослагательном наклонении; пусть будет","história":"история","possível":"возможный","nem":"ни; даже не","quero":"я хочу (querer)","será":"будет (ser); será que — интересно, действительно ли","joão":"Иоанн; Жуан","responsável":"ответственный","agradeço":"я благодарю (agradecer)","estou":"я нахожусь; моё состояние (estar)","posso":"я могу (poder)","peço":"я прошу (pedir)","há":"есть; тому назад (haver)","conversa":"беседа; беседует (conversar)","ideia":"мысль, идея","conforme":"согласно; в зависимости от","considerar":"рассматривать, учитывать","embora":"хотя; в ir embora — уходить","amigos":"друзья","discípulos":"ученики, последователи","são":"являются (ser)","chegou":"пришёл, пришла (chegar)","situação":"ситуация","faz":"делает (fazer)","foi":"был(а) (ser); пошёл/пошла (ir)","inclui":"включает (incluir)","fica":"остаётся; находится (ficar)","devemos":"мы должны (dever)","evitar":"избегать","participantes":"участники","narrativa":"повествование","condições":"условия","juntos":"вместе","lemos":"мы читаем или прочитали (ler)","medida":"мера; à medida que — по мере того как","necessário":"необходимый","era":"был(а) (ser)","melhor":"лучше; лучший","dificuldades":"трудности","explicou":"объяснил(а) (explicar)","informações":"сведения, информация","quer":"хочет; хочешь (querer)","podem":"могут (poder)","poderia":"мог(ла) бы (poder)","fim":"конец","clara":"ясная, светлая","simples":"простой","breve":"краткий","apenas":"только","escolhas":"выборы, решения","circunstâncias":"обстоятельства","permite":"позволяет (permitir)","leitura":"чтение","exemplos":"примеры","necessariamente":"обязательно, непременно","espero":"я надеюсь; жду (esperar)","estudo":"я учусь (estudar); учёба","outros":"другие","houver":"если будет, если возникнет (haver)","jovens":"молодые люди","parte":"часть","orienta":"наставляет, направляет (orientar)","maria":"Мария","durante":"во время","obra":"дело, труд, произведение","perguntou":"спросил(а) (perguntar)","tanto":"столько; tanto… quanto — как… так и","perguntas":"вопросы","houve":"было, произошло (haver)","prefiro":"я предпочитаю (preferir)","central":"центральный, основной","procure":"постарайся; ищи (procurar)","verifique":"проверь (verificar)","caso":"случай; если (союз)","plano":"план","ideias":"идеи, мысли","confio":"я доверяю (confiar)","creio":"я верю (crer)","oro":"я молюсь (orar)","oramos":"мы молимся или помолились (orar)","ajuda-me":"помоги мне (ajudar + me)","todos":"все","dias":"дни","bíblia":"Библия","moro":"я живу (morar)","qual":"какой, который","vós":"вы (книжное множественное число)","sois":"вы есть (ser, форма vós)","tendes":"вы имеете (ter, форма vós)","convosco":"с вами (книжная форма)"
+};
+let gameHelpCache=null;
+function gameHelpKey(t){return String(t||'').normalize('NFC').toLocaleLowerCase('pt-BR').trim().replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu,'').replace(/\s+/g,' ')}
+function gameHelpIndex(){
+ if(gameHelpCache)return gameHelpCache;
+ let m=new Map(),put=(p,r)=>{let k=gameHelpKey(p);if(k&&typeof r==='string'&&r.trim()&&!m.has(k))m.set(k,r)};
+ for(const [p,r] of Object.entries(GAME_FORM_GLOSSES))put(p,r);
+ for(const e of baseVocabulary())put(e.pt,e.ru);
+ if(typeof VERBS!=='undefined')for(const [p,r,type,...forms] of VERBS)for(const group of forms.slice(0,3))if(typeof group==='string')for(const form of group.split(','))if(form.trim())put(form,'форма '+p+' — '+r);
+ for(const l of L)for(const [p,r] of l[8])put(p,r);
+ if(typeof ESTUDO_CHAPTERS!=='undefined')for(const ch of ESTUDO_CHAPTERS)for(const v of ch[8]){put(v[1],v[2]);for(const [p,r] of v[6])put(p,r)}
+ return gameHelpCache=m
+}
+function gameHelpData(src,q){
+ let m=gameHelpIndex(),local=new Map(),rows=new Map(),phrases=new Map(),unresolved=new Set();
+ const key=gameHelpKey,put=(p,r)=>{let k=key(p);if(k&&typeof r==='string'&&r.trim())local.set(k,r)};
+ for(const [p,r] of src?.words||[])put(p,r);
+ for(const [p,r] of src?.examples||[])put(p,r);
+ if(q.pt&&q.ru)put(q.pt,q.ru);
+ if(q.target==='ru'&&q.prompt&&q.answer)put(q.prompt,q.answer);
+ if(q.target==='pt'&&!q.listen&&/[а-яё]/i.test(q.prompt||'')&&q.answer&&q.kind!=='free'&&q.type!=='Complete a frase'&&!q.rule)put(q.answer,q.prompt);
+ if(q.ex&&typeof q.ex==='string'){let pair=q.ex.split(' · ')[0].split(' — ');if(pair.length===2&&/[а-яё]/i.test(pair[1])&&!/[а-яё]/i.test(pair[0]))put(pair[0],pair[1])}
+ function gloss(p){let k=key(p);return local.get(k)||m.get(k)}
+ function add(p,whole=true){if(typeof p!=='string'||!p.trim()||/[а-яё]/i.test(p))return;let k=key(p),r=gloss(p);if(!k)return;
+  if(whole&&r&&k.includes(' '))phrases.set(k,[p,r]);else if(r)rows.set(k,[p,r]);
+  if(k.includes(' ')||!r)for(const t of p.match(/[\p{L}\p{M}]+(?:-[\p{L}\p{M}]+)*/gu)||[]){let tk=key(t),v=gloss(t);if(v&&!rows.has(tk))rows.set(tk,[t,v]);else if(!v)unresolved.add(t)}
+ }
+ if(q.kind==='free'){add(q.pt);add(q.model)}
+ else if(q.kind==='reflect'){add(q.prompt);add(q.answer);add(src?.v?.[1])}
+ else if(q.listen){add(q.listen);if(q.opts&&q.target==='pt')q.opts.forEach(x=>add(x))}
+ else {add(q.prompt);add(q.pt);if(q.target==='pt'){if(q.opts)q.opts.forEach(x=>add(x));if(q.bank)q.bank.forEach(x=>add(x));add(q.answer)}}
+ // For cloze and sentence tasks show the complete translated source on request.
+ const matchKeys=new Set([q.prompt,q.answer,q.listen,q.pt].filter(Boolean).map(key));for(const [p,r] of src?.examples||[]){if(matchKeys.has(key(p))||r===q.context||r===q.prompt){phrases.set(key(p),[p,r]);add(p,false)}}
+ return {rows:[...rows.values()],phrases:[...phrases.values()],unresolved:[...unresolved].filter(t=>!rows.has(key(t)))}
+}
+function gameHelpHTML(src,q){
+ const d=gameHelpData(src,q);
+ let h='<details class="game-more"><summary>'+tr('📘 Незнакомые слова и перевод','📘 Palavras novas e tradução')+'</summary><p class="muted">'+tr('Подсказка может раскрывать ответ. Сначала попробуй самостоятельно, затем посмотри перевод.','A dica pode revelar a resposta. Tente primeiro e consulte a tradução quando precisar.')+'</p>';
+ for(const [p,r] of d.phrases)h+='<p><strong lang="pt-BR">'+esc(p)+'</strong> — '+esc(r)+' '+audio(p)+'</p>';
+ for(const [p,r] of d.rows)h+='<p><strong lang="pt-BR">'+esc(p)+'</strong> — '+esc(r)+' '+audio(p)+'</p>';
+ if(d.unresolved.length)h+='<p class="muted">'+tr('Для этих форм пока нет отдельной словарной статьи: ','Estas formas ainda não têm uma entrada individual: ')+esc(d.unresolved.join(', '))+'. '+tr('Сверь значение с переводом предложения, если он доступен ниже или в материалах урока.','Consulte a tradução da frase, quando disponível, ou o material da lição.')+'</p>';
+ if(src){h+='<details><summary>'+tr('Все слова и примеры этого урока','Todas as palavras e exemplos desta lição')+'</summary>'+gamePrepContent(src)+'</details>'}
+ return h+'</details>'
+}
+function gamePrepContent(src){
+ let h=src.kind==='course'?'<p>'+esc(tr(src.l[6],src.l[5]))+'</p>':'<p>'+esc(tr(src.v[5],src.v[4]))+'</p>';
+ for(const [p,r] of src.words)h+='<p><strong lang="pt-BR">'+esc(p)+'</strong> — '+esc(r)+' '+audio(p)+'</p>';
+ for(const [p,r] of src.examples)h+='<p lang="pt-BR"><strong>'+esc(p)+'</strong> '+audio(p)+'</p><p>'+esc(r)+'</p>';
+ return h
+}
+function gamePreparationHTML(src){return '<details class="game-more" open><summary>'+tr('📚 Подготовка к уроку: слова и примеры','📚 Prepare-se: palavras e exemplos')+'</summary>'+gamePrepContent(src)+'</details>'}
+
 function gameHTML(){
  let src=gameSource(gameKey||''),d=gameSession(),q=gameCurrent();if(!src||!d||!q)return '<article>'+gameBtn(tr('К урокам','Voltar às lições'),'go("map")')+'</article>';
  if(journeyBoundary(d))return journeyBlockHTML(d);
@@ -113,6 +169,6 @@ function gameHTML(){
    h+=gameBtn(next,'gameAdvance()');
   }else {let ready=q.opts?Number.isInteger(d.selected):q.bank?d.picked.length===q.bank.length:!!d.input.trim();h+='<button id="game-check" type="button" class="wide" '+(ready?'':'disabled ')+'onclick="gameCheck()">'+check+'</button>'}
  }
- return h+'</section>'+gameDetails(src)
+ return h+'</section>'+(!d.feedback&&d.at===0?gamePreparationHTML(src):'')+gameHelpHTML(src,q)+gameDetails(src)
 }
 function gameResultHTML(){let r=gameResult,src=gameSource(r?.key||'');if(!r||!src)return gameBtn(tr('Главная','Início'),'go("home")');return '<article class="game-card game-end"><span class="game-celebrate">'+(r.passed?'🌿':'📘')+'</span><h1>'+tr(r.passed?'Урок завершён!':'Продолжим практику?',r.passed?'Lição concluída!':'Vamos praticar mais?')+'</h1><p>'+esc(tr(src.ru,src.title))+'</p><p><b>'+r.correct+' / '+r.total+'</b> '+tr('заданий закреплено','exercícios consolidados')+'</p><p class="muted">'+(r.xp?'+'+r.xp+' XP · ':'')+tr('Ошибки — часть обучения.','Errar faz parte da aprendizagem.')+'</p>'+gameBtn(tr(r.passed?(src.kind==='bible'?(src.v[0]<src.ch[8].length?'Следующий стих':'К главам'):'Следующий урок'):'Повторить урок',r.passed?(src.kind==='bible'?(src.v[0]<src.ch[8].length?'Próximo versículo':'Ver capítulos'):'Próxima lição'):'Repetir lição'),'gameNext()')+gameBtn(tr('На главную','Início'),'go("home")',true)+'</article>'}
