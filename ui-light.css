@@ -286,3 +286,16 @@ body[data-page="home"] header{display:none}
 
 /* Focused conjugation practice */
 body[data-page="verb-run"]{background:#fff}body[data-page="verb-run"] nav,body[data-page="verb-run"] header{display:none}body[data-page="verb-run"] main{max-width:660px;min-height:100dvh;padding-top:16px;padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}body[data-page="verb-run"] .game-card{padding:12px 0}body[data-page="verb-practice"] .ux-filters button{flex:1}body[data-page="verb-run"] .game-feedback table{background:white;border-radius:10px}
+
+/* Conjugation prompts: tense, verb and pronoun have equal visual priority. */
+.vc-question-header{display:grid;gap:10px;margin:18px 0 20px}
+.vc-question-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.vc-tense,.vc-verb,.vc-person{display:flex;flex-direction:column;gap:5px;padding:14px 16px;border:1px solid #d4e6d4;border-radius:16px;background:#f4faf3;color:#243c29;min-width:0;overflow-wrap:anywhere}
+.vc-tense{background:#edf7eb;border-color:#b8d7b9}
+.vc-person{background:#eef6fe;border-color:#c9dff0;color:#183e61}
+.vc-question-header span{font-size:.73rem;font-weight:800;letter-spacing:.055em}
+.vc-question-header strong{display:block;font-size:clamp(1.3rem,5vw,1.7rem);font-weight:800;line-height:1.2}
+.vc-tense strong{font-size:clamp(1.15rem,4.7vw,1.5rem)}
+.vc-question-header small{font-size:1rem;line-height:1.35}
+.vc-question-header .vc-verb .tap-word{font:inherit;color:inherit}
+@media(max-width:360px){.vc-tense,.vc-verb,.vc-person{padding:11px}.vc-question-pair{gap:8px}}
