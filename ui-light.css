@@ -206,3 +206,36 @@ body[data-page="speaking"] .ux-filters button{width:auto;flex:1;min-width:55px}b
  .ux-search-result .audio-group button{padding:7px 9px}
 }
 @media(max-width:340px){.home-main{grid-template-columns:1fr}.home-main .ux-tile{flex-direction:row;min-height:64px}}
+
+/* Light, game-first mini-lessons. Original Luz palette and artwork retained. */
+body[data-page="game"],body[data-page="quiz"]{background:#fff}
+body[data-page="game"] header{display:none}
+body[data-page="game"] main{min-height:100dvh;padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+.game-top{position:sticky;top:0;background:white;z-index:4;padding:8px 0}
+.game-top progress{height:14px;border-radius:10px;overflow:hidden}
+.game-card{border:0;box-shadow:none;padding:14px 0 8px}
+.game-card h2{font-weight:800;margin:12px 0}
+.game-option{border-width:2px;border-bottom-width:4px;border-radius:15px}
+.game-option.selected{background:#e1f4e6;border-color:#318758}
+.game-card>.wide{border-bottom:4px solid #165833;border-radius:14px;min-height:54px}
+.game-card>.wide:disabled{background:#e6eae6;border-color:#d5dbd5;color:#55685b;opacity:1}
+.game-card .game-word{font-size:clamp(24px,5vw,34px)}
+.tap-word{display:inline;min-height:0;font-size:inherit;font-weight:inherit;line-height:inherit;background:transparent;color:inherit;padding:1px 1px 2px;margin:0;border:0;border-radius:4px;text-decoration:underline dotted;text-decoration-color:#398657;text-underline-offset:5px}
+.tap-word[aria-expanded="true"]{background:#e1f3e5;color:#185b39}
+.tap-instruction{font-size:12px;color:var(--pcb-muted);margin:0 0 10px}
+.tap-option-row{display:flex;gap:6px;align-items:stretch}
+.tap-option-row .game-option{flex:1;min-width:0}
+.tap-option-help,.tap-tile-help{background:var(--pcb-soft);color:var(--pcb-green);min-width:44px;min-height:44px;padding:7px;margin:0;border:1px solid var(--pcb-line);border-radius:12px}
+.tap-option-help[aria-expanded="true"],.tap-tile-help[aria-expanded="true"]{background:#d4ecd8;border-color:#318758}
+.tap-tile-row{display:inline-flex;align-items:stretch;gap:2px;max-width:100%}
+.tap-tile-row .tile{margin:0;min-width:0}
+.tap-tile-help{min-width:36px;padding:5px}
+.tap-panel{background:#eff8ef;border:1px solid #add6b6;border-radius:14px;padding:12px;margin:10px 0;scroll-margin:80px 0 12px}
+.tap-panel[hidden]{display:none!important}
+.tap-panel-head{display:flex;align-items:center;gap:6px}
+.tap-panel-head strong{flex:1;min-width:0;font-size:18px}
+.tap-panel-head button{width:44px;min-height:44px;padding:4px;margin:0}
+#game-tap-meaning{font-size:16px;margin:8px 0}
+#game-tap-context{color:var(--pcb-muted);font-size:13px}
+.tap-inline{font-size:18px}
+@media(max-width:520px){body[data-page="game"] main{padding-left:16px;padding-right:16px}.game-card{padding:8px 0}.game-top{gap:8px}.tap-option-help{min-width:44px}.game-options{gap:9px}}
