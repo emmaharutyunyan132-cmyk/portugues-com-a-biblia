@@ -101,6 +101,7 @@ function gameHelpIndex(){
  if(gameHelpCache)return gameHelpCache;
  let m=new Map(),put=(p,r)=>{let k=gameHelpKey(p);if(k&&typeof r==='string'&&r.trim()&&!m.has(k))m.set(k,r)};
  for(const [p,r] of Object.entries(GAME_FORM_GLOSSES))put(p,r);
+ put('Vocês têm esperança.','У вас есть надежда.');put('Que a paz esteja com vocês.','Пусть мир будет с вами.');
  for(const e of baseVocabulary())put(e.pt,e.ru);
  if(typeof VERBS!=='undefined')for(const [p,r,type,...forms] of VERBS)for(const group of forms.slice(0,3))if(typeof group==='string')for(const form of group.split(','))if(form.trim())put(form,'форма '+p+' — '+r);
  for(const l of L)for(const [p,r] of l[8])put(p,r);
@@ -108,14 +109,14 @@ function gameHelpIndex(){
  return gameHelpCache=m
 }
 function gameHelpData(src,q){
- let m=gameHelpIndex(),local=new Map(),rows=new Map(),phrases=new Map(),unresolved=new Set();
+ let m=gameHelpIndex(),local=new Map(),rows=new Map(),phrases=new Map(),unresolved=new Set(),sourcePair=null;
  const key=gameHelpKey,put=(p,r)=>{let k=key(p);if(k&&typeof r==='string'&&r.trim())local.set(k,r)};
  for(const [p,r] of src?.words||[])put(p,r);
  for(const [p,r] of src?.examples||[])put(p,r);
  if(q.pt&&q.ru)put(q.pt,q.ru);
  if(q.target==='ru'&&q.prompt&&q.answer)put(q.prompt,q.answer);
  if(q.target==='pt'&&!q.listen&&/[а-яё]/i.test(q.prompt||'')&&q.answer&&q.kind!=='free'&&q.type!=='Complete a frase'&&!q.rule)put(q.answer,q.prompt);
- if(q.ex&&typeof q.ex==='string'){let pair=q.ex.split(' · ')[0].split(' — ');if(pair.length===2&&/[а-яё]/i.test(pair[1])&&!/[а-яё]/i.test(pair[0]))put(pair[0],pair[1])}
+ if(q.ex&&typeof q.ex==='string'){let pair=q.ex.split(' · ')[0].split(' — ');if(pair.length===2&&/[а-яё]/i.test(pair[1])&&!/[а-яё]/i.test(pair[0])){put(pair[0],pair[1]);sourcePair=pair}}
  function gloss(p){let k=key(p);return local.get(k)||m.get(k)}
  function add(p,whole=true){if(typeof p!=='string'||!p.trim()||/[а-яё]/i.test(p))return;let k=key(p),r=gloss(p);if(!k)return;
   if(whole&&r&&k.includes(' '))phrases.set(k,[p,r]);else if(r)rows.set(k,[p,r]);
@@ -126,6 +127,7 @@ function gameHelpData(src,q){
  else if(q.listen){add(q.listen);if(q.opts&&q.target==='pt')q.opts.forEach(x=>add(x))}
  else {add(q.prompt);add(q.pt);if(q.target==='pt'){if(q.opts)q.opts.forEach(x=>add(x));if(q.bank)q.bank.forEach(x=>add(x));add(q.answer)}}
  // For cloze and sentence tasks show the complete translated source on request.
+ if(sourcePair&&key(sourcePair[0]).includes(' ')){phrases.set(key(sourcePair[0]),sourcePair);add(sourcePair[0],false)}
  const matchKeys=new Set([q.prompt,q.answer,q.listen,q.pt].filter(Boolean).map(key));for(const [p,r] of src?.examples||[]){if(matchKeys.has(key(p))||r===q.context||r===q.prompt){phrases.set(key(p),[p,r]);add(p,false)}}
  return {rows:[...rows.values()],phrases:[...phrases.values()],unresolved:[...unresolved].filter(t=>!rows.has(key(t)))}
 }
@@ -169,6 +171,6 @@ function gameHTML(){
    h+=gameBtn(next,'gameAdvance()');
   }else {let ready=q.opts?Number.isInteger(d.selected):q.bank?d.picked.length===q.bank.length:!!d.input.trim();h+='<button id="game-check" type="button" class="wide" '+(ready?'':'disabled ')+'onclick="gameCheck()">'+check+'</button>'}
  }
- return h+'</section>'+(!d.feedback&&d.at===0?gamePreparationHTML(src):'')+gameHelpHTML(src,q)+gameDetails(src)
+ return (!d.feedback&&d.at===0?gamePreparationHTML(src):'')+h+'</section>'+gameHelpHTML(src,q)+gameDetails(src)
 }
 function gameResultHTML(){let r=gameResult,src=gameSource(r?.key||'');if(!r||!src)return gameBtn(tr('Главная','Início'),'go("home")');return '<article class="game-card game-end"><span class="game-celebrate">'+(r.passed?'🌿':'📘')+'</span><h1>'+tr(r.passed?'Урок завершён!':'Продолжим практику?',r.passed?'Lição concluída!':'Vamos praticar mais?')+'</h1><p>'+esc(tr(src.ru,src.title))+'</p><p><b>'+r.correct+' / '+r.total+'</b> '+tr('заданий закреплено','exercícios consolidados')+'</p><p class="muted">'+(r.xp?'+'+r.xp+' XP · ':'')+tr('Ошибки — часть обучения.','Errar faz parte da aprendizagem.')+'</p>'+gameBtn(tr(r.passed?(src.kind==='bible'?(src.v[0]<src.ch[8].length?'Следующий стих':'К главам'):'Следующий урок'):'Повторить урок',r.passed?(src.kind==='bible'?(src.v[0]<src.ch[8].length?'Próximo versículo':'Ver capítulos'):'Próxima lição'):'Repetir lição'),'gameNext()')+gameBtn(tr('На главную','Início'),'go("home")',true)+'</article>'}
