@@ -283,3 +283,6 @@ body[data-page="home"] header{display:none}
 
 /* Guided learning and checkpoints */
 .dialogue-line{border:1px solid var(--pcb-line);border-radius:14px;background:#f4f9f3;padding:12px;margin:8px 0}.dialogue-line small{font-weight:800;color:var(--pcb-green)}.dialogue-line p{margin:5px 0}.dialogue-line p[lang="pt-BR"]{font-size:19px;font-weight:650}.journey-node.checkpoint{border:2px solid #a8c9a9;background:#f1f8ef}.journey-node.checkpoint .journey-dot{background:#dceede}.journey-node.checkpoint:disabled{opacity:.65}.game-card .game-feedback details{margin:8px 0}.game-card .game-feedback details summary{font-weight:700}
+
+/* Focused conjugation practice */
+body[data-page="verb-run"]{background:#fff}body[data-page="verb-run"] nav,body[data-page="verb-run"] header{display:none}body[data-page="verb-run"] main{max-width:660px;min-height:100dvh;padding-top:16px;padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}body[data-page="verb-run"] .game-card{padding:12px 0}body[data-page="verb-practice"] .ux-filters button{flex:1}body[data-page="verb-run"] .game-feedback table{background:white;border-radius:10px}
