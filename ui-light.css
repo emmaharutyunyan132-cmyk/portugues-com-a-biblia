@@ -239,3 +239,34 @@ body[data-page="game"] main{min-height:100dvh;padding-top:max(12px,env(safe-area
 #game-tap-context{color:var(--pcb-muted);font-size:13px}
 .tap-inline{font-size:18px}
 @media(max-width:520px){body[data-page="game"] main{padding-left:16px;padding-right:16px}.game-card{padding:8px 0}.game-top{gap:8px}.tap-option-help{min-width:44px}.game-options{gap:9px}}
+
+/* 1.0.6: visibly redesigned dashboard, mobile-first light theme. */
+body[data-page="home"] main{max-width:690px;padding-top:18px}
+body[data-page="home"] header{display:none}
+.dash-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 16px}
+.dash-eyebrow{font-size:10px;letter-spacing:1.25px;font-weight:800;color:var(--pcb-green);margin:0 0 5px}
+.dash-top h1{font-size:clamp(27px,6vw,38px);letter-spacing:-1px;margin:0}
+.dash-top .muted{margin:4px 0}
+.dash-search{width:48px;height:48px;flex-shrink:0;font-size:27px;padding:0;border-radius:14px}
+.dash-level{background:white;border:1px solid var(--pcb-line);border-radius:18px;margin:0 0 14px;padding:14px}
+.dash-level progress{height:10px;margin:9px 0 12px}
+.dash-levels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.dash-levels button{margin:0;min-width:0;padding:10px 0;border-radius:12px;font-weight:750}
+.dash-levels button[aria-pressed="true"]{border-bottom:3px solid #195f38}
+.dash-next{background:#e6f4e6;border:1px solid #bcdfbe;border-radius:22px;padding:18px;margin:0 0 16px}
+.dash-next-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.dash-next-top>div{flex:1;min-width:0}
+.dash-next-top svg{width:94px;height:auto;flex:0 0 94px}
+.dash-label{display:block;font-size:11px;letter-spacing:.8px;font-weight:800;color:#2d7546}
+.dash-next h2{font-size:23px;line-height:1.22;margin:7px 0}
+.dash-next p{font-size:13px;margin:7px 0 14px}
+.dash-next>.wide{min-height:52px;border-bottom:4px solid #1b613a;border-radius:14px;margin:5px 0}
+.dash-link{display:block;margin:8px auto 0;min-height:44px;background:transparent;color:var(--pcb-green);font-size:13px;padding:8px;text-align:center}
+.dash-section{font-size:20px;margin:22px 0 10px}
+.dash-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.dash-grid .ux-tile{display:flex;flex-direction:column;align-items:flex-start;min-height:112px;border-radius:17px;background:#fff;border:1px solid var(--pcb-line);border-bottom:3px solid #dbe5dc;padding:13px;gap:8px}
+.dash-grid .ux-tile .ux-icon{display:inline-grid;place-items:center;flex:0 0 auto;width:36px;height:36px;background:var(--pcb-soft);border-radius:10px;font-size:21px}
+.dash-grid .ux-tile strong{font-size:15px;line-height:1.25}
+.dash-grid .ux-tile small{font-size:12px;line-height:1.35}
+.dash-build{text-align:center;font-size:11px;color:var(--pcb-muted);margin:20px 0 8px}
+@media(max-width:360px){.dash-next-top svg{width:68px;flex-basis:68px}.dash-grid .ux-tile{padding:10px}.dash-grid .ux-tile strong{font-size:14px}}
